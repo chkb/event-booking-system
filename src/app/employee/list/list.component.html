@@ -1,0 +1,54 @@
+<div class="search">
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Søg">
+    </mat-form-field>
+</div>
+<div class="table-overflow mat-elevation-z8">
+    <div class="container">
+        <mat-table #table [dataSource]="dataSource" matSort>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="displayName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <!-- <img class="image" [src]="row.photoURL" /> -->
+                    {{row.displayName}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="role">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Rolle </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+            </ng-container>
+
+            <!-- Mobile Column -->
+            <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Mobilnummer </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
+            </ng-container>
+
+            <!-- HasCar Column -->
+            <ng-container matColumnDef="hasCar">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+            </ng-container>
+
+            <!-- HasDriverLicens Column -->
+            <ng-container matColumnDef="hasDriverLicens">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" (click)="gotoEmployee(row.uid)"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>

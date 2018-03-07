@@ -1,0 +1,50 @@
+<h1 @flyInOut>
+    Velkommen til denne app
+</h1>
+<h2 @flyInOut-3sec>
+    Den er mega smart
+</h2>
+<br>
+
+<h2>
+    Klik animation
+</h2>
+<div *ngFor="let item of List">
+    <mat-card [@heroState]="item.state" (click)="toggleState(item)">
+        {{item.name}}
+    </mat-card>
+</div>
+
+
+
+
+<mat-horizontal-stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <h1>
+            Step 1
+        </h1>
+        <ng-template matStepLabel>Intro</ng-template>
+        <div>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <h1>
+            Du skal blot læne dig tilbage og nyde showet!
+        </h1>
+        <ng-template matStepLabel>Værd at vide</ng-template>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+        </div>
+    </mat-step>
+    <mat-step>
+        <h1>
+            Du er nu færdig!
+        </h1>
+        <ng-template matStepLabel>Færdig</ng-template>
+        <div>
+            <button mat-button matStepperPrevious>Back</button>
+        </div>
+    </mat-step>
+</mat-horizontal-stepper>

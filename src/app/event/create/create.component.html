@@ -1,0 +1,41 @@
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+    <div fxFlex>
+        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Find og book medarbejder
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <div *ngIf="employeeList">
+                    <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                        <div fxFlex="100" *ngFor="let employee of employeeList" fxFlex.gt-md="20">
+                            <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                                <mat-card-content>
+                                    <img mat-card-image class="image" [src]="employee.photoURL">
+                                    <mat-card-title>{{employee.displayName}}</mat-card-title>
+                                    <mat-card-subtitle>Email: {{employee.email}}</mat-card-subtitle>
+                                    <mat-card-subtitle>Mobil: {{employee.mobile}}</mat-card-subtitle>
+                                    <p>
+                                        {{employee.comment}}
+                                    </p>
+                                    <h5>{{employee.skills ? 'Kompetencer' : 'Ingen kompetencer tildelt'}}</h5>
+                                    <ul>
+                                        <li *ngFor="let skill of employee.skills">
+                                            {{skill}}
+                                        </li>
+                                    </ul>
+                                </mat-card-content>
+                                <mat-card-actions>
+                                    <button mat-raised-button color="primary">BOOK</button>
+                                    <button mat-raised-button color="accent">MÅSKE</button>
+                                    <button mat-raised-button color="warn">KAN IKKE</button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+    <div fxFlex="100" fxFlex.gt-md="50">
+        <mat-card *ngIf="skillList" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Kompetenceliste
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Tilføj kompetence" [(ngModel)]="value">
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="create()" [disabled]="!value">OPRET KOMPETENCE</button>
+                <mat-list>
+                    <mat-list-item *ngFor="let skill of skillList">
+                        <mat-icon class="btn" (click)="delete(skill)" mat-list-icon>delete</mat-icon>
+                        <h4 mat-line>{{skill.name}}</h4>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

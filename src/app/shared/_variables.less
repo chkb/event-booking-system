@@ -1,0 +1,92 @@
+@ok-color: #058805;
+@defekt-color: #c82a0c;
+@forbehold-color: #f0ad4e;
+@soft-black: rgba(0, 0, 0, 0.87);
+@softer-transparent-black: rgba(0, 0, 0, 0.5);
+@flex-breakpoint-mq-xs: ~'screen and (max-width: 599px)';
+@margin-variable: 16px;
+.image-missing {
+    // Aspect ratio properties
+    @width: 16;
+    @height: 9;
+    background: #607D8B;
+    position: relative;
+    margin-bottom: @margin-variable;
+    &:before {
+        display: block;
+        content: "";
+        width: 100%;
+        padding-top: (@height / @width) * 100%;
+    }
+    >.content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+         ::ng-deep .mat-icon {
+            font-size: 100px;
+            color: white;
+        }
+    }
+}
+
+.infocard {
+    .card-header {
+        color: rgba(0, 0, 0, .54);
+        background: rgba(0, 0, 0, .03);
+        margin-top: -24px!important;
+        margin-right: -24px;
+        margin-left: -24px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .content {
+        margin-top: 16px;
+    }
+}
+
+.infocard-xs {
+    .card-header {
+        margin-right: -16px;
+        margin-left: -16px;
+    }
+}
+
+.card-xs {
+    .image-tab-container {
+        margin-right: -16px;
+        margin-left: -16px;
+    }
+}
+
+.card {
+    margin: @margin-variable;
+}
+
+.card-header {
+    background: #3E50B4;
+    color: white;
+    margin: -24px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 24px;
+}
+
+.form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.btn:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,30 @@
+<div fxLayout="column" fxLayoutAlign="space-between center">
+    <mat-card class="login-card">
+        <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
+            <div fxFlex>
+                <h1>
+                    Login
+                </h1>
+            </div>
+            <div fxFlex>
+                <mat-icon class="lock" [@active]="lockstate">{{lockstate == 'inactive'? 'lock' : 'lock_open'}}</mat-icon>
+            </div>
+            <div fxFlex>
+                <button class="login-button" mat-raised-button (click)="facebookLogin()" id="fb">Login With Facebook</button>
+            </div>
+            <div fxFlex>
+                <button class="login-button" mat-raised-button (click)="googleLogin()" id="google">Login With Google</button>
+            </div>
+            <div fxFlex>
+                <button class="login-button" mat-raised-button routerLink="/login-email" id="email">
+                    <mat-icon>email</mat-icon> Email
+                </button>
+            </div>
+            <div fxFlex>
+                <a routerLink="/signup" routerLinkActive="active" class="alc">No account?
+                    <strong>Create one here</strong>
+                </a>
+            </div>
+        </div>
+    </mat-card>
+</div>

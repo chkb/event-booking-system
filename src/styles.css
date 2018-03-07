@@ -1,1 +1,71 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+body {
+    margin: 0;
+    background-color: #e9e9e9;
+    font-family: Roboto, Arial, sans-serif;
+}
+
+html,
+body,
+app-root {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    background: #3f51b5;
+    overflow: hidden;
+    display: block;
+    margin-right: -24px;
+    margin-left: -24px;
+    z-index: 0;
+}
+
+@media screen and (min-width: 520px) {
+    .header {
+        margin: -124px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    .header {
+        margin: -20px;
+    }
+}
+
+.header-section {
+    text-align: center;
+    padding-top: 60px;
+    display: block;
+}
+
+.header-headline {
+    color: rgba(255, 255, 255, 0.87);
+    height: 99px;
+    padding-top: 64px;
+    font-size: 56px;
+    font-weight: 300;
+    line-height: 56px;
+    margin: 15px 5px;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 28px;
+    margin: 15px 0 25px 0;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.header-action {
+    padding: 20px;
+    text-align: center;
+    margin: 60px 0;
+}
+
+.padding-top {
+    margin-top: 200px;
+}

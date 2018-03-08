@@ -45,10 +45,12 @@ export class EmployeeEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: Employee) => {
                     this.selectedEmployee = result;
-                    this.selectedSkills = this.selectedEmployee.skills;
-                    this.selectedSkills.forEach(item => {
-                        this.removeInPlace(this.skills, item);
-                    });
+                    if (this.selectedEmployee.skills) {
+                        this.selectedSkills = this.selectedEmployee.skills;
+                        this.selectedSkills.forEach(item => {
+                            this.removeInPlace(this.skills, item);
+                        });
+                    }
                 });
         });
 
@@ -133,5 +135,4 @@ export class EmployeeEditComponent implements OnInit {
         // Return the modified array
         return array;
     }
-
 }

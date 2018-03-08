@@ -33,6 +33,16 @@ export class SignupComponent {
         private router: Router) {
     }
 
+    googleLogin() {
+        this.loginProvider.googleLogin();
+        this.navigateToDashboard();
+    }
+
+    facebookLogin() {
+        this.loginProvider.facebookLogin();
+        this.navigateToDashboard();
+    }
+
     createLogin() {
         this.loginProvider.signup(this.emailFormControl.value, this.passwordFormControl.value);
         this.navigateToDashboard();

@@ -3,59 +3,15 @@
         <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
             <div fxFlex>
                 <h1>
-                    <mat-icon>lock_open</mat-icon>
+                    Opret bruger
                 </h1>
             </div>
             <div fxFlex>
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Email" [formControl]="emailFormControl">
-                    <button mat-button *ngIf="emailFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="emailFormControl.setValue('')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <mat-error *ngIf="emailFormControl.hasError('pattern')">
-                        Please enter a valid email address
-                    </mat-error>
-                    <mat-error *ngIf="emailFormControl.hasError('required')">
-                        Email is
-                        <strong>required</strong>
-                    </mat-error>
-                </mat-form-field>
+                <button class="login-button" mat-raised-button (click)="facebookLogin()" id="fb">Opret bruger med Facebook</button>
             </div>
             <div fxFlex>
-                <mat-form-field class="full-width">
-                    <input matInput type="password" placeholder="Password" [formControl]="passwordFormControl">
-                    <button mat-button *ngIf="passwordFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="passwordFormControl.setValue('')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <mat-error *ngIf="passwordFormControl.hasError('pattern')">
-                        Must contain min. 6 characters
-                    </mat-error>
-                    <mat-error *ngIf="passwordFormControl.hasError('required')">
-                        Password is
-                        <strong>required</strong>
-                    </mat-error>
-                </mat-form-field>
+                <button class="login-button" mat-raised-button (click)="googleLogin()" id="google">Opret bruger med Google</button>
             </div>
-            <div fxFlex>
-                <mat-form-field class="full-width">
-                    <input matInput type="password" placeholder="Repeat password" [formControl]="repeatPasswordFormControl">
-                    <button mat-button *ngIf="repeatPasswordFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="repeatPasswordFormControl.setValue('')">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                    <mat-error *ngIf="repeatPasswordFormControl.value?.length && repeatPasswordFormControl.value != passwordFormControl.value">
-                        Password are not
-                        <strong>identical</strong>
-                    </mat-error>
-                </mat-form-field>
-            </div>
-            <div fxFlex>
-                <button class="login-button" [disabled]="!repeatPasswordFormControl.value?.length|| !passwordFormControl.value?.length || passwordFormControl.value != repeatPasswordFormControl.value"
-                    mat-raised-button (click)="createLogin()" id="google">CREATE LOGIN</button>
-            </div>
-            <div fxFlex>
-                <button class="login-button" mat-raised-button routerLink="/login" id="google">BACK</button>
-            </div>
-            <mat-divider></mat-divider>
         </div>
     </mat-card>
 </div>

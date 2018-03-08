@@ -8,6 +8,7 @@ import { EmployeeCreateComponent } from '../employee/create/create.component';
 import { EmployeeEditComponent } from '../employee/edit/edit.component';
 import { EmployeeListComponent } from '../employee/list/list.component';
 import { EventCreateComponent } from '../event/create/create.component';
+import { EventEditComponent } from '../event/edit/edit.component';
 import { EventListComponent } from '../event/list/list.component';
 import { LoginEmailComponent } from '../login-email/login-email.component';
 import { LoginComponent } from '../login/login.component';
@@ -46,6 +47,11 @@ const routes: Route[] = [
     {
         path: 'event/list',
         component: EventListComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'event/:id',
+        component: EventEditComponent,
         canActivate: [AuthGuard]
     },
     {

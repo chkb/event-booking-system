@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { AfterViewInit, Component } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -26,9 +26,6 @@ export class EmployeeListComponent implements AfterViewInit {
     ];
     dataSource: MatTableDataSource<Employee>;
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-
     constructor(
         private afs: AngularFirestore,
         private router: Router
@@ -48,14 +45,10 @@ export class EmployeeListComponent implements AfterViewInit {
                 employeeList.push(employee);
             });
             this.dataSource = new MatTableDataSource(employeeList);
-            this.paginator.length = employeeList.length;
-            this.paginator.pageIndex = 0;
         });
     }
 
     ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
     }
 
     applyFilter(filterValue: string) {

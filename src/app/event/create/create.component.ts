@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
+import { AmazingTimePickerService } from 'amazing-time-picker';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { LocalStorageService } from '../../localstorage.service';
@@ -27,6 +28,8 @@ export class EventCreateComponent implements AfterViewInit {
     minDate = new Date().toISOString();
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
+    startTime = '18:00';
+    endTime = '22:00';
     displayedColumns = [
         'role',
         'displayName',
@@ -38,13 +41,12 @@ export class EventCreateComponent implements AfterViewInit {
     dataSource: MatTableDataSource<Employee>;
     private readonly localstorageSkillListKey: string = 'search_skill_list';
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
-
     constructor(
         private afs: AngularFirestore,
         private router: Router,
-        private localStorageService: LocalStorageService
+        private localStorageService: LocalStorageService,
+        private atp: AmazingTimePickerService,
+        private snackBar: MatSnackBar
     ) {
         this.getEmployeeData();
         this.getFilterData();
@@ -79,15 +81,11 @@ export class EventCreateComponent implements AfterViewInit {
                 }
             });
             this.dataSource = new MatTableDataSource(employeeList);
-            this.paginator.length = employeeList.length;
-            this.paginator.pageIndex = 0;
             this.localStorageService.setItem(this.localstorageSkillListKey, this.skillList);
         });
     }
 
     ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
     }
 
     applyFilter(filterValue: string) {
@@ -132,12 +130,25 @@ export class EventCreateComponent implements AfterViewInit {
     }
 
     create(): void {
-        // this.afs.collection('event').add(this.event).then(res => {
-        //     this.snackBar.open('Kompetence oprettet', 'LUK',
-        //         {
-        //             duration: 10000,
-        //         });
-        // });
+        if (!this.event && !this.event.name) {
+            this.snackBar.open('Navn skal udfyldes før du kan oprette en begivenhed', 'LUK',
+                {
+                    duration: 10000,
+                });
+            return;
+        }
+        this.event.timeFrom = this.startTime;
+        this.event.timeTo = this.endTime;
+        this.event.timeTo = this.endTime;
+        this.event.dateFrom = this.startDate.value;
+        this.event.dateTo = this.endDate.value;
+        this.afs.collection('events').add(JSON.parse(JSON.stringify(this.event))).then(res => {
+            this.snackBar.open('Event oprettet', 'LUK',
+                {
+                    duration: 10000,
+                });
+            this.router.navigate(['/event/list']);
+        });
     }
 
     getFilterData(): void {

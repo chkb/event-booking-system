@@ -1,3 +1,169 @@
-<p>
-  edit works!
-</p>
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%" *ngIf="selectedEvent">
+    <div fxFlex>
+        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Begivenhed {{startDate.value |  date: 'Den dd. MMMM yyyy'}}
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Navn på begivenhed" [(ngModel)]="selectedEvent.name" name="eventname">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <textarea matInput placeholder="Kommentar" [(ngModel)]="selectedEvent.eventDescription" name="comment"></textarea>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)" [(ngModel)]="selectedEvent.staffNeed"
+                        name="eventname">
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-select [(value)]="selectedEvent.billInfo">
+                        <mat-option value="">Ingen fakturing udført</mat-option>
+                        <mat-option value="0%">0%</mat-option>
+                        <mat-option value="10%">10%</mat-option>
+                        <mat-option value="20%">20%</mat-option>
+                        <mat-option value="30%">30%</mat-option>
+                        <mat-option value="40%">40%</mat-option>
+                        <mat-option value="50%">50%</mat-option>
+                        <mat-option value="60%">60%</mat-option>
+                        <mat-option value="70%">70%</mat-option>
+                        <mat-option value="80%">80%</mat-option>
+                        <mat-option value="90%">90%</mat-option>
+                        <mat-option value="99%">99%</mat-option>
+                        <mat-option value="Færdig">Færdig</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-divider></mat-divider>
+                <h3>Tid og sted</h3>
+                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                    <div fxFlex>
+                        <h5>Start tidspunkt</h5>
+                        <input atp-time-picker value="19:00" />
+                        <mat-form-field class="full-width">
+                            <input matInput [matDatepicker]="picker1" placeholder="Startdato" [formControl]="startDate" [min]="minDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                        <h5>Slut tidspunkt</h5>
+                        <input atp-time-picker value="19:00" />
+                        <mat-form-field class="full-width">
+                            <input matInput [matDatepicker]="picker2" placeholder="Slutdato" [formControl]="endDate" [min]="startDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                    <div fxFlex>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Lokation" [(ngModel)]="selectedEvent.eventLocation" name="eventlocation">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Adresse på lokation" [(ngModel)]="selectedEvent.eventAdress" name="eventadress">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <h3>Kundeoplysninger</h3>
+                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                    <div fxFlex>
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Kunde" [(ngModel)]="selectedEvent.customer" name="customer">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex>
+                        <mat-form-field class="full-width">
+                            <textarea matInput placeholder="Kontaktoplysninger" [(ngModel)]="selectedEvent.contactInfo" name="contactInfo"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="update()">GEM ÆNDRINGER</button>
+                <button mat-raised-button color="warn" (click)="delete()">SLET BEGIVENHED</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+    <div fxFlex>
+        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Find og book medarbejder
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="search">
+                    <mat-form-field>
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Søg">
+                    </mat-form-field>
+                    <button mat-raised-button (click)="showFilters = !showFilters">
+                        {{showFilters ? 'LUK FILTRE' : 'VIS FILTRE'}}
+                    </button>
+                    <div *ngIf="showFilters && skillList">
+                        <h3>
+                            Kompentence filtre
+                        </h3>
+                        <div *ngFor="let skill of skillList">
+                            <mat-checkbox (click)="addToSearchFilter(skill.name)" [(ngModel)]="skill.selected">{{skill.name}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-overflow mat-elevation-z8">
+                    <div class="container">
+                        <mat-table #table [dataSource]="dataSource" matSort>
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="displayName">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Navn </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <!-- <img class="image" [src]="row.photoURL" /> -->
+                                    {{row.displayName}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="role">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Rolle </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Email Column -->
+                            <ng-container matColumnDef="email">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Mobile Column -->
+                            <ng-container matColumnDef="mobile">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Mobilnummer </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
+                            </ng-container>
+
+                            <!-- HasCar Column -->
+                            <ng-container matColumnDef="hasCar">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                            </ng-container>
+
+                            <!-- HasDriverLicens Column -->
+                            <ng-container matColumnDef="hasDriverLicens">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row"></mat-row>
+                        </mat-table>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

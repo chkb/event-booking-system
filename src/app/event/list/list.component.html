@@ -1,3 +1,63 @@
-<p>
-  list works!
-</p>
+<div class="search">
+    <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Søg">
+    </mat-form-field>
+</div>
+<div class="table-overflow mat-elevation-z8">
+    <div class="container">
+        <mat-table #table [dataSource]="dataSource">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <!-- <img class="image" [src]="row.photoURL" /> -->
+                    {{row.name}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'Den dd. MMMM yyyy'}}</mat-cell>
+            </ng-container>
+
+            <!-- Date Column -->
+            <ng-container matColumnDef="time">
+                <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
+            </ng-container>
+
+            <!-- Lokation Column -->
+            <ng-container matColumnDef="location">
+                <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.eventLocation}} </mat-cell>
+            </ng-container>
+
+            <!-- Customer Column -->
+            <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
+            </ng-container>
+
+            <!-- Staff Needed Column -->
+            <ng-container matColumnDef="staffNeed">
+                <mat-header-cell *matHeaderCellDef> Antal medarbejdere </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.staffNeed}} </mat-cell>
+            </ng-container>
+
+            <!-- Bill Info Column -->
+            <ng-container matColumnDef="billInfo">
+                <mat-header-cell *matHeaderCellDef> Fakturering? </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.billInfo}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" (click)="gotoEvent(row.uid)"></mat-row>
+        </mat-table>
+    </div>
+</div>
+
+<a class="global-fab" mat-fab color="primary" routerLinkActive="active" routerLink="/event/create">
+    <mat-icon>add</mat-icon>
+</a>

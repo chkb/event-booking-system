@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
@@ -68,7 +69,8 @@ registerLocaleData(daLocale);
         AngularFireAuthModule, // imports firebase/auth, only needed for auth features
         ReactiveFormsModule,
         AppMaterialModule,
-        FormsModule
+        FormsModule,
+        AmazingTimePickerModule
     ],
 
     entryComponents: [

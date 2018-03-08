@@ -5,9 +5,9 @@ export class EventObject {
     name: string;
     dateFrom: Date;
     dateTo: Date;
-    timeFrom: Date;
-    timeTo: Date;
-    billInfo: number;
+    timeFrom: string;
+    timeTo: string;
+    billInfo = '';
     language: string;
     eventDescription: string;
     internalComment: string;

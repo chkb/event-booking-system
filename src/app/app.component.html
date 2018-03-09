@@ -19,10 +19,6 @@
         </div>
 
         <mat-nav-list class="nav-list">
-            <h3>Dashboard</h3>
-            <a *ngFor="let item of dashboardItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
-                <span>{{item.text}}</span>
-            </a>
             <h3>Events</h3>
             <a *ngFor="let item of eventNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
                 <span>{{item.text}}</span>

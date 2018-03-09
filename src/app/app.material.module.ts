@@ -22,6 +22,7 @@ import {
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatTooltipModule,
 } from '@angular/material';
 
 @NgModule({
@@ -47,6 +48,7 @@ import {
         MatTableModule,
         MatTabsModule,
         MatToolbarModule,
+        MatTooltipModule,
         MatStepperModule
     ]
 })

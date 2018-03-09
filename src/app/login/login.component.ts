@@ -40,23 +40,23 @@ export class LoginComponent {
 
     googleLogin() {
         this.loginProvider.googleLogin();
-        this.navigateToDashboard();
+        this.navigateToList();
     }
 
     facebookLogin() {
         this.loginProvider.facebookLogin();
-        this.navigateToDashboard();
+        this.navigateToList();
     }
 
     emailLogin(email: string, password: string) {
         this.loginProvider.emailLogin(email, password);
-        this.navigateToDashboard();
+        this.navigateToList();
     }
 
-    navigateToDashboard(): void {
+    navigateToList(): void {
         this.loginProvider.user.subscribe(res => {
             if (res && res.uid) {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/event/list']);
             }
         });
     }

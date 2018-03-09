@@ -11,6 +11,7 @@ export class EventObject {
     language: string;
     eventDescription: string;
     internalComment: string;
+    teamComment: string;
     eventLocation: string;
     eventAdress: string;
     meetingLocation: string;
@@ -23,5 +24,4 @@ export class EventObject {
     agenda: string;
     customer: string;
     contactInfo: string;
-
 }

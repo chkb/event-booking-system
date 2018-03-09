@@ -29,13 +29,6 @@ export class AppComponent {
         });
     }
 
-    dashboardItems: NavigationItem[] = [
-        {
-            url: '/dashboard',
-            text: 'Dashboard'
-        }
-    ];
-
     eventNavigationItems: NavigationItem[] = [
         {
             url: '/event/list',

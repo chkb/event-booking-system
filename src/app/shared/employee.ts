@@ -4,11 +4,12 @@ export class Employee {
     photoURL: string;
     uid: string;
     comment: string;
+    internalComment: string;
     mobile: string;
-    phone: string;
+    workEmail: string;
+    uniqueId: string;
     adress: string;
     postal: string;
-    city: string;
     height: string;
     bankAccount: string;
     bankReg: string;
@@ -16,5 +17,14 @@ export class Employee {
     hasCar: boolean;
     contractSigned: boolean;
     role: string;
-    skills: string[];
+    skills: Skill[] = [];
+}
+
+
+export class Skill {
+    uid: string;
+    name: string;
+    ranking: number;
+    ratingText: string;
+    isOnlyadmin: boolean;
 }

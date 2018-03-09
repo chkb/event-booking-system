@@ -32,11 +32,15 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Navn" [(ngModel)]="selectedEmployee.displayName" name="fullName">
+                    <input matInput placeholder="Navn (unikt for bruger)" [(ngModel)]="selectedEmployee.displayName" name="fullName">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Email" [(ngModel)]="selectedEmployee.email" name="email">
+                    <input matInput placeholder="Email" disabled [(ngModel)]="selectedEmployee.email" name="email">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Arbejdsmail" [(ngModel)]="selectedEmployee.workEmail" name="workEmail">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -45,10 +49,6 @@
 
                 <mat-form-field class="full-width">
                     <input matInput placeholder="Mobilnummer" [(ngModel)]="selectedEmployee.mobile" name="mobile">
-                </mat-form-field>
-
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Andet nummer" [(ngModel)]="selectedEmployee.phone" name="phone">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -94,18 +94,50 @@
                     <h4 *ngIf="!selectedEmployee.skills" mat-subheader>Ingen kompentencer tildelt endnu.</h4>
                     <h3 *ngIf="selectedEmployee.skills" mat-subheader>Medarbejders kompentencer</h3>
                     <div *ngIf="selectedEmployee.skills">
-                        <mat-list-item *ngFor="let skill of selectedEmployee.skills">
-                            <mat-icon class="btn" (click)="removeSkill(skill)" mat-list-icon>delete</mat-icon>
-                            <h4 mat-line>{{skill}}</h4>
-                        </mat-list-item>
+                        <div *ngFor="let skill of selectedEmployee.skills">
+                            <mat-list-item>
+                                <mat-icon class="btn" (click)="removeSkill(skill)" mat-list-icon>delete</mat-icon>
+                                <h4 mat-line>{{skill.name}}</h4>
+                                <div mat-line [matTooltip]="skill.ratingText" *ngIf="skill.ranking">
+                                    <mat-icon>star</mat-icon>
+                                    <mat-icon>
+                                        {{skill.ranking == 2 ? 'star' : 'star_border'}}
+                                    </mat-icon>
+                                    <mat-icon>
+                                        {{skill.ranking == 3 ? 'star' : 'star_border'}}
+                                    </mat-icon>
+                                </div>
+                            </mat-list-item>
+                        </div>
                     </div>
                 </mat-list>
-                <mat-list>
-                    <h3 mat-subheader>Liste af tilgænglige kompentencer</h3>
-                    <mat-list-item *ngFor="let skill of skills">
-                        <mat-icon class="btn" (click)="addSkill(skill)" mat-list-icon>add</mat-icon>
-                        <h4 mat-line>{{skill}}</h4>
-                    </mat-list-item>
+                <h3>Liste af tilgænglige kompentencer</h3>
+                <mat-list *ngFor="let masterskill of masterskills">
+                    <div *ngIf="masterskill.skills?.length">
+                        <h3 mat-subheader>{{masterskill.name}}</h3>
+                        <div *ngIf="!masterskill.hasRating">
+                            <mat-list-item *ngFor="let skill of masterskill.skills">
+                                <mat-icon class="btn" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)" mat-list-icon>add</mat-icon>
+                                <h4 mat-line>{{skill}}</h4>
+                            </mat-list-item>
+                        </div>
+                        <div *ngIf="masterskill.hasRating">
+                            <mat-list-item *ngFor="let skill of masterskill.skills">
+                                <div>
+                                    <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit , 1, masterskill.ratingValue1)">
+                                        <mat-icon>star</mat-icon>
+                                    </button>
+                                    <button mat-icon-button [matTooltip]="masterskill.ratingValue2" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 2, masterskill.ratingValue2)">
+                                        <mat-icon>star</mat-icon>
+                                    </button>
+                                    <button mat-icon-button [matTooltip]="masterskill.ratingValue3" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 3, masterskill.ratingValue3)">
+                                        <mat-icon>star</mat-icon>
+                                    </button>
+                                </div>
+                                <h4>{{skill}}</h4>
+                            </mat-list-item>
+                        </div>
+                    </div>
                 </mat-list>
             </mat-card-content>
             <mat-card-actions>

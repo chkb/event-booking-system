@@ -13,6 +13,7 @@ import { EventObject } from '../../shared/event';
 export class EventListComponent implements AfterViewInit {
     displayedColumns = [
         'name',
+        'eventLeader',
         'date',
         'time',
         'location',
@@ -38,6 +39,7 @@ export class EventListComponent implements AfterViewInit {
                 event.timeFrom = doc.data()['timeFrom'];
                 event.dateTo = doc.data()['dateTo'];
                 event.timeTo = doc.data()['timeTo'];
+                event.eventLeader = doc.data()['eventLeader'];
                 event.uid = doc.id;
                 event.eventLocation = doc.data()['eventLocation'];
                 event.customer = doc.data()['customer'];
@@ -47,6 +49,7 @@ export class EventListComponent implements AfterViewInit {
                 event.eventTypeColor = doc.data()['eventTypeColor'];
                 event.bookingDone = doc.data()['bookingDone'];
                 event.payoutDone = doc.data()['payoutDone'];
+                event.booked = doc.data()['booked'];
                 eventList.push(event);
             });
             eventList = eventList.sort((a, b) => new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime());

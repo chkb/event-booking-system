@@ -33,13 +33,22 @@ export class EventEditComponent implements OnInit {
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
     eventTypeList: EventType[] = [];
+    selectedBookedList: Employee[] = [];
+    selectedMaybeList: Employee[] = [];
+    selectedNogoList: Employee[] = [];
+    generalEmployeeList: Employee[] = [];
+    leaderList: Employee[] = [];
+    employeeBlackList: string[] = [];
+    emailList: string;
+    copied = false;
     displayedColumns = [
         'role',
         'displayName',
         'email',
         'mobile',
         'hasDriverLicens',
-        'hasCar'
+        'hasCar',
+        'selection'
     ];
     dataSource: MatTableDataSource<Employee>;
     private readonly localstorageSkillListKey: string = 'search_skill_list';
@@ -53,9 +62,6 @@ export class EventEditComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog
     ) {
-        this.getEmployeeData();
-        this.getFilterData();
-        this.geteventTypeList();
     }
 
     getEmployeeData(): void {
@@ -86,9 +92,92 @@ export class EventEditComponent implements OnInit {
                     employeeList.push(employee);
                 }
             });
-            this.dataSource = new MatTableDataSource(employeeList);
+            this.generalEmployeeList = employeeList;
+            this.getListOfLeaders(employeeList);
             this.localStorageService.setItem(this.localstorageSkillListKey, this.skillList);
+            this.setDataTableData();
         });
+    }
+
+    setDataTableData(): void {
+        const tempList: Employee[] = [];
+        this.generalEmployeeList.forEach(employee => {
+            if (!this.isBlacklisted(employee.uid)) {
+                tempList.push(employee);
+            }
+        });
+
+        this.generalEmployeeList = tempList;
+
+        this.dataSource = new MatTableDataSource(tempList);
+    }
+
+    isBlacklisted(uid: string): boolean {
+        let result = false;
+        this.employeeBlackList.forEach(blacklistedEmployeeIds => {
+            if (blacklistedEmployeeIds === uid) {
+                result = true;
+            }
+        });
+
+        return result;
+
+    }
+    getListOfLeaders(employeeList: Employee[]): void {
+        employeeList.forEach(employee => {
+            if (employee.role === 'admin' || employee.role === 'eventLeader') {
+                this.leaderList.push(employee);
+            }
+        });
+    }
+
+    updateArray(employeeList: Employee[]): void {
+        employeeList.forEach(employee => {
+            this.removeInPlace(this.generalEmployeeList, employee);
+        });
+
+        this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+    }
+
+    bookEmployee(employee: Employee): void {
+        this.selectedBookedList.push(employee);
+        this.selectedEvent.booked = this.selectedBookedList;
+        this.update(false);
+        this.updateArray(this.selectedBookedList);
+        this.getEmailList();
+    }
+
+    removeBookedEmployee(employee: Employee): void {
+        this.removeInPlace(this.selectedBookedList, employee);
+        this.generalEmployeeList.push(employee);
+        this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+        this.getEmailList();
+    }
+
+    maybeEmployee(employee: Employee): void {
+        this.selectedMaybeList.push(employee);
+        this.selectedEvent.maybe = this.selectedMaybeList;
+        this.update(false);
+        this.updateArray(this.selectedMaybeList);
+    }
+
+    removeMaybeEmployee(employee: Employee): void {
+        this.removeInPlace(this.selectedMaybeList, employee);
+        this.generalEmployeeList.push(employee);
+        this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+    }
+
+    nogoEmployee(employee: Employee): void {
+        this.selectedNogoList.push(employee);
+        this.selectedEvent.nogo = this.selectedNogoList;
+        this.update(false);
+        this.updateArray(this.selectedNogoList);
+    }
+
+    removeNogoEmployee(employee: Employee): void {
+        this.removeInPlace(this.selectedNogoList, employee);
+        this.generalEmployeeList.push(employee);
+        this.dataSource = new MatTableDataSource(this.generalEmployeeList);
     }
 
     geteventTypeList(): void {
@@ -105,6 +194,13 @@ export class EventEditComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getEventDate();
+        this.getEmployeeData();
+        this.getFilterData();
+        this.geteventTypeList();
+    }
+
+    getEventDate(): void {
         this.route.params.subscribe(params => {
             this.eventId = params['id'];
             this.afs
@@ -113,6 +209,25 @@ export class EventEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: EventObject) => {
                     this.selectedEvent = result;
+                    if (this.selectedEvent.booked) {
+                        this.selectedBookedList = this.selectedEvent.booked;
+                        this.selectedBookedList.forEach(employee => {
+                            this.employeeBlackList.push(employee.uid);
+                        });
+                        this.getEmailList();
+                    }
+                    if (this.selectedEvent.maybe) {
+                        this.selectedMaybeList = this.selectedEvent.maybe;
+                        this.selectedMaybeList.forEach(employee => {
+                            this.employeeBlackList.push(employee.uid);
+                        });
+                    }
+                    if (this.selectedEvent.nogo) {
+                        this.selectedNogoList = this.selectedEvent.nogo;
+                        this.selectedNogoList.forEach(employee => {
+                            this.employeeBlackList.push(employee.uid);
+                        });
+                    }
                 });
         });
     }
@@ -130,7 +245,7 @@ export class EventEditComponent implements OnInit {
             this.searchFilterBucket.push(skill);
         }
         setInterval(() => {
-            this.getEmployeeData();
+            // this.getEmployeeData();
         }, 300);
     }
 
@@ -161,7 +276,7 @@ export class EventEditComponent implements OnInit {
     update(navigate: boolean): void {
         this.afs
             .collection('events')
-            .doc(this.eventId).update(this.selectedEvent).then(() => {
+            .doc(this.eventId).update(JSON.parse(JSON.stringify(this.selectedEvent))).then(() => {
                 this.snackBar.open('Begivenhed opdateret', 'LUK',
                     {
                         duration: 10000,
@@ -218,7 +333,7 @@ export class EventEditComponent implements OnInit {
                     this.searchFilterBucket.push(skill.name);
                 }
             });
-            this.getEmployeeData();
+            // this.getEmployeeData();
         } else {
             this.skillList = [];
             this.afs.collection('skills').ref.get().then(querySnapshot => {
@@ -239,5 +354,14 @@ export class EventEditComponent implements OnInit {
         const roleText = Role[value];
 
         return roleText;
+    }
+
+    getEmailList(): void {
+        let string = '';
+        this.selectedBookedList.forEach(employee => {
+            string = `${string}${employee.email};`;
+        });
+
+        this.emailList = string;
     }
 }

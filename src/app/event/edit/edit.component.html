@@ -51,6 +51,14 @@
                     </mat-select>
                 </mat-form-field>
 
+                <mat-form-field class="full-width">
+                    <mat-select placeholder="Eventleder" [(value)]="selectedEvent.eventLeader">
+                        <mat-option *ngFor="let employee of leaderList" [value]="employee.displayName">
+                            {{employee.displayName}} ({{getRoleText(employee.role)}})
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <mat-divider></mat-divider>
                 <h3>Tid og sted</h3>
                 <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
@@ -113,6 +121,135 @@
         </mat-card>
     </div>
 </div>
+<div class="margin">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Medarbejder der er booked
+                </mat-panel-title>
+                <mat-panel-description>
+                    Der er {{selectedBookedList.length}} på listen
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <h4 *ngIf="!selectedBookedList?.length">
+                Der er ingen på denne liste
+            </h4>
+            <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
+                <div fxFlex="100" fxFlex.gt-md="15" *ngFor="let bookedEmployee of selectedBookedList">
+                    <mat-card *ngIf="bookedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                        <mat-card-header class="card-header">
+                            <h3>
+                                Medarbejder opsumering
+                            </h3>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <img mat-card-image [src]="bookedEmployee.photoURL">
+                            <mat-card-title>{{bookedEmployee.displayName}}</mat-card-title>
+                            <mat-card-subtitle>{{bookedEmployee.email}}</mat-card-subtitle>
+                            <p>
+                                {{bookedEmployee.comment}}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button class="maybe" (click)="removeBookedEmployee(bookedEmployee); maybeEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan kun måske">
+                                <mat-icon>error_outline</mat-icon>
+                            </button>
+                            <button class="nogo" (click)="removeBookedEmployee(bookedEmployee); nogoEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan alligevel ikke">
+                                <mat-icon>clear</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+            <mat-form-field class="full-width">
+                <input matInput placeholder="Email list" readonly [(ngModel)]="emailList" #inputTarget name="emaillist">
+            </mat-form-field>
+            <button mat-raised-button color="primary" [class.book]="copied" (click)="copied = true" [ngxClipboard]="inputTarget">{{copied ? 'EMAIL LIST KOPIERET' : 'KOPIER EMAIL LISTE'}}</button>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Medarbejder der måske kan
+                </mat-panel-title>
+                <mat-panel-description>
+                    Der er {{selectedMaybeList.length}} på listen
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <h4 *ngIf="!selectedMaybeList?.length">
+                Der er ingen på denne liste
+            </h4>
+            <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
+                <div fxFlex="100" fxFlex.gt-md="15" *ngFor="let bookedEmployee of selectedMaybeList">
+                    <mat-card *ngIf="bookedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                        <mat-card-header class="card-header">
+                            <h3>
+                                Medarbejder opsumering
+                            </h3>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <img mat-card-image [src]="bookedEmployee.photoURL">
+                            <mat-card-title>{{bookedEmployee.displayName}}</mat-card-title>
+                            <mat-card-subtitle>{{bookedEmployee.email}}</mat-card-subtitle>
+                            <p>
+                                {{bookedEmployee.comment}}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button class="book" (click)="removeMaybeEmployee(bookedEmployee); bookEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan kun måske">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                            <button class="nogo" (click)="removeMaybeEmployee(bookedEmployee); nogoEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan alligevel ikke">
+                                <mat-icon>clear</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Medarbejder der ikke kan deltage
+                </mat-panel-title>
+                <mat-panel-description>
+                    Der er {{selectedNogoList.length}} på listen
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <h4 *ngIf="!selectedNogoList?.length">
+                Der er ingen på denne liste
+            </h4>
+            <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
+                <div fxFlex="100" fxFlex.gt-md="15" *ngFor="let bookedEmployee of selectedNogoList">
+                    <mat-card *ngIf="bookedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                        <mat-card-header class="card-header">
+                            <h3>
+                                Medarbejder opsumering
+                            </h3>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <img mat-card-image [src]="bookedEmployee.photoURL">
+                            <mat-card-title>{{bookedEmployee.displayName}}</mat-card-title>
+                            <mat-card-subtitle>{{bookedEmployee.email}}</mat-card-subtitle>
+                            <p>
+                                {{bookedEmployee.comment}}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button class="book" (click)="removeNogoEmployee(bookedEmployee); bookEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan kun måske">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                            <button class="maybe" (click)="removeNogoEmployee(bookedEmployee); maybeEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan alligevel ikke">
+                                <mat-icon>clear</mat-icon>
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+
 <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
     <div fxFlex>
         <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
@@ -179,6 +316,22 @@
                             <ng-container matColumnDef="hasDriverLicens">
                                 <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
                                 <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                            </ng-container>
+
+                            <!-- Selection Column -->
+                            <ng-container matColumnDef="selection">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header> Book </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button class="book" (click)="bookEmployee(row)" mat-mini-fab matTooltip="Book {{row.displayName}}">
+                                        <mat-icon>check</mat-icon>
+                                    </button>
+                                    <button class="maybe" (click)="maybeEmployee(row)" mat-mini-fab matTooltip="{{row.displayName}} kan måske">
+                                        <mat-icon>error_outline</mat-icon>
+                                    </button>
+                                    <button class="nogo" (click)="nogoEmployee(row)" mat-mini-fab matTooltip="{{row.displayName}} kan ikke">
+                                        <mat-icon>clear</mat-icon>
+                                    </button>
+                                </mat-cell>
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

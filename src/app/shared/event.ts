@@ -17,11 +17,11 @@ export class EventObject {
     eventAdress: string;
     meetingLocation: string;
     meetingAdress: string;
-    eventLeader: Employee;
+    eventLeader: string;
     staffNeed: number;
-    booked: Employee[];
-    maybe: Employee[];
-    nogo: Employee[];
+    booked: Employee[] = [];
+    maybe: Employee[] = [];
+    nogo: Employee[] = [];
     agenda: string;
     customer: string;
     contactInfo: string;

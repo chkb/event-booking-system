@@ -27,13 +27,18 @@ mat-toolbar {
         }
         .content-container {
             margin-top: 48px;
-            overflow: hidden;
-            position: relative;
+            overflow: auto!important;
+            position: relative!important;
         }
         .toolbar {
             display: none;
         }
     }
+}
+
+::ng-deep app-edit {
+    overflow: auto!important;
+    position: relative!important;
 }
 
 @media screen and (min-width: 520px) {

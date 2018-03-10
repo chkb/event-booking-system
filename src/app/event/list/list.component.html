@@ -11,8 +11,15 @@
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef> Navn </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <!-- <img class="image" [src]="row.photoURL" /> -->
                     {{row.name}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="eventLeader">
+                <mat-header-cell *matHeaderCellDef> Eventleder </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.eventLeader ? row.eventLeader : 'Ingen eventleder' }}
                 </mat-cell>
             </ng-container>
 
@@ -31,19 +38,38 @@
             <!-- Lokation Column -->
             <ng-container matColumnDef="location">
                 <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.eventLocation}} </mat-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.eventLocation ? row.eventLocation : 'Ingen lokation' }}
+                </mat-cell>
             </ng-container>
 
             <!-- Customer Column -->
             <ng-container matColumnDef="customer">
                 <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.customer ? row.customer : 'Ingen kunde' }}
+                </mat-cell>
             </ng-container>
 
             <!-- Staff Needed Column -->
             <ng-container matColumnDef="staffNeed">
-                <mat-header-cell *matHeaderCellDef> Antal medarbejdere </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.staffNeed}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef> Medarbejder der mangler? </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <span *ngIf="row.staffNeed">
+                        <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
+                            {{row.staffNeed - row.booked.length}}
+                        </span>
+                        <span *ngIf="row.booked?.length && row.staffNeed == row.booked.length">
+                            <mat-icon>check_circle</mat-icon>
+                        </span>
+                        <span *ngIf="!row.booked?.length">
+                            {{row.staffNeed}}
+                        </span>
+                    </span>
+                    <span *ngIf="!row.staffNeed">
+                        Ikke angivet
+                    </span>
+                </mat-cell>
             </ng-container>
 
             <!-- Event type Column -->
@@ -59,7 +85,9 @@
             <!-- Bill Info Column -->
             <ng-container matColumnDef="billInfo">
                 <mat-header-cell *matHeaderCellDef> Fakturering? </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.billInfo}} </mat-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.billInfo ? row.billInfo : 'Ikke angivet' }}
+                </mat-cell>
             </ng-container>
 
             <!-- Booking Done Column -->

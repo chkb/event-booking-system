@@ -6,6 +6,7 @@ import {
     MatChipsModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -24,6 +25,7 @@ import {
     MatToolbarModule,
     MatTooltipModule,
 } from '@angular/material';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
     exports: [
@@ -49,7 +51,9 @@ import {
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
-        MatStepperModule
+        MatStepperModule,
+        MatExpansionModule,
+        ClipboardModule
     ]
 })
 export class AppMaterialModule {

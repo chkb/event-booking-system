@@ -1,0 +1,37 @@
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+    <div fxFlex="100" fxFlex.gt-md="50">
+        <mat-card *ngIf="eventTypeList" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Event-typer
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Event-type navn" [(ngModel)]="eventType.name">
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-select placeholder="Vælg end farve" [(value)]="eventType.color">
+                        <mat-option *ngFor="let color of colors" [value]="color.color">
+                            <h3 [style.color]="color.color">
+                                {{color.name}}
+                            </h3>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="create()" [disabled]="!eventType.name">OPRET KOMPETENCE</button>
+                <mat-list>
+                    <mat-list-item *ngFor="let eventType of eventTypeList">
+                        <mat-icon mat-list-icon (click)="delete(eventType)">delete</mat-icon>
+                        <h4 mat-line>
+                            <mat-chip-list>
+                                <mat-chip [style.background]="eventType.color" style="color:white;">{{eventType.name}}</mat-chip>
+                            </mat-chip-list>
+                        </h4>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

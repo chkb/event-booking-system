@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { LoginProviderService } from '../../core/login-provider.service';
 import { moveIn } from '../../router.animations';
 import { Employee, Skill } from '../../shared/employee';
 import { MasterSkill } from '../../shared/skill';
+import { Wager } from '../../shared/wager';
 
 @Component({
     selector: 'app-edit',
@@ -20,10 +22,11 @@ export class EmployeeEditComponent implements OnInit {
     selectedEmployee: Employee;
     employeeId: string;
     selectedSkills: MasterSkill[] = [];
+    showUniqueId: boolean;
+    wagerList: Wager[];
     roles = [
-        { value: 'employee', viewValue: 'Medarbejder' },
+        { value: 'employee', viewValue: 'Basis' },
         { value: 'eventLeader', viewValue: 'Eventleder' },
-        { value: 'projectLeader', viewValue: 'Projektleder' },
         { value: 'admin', viewValue: 'Administrator' }
     ];
 
@@ -33,7 +36,8 @@ export class EmployeeEditComponent implements OnInit {
         private router: Router,
         private afs: AngularFirestore,
         private snackBar: MatSnackBar,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private lps: LoginProviderService
     ) { }
 
     ngOnInit() {
@@ -45,15 +49,13 @@ export class EmployeeEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: Employee) => {
                     this.selectedEmployee = result;
-                    // if (this.selectedEmployee.skills) {
-                    //     this.selectedSkills = this.selectedEmployee.skills;
-                    //     this.selectedSkills.forEach(item => {
-                    //         this.removeInPlace(this.skills, item);
-                    //     });
-                    // }
                 });
         });
+        this.getEmployeeData();
+        this.getWagerData();
+    }
 
+    getEmployeeData(): void {
         this.afs.collection('masterSkills').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 const masterskill = new MasterSkill();
@@ -70,7 +72,30 @@ export class EmployeeEditComponent implements OnInit {
                     this.removeInPlace(this.masterskills, item);
                 });
             });
+            this.sortSkillFromEmployee();
         });
+    }
+
+    getWagerData(): void {
+        this.wagerList = [];
+        this.afs.collection('wagers').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const masterSkill = new Wager();
+                masterSkill.name = doc.data()['name'];
+                masterSkill.value = doc.data()['value'];
+                masterSkill.uid = doc.id;
+                this.wagerList.push(masterSkill);
+            });
+        });
+    }
+
+    sortSkillFromEmployee() {
+        if (this.selectedEmployee && this.selectedEmployee.skills && this.masterskills) {
+            this.selectedEmployee.skills.forEach(employeeSkill => {
+                const idx = this.masterskills.findIndex(x => x.uid === employeeSkill.uid);
+                this.removeInPlace(this.masterskills[idx].skills, employeeSkill.name);
+            });
+        }
     }
 
     saveChanges(): void {
@@ -133,15 +158,15 @@ export class EmployeeEditComponent implements OnInit {
 
     removeFromFEList(masterskillId: string, skill: string): void {
         // FE stuff
-        const tempList = this.masterskills.find(x => x.uid === masterskillId);
         const idx = this.masterskills.findIndex(x => x.uid === masterskillId);
-        const removedList = this.removeInPlace(this.masterskills[idx].skills, skill);
+        this.removeInPlace(this.masterskills[idx].skills, skill);
     }
 
-    removeSkill(skill: string): void {
-        // this.masterskills.push(skill);
-        // this.removeInPlace(this.selectedSkills, skill);
-        // this.removeInPlace(this.selectedEmployee.skills, skill);
+    removeSkill(skill: Skill): void {
+        const idx = this.masterskills.findIndex(x => x.uid === skill.uid);
+        this.masterskills[idx].skills.push(skill.name);
+        this.removeInPlace(this.selectedEmployee.skills, skill);
+        this.saveChanges();
     }
 
     removeInPlace(array, item) {
@@ -162,5 +187,21 @@ export class EmployeeEditComponent implements OnInit {
 
         // Return the modified array
         return array;
+    }
+
+    isThisMe(): boolean {
+        if (this.lps.userId === this.selectedEmployee.uid) {
+            return true;
+        }
+
+        return false;
+    }
+
+    isAdminOrEventLeader() {
+        if (this.lps.role === 'admin' || this.lps.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
     }
 }

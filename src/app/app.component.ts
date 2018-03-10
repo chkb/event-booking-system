@@ -54,6 +54,20 @@ export class AppComponent {
         }
     ];
 
+    wagerNavigationItems: NavigationItem[] = [
+        {
+            url: '/wager',
+            text: 'Løn-Niveauer'
+        }
+    ];
+
+    eventTypeNavigationItems: NavigationItem[] = [
+        {
+            url: '/event-typer',
+            text: 'Event-Typer'
+        }
+    ];
+
 
     logout(): void {
         this.auth.signOut();

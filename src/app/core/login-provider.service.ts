@@ -14,11 +14,14 @@ interface User {
     photoURL?: string;
     displayName?: string;
     favoriteColor?: string;
+    role?: string;
 }
 
 @Injectable()
 export class LoginProviderService {
     user: Observable<User>;
+    userId: string;
+    role: string;
     constructor(private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private router: Router) {
@@ -26,7 +29,14 @@ export class LoginProviderService {
         this.user = this.afAuth.authState
             .switchMap(user => {
                 if (user) {
-                    return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+                    this.userId = user.uid;
+                    const _user = this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+                    // tslint:disable-next-line:no-shadowed-variable
+                    _user.subscribe((user: User) => {
+                        this.role = user.role;
+                    });
+
+                    return _user;
                 } else {
                     return Observable.of(null);
                 }

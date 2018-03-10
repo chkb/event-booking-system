@@ -46,10 +46,36 @@
                 <mat-cell *matCellDef="let row"> {{row.staffNeed}} </mat-cell>
             </ng-container>
 
+            <!-- Event type Column -->
+            <ng-container matColumnDef="eventType">
+                <mat-header-cell *matHeaderCellDef> Event-Type </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-chip-list>
+                        <mat-chip [style.background]="row.eventTypeColor" style="color:white;">{{row.eventType ? row.eventType : 'Ingen event type'}}</mat-chip>
+                    </mat-chip-list>
+                </mat-cell>
+            </ng-container>
+
             <!-- Bill Info Column -->
             <ng-container matColumnDef="billInfo">
                 <mat-header-cell *matHeaderCellDef> Fakturering? </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.billInfo}} </mat-cell>
+            </ng-container>
+
+            <!-- Booking Done Column -->
+            <ng-container matColumnDef="bookingDone">
+                <mat-header-cell *matHeaderCellDef> Booking udført? </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-icon> {{row.bookingDone ? 'check_circle': 'remove_circle'}}</mat-icon>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Payout Done Column -->
+            <ng-container matColumnDef="payoutDone">
+                <mat-header-cell *matHeaderCellDef> Udbetalt </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>
+                </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

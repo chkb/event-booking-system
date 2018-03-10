@@ -1,3 +1,5 @@
+import { Wager } from './wager';
+
 export class Employee {
     displayName: string;
     email: string;
@@ -18,6 +20,7 @@ export class Employee {
     contractSigned: boolean;
     role: string;
     skills: Skill[] = [];
+    personalWager: Wager;
 }
 
 

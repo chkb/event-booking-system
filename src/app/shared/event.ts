@@ -1,4 +1,5 @@
 import { Employee } from './employee';
+import { EventType } from './event-type';
 
 export class EventObject {
     uid: string;
@@ -24,4 +25,8 @@ export class EventObject {
     agenda: string;
     customer: string;
     contactInfo: string;
+    eventType: string;
+    eventTypeColor: string;
+    bookingDone: boolean;
+    payoutDone: boolean;
 }

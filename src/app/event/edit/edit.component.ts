@@ -10,6 +10,7 @@ import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
 import { Employee } from '../../shared/employee';
 import { EventObject } from '../../shared/event';
+import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
 import { SkillExtended } from '../../shared/skill';
 
@@ -31,6 +32,7 @@ export class EventEditComponent implements OnInit {
     minDate = new Date().toISOString();
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
+    eventTypeList: EventType[] = [];
     displayedColumns = [
         'role',
         'displayName',
@@ -53,6 +55,7 @@ export class EventEditComponent implements OnInit {
     ) {
         this.getEmployeeData();
         this.getFilterData();
+        this.geteventTypeList();
     }
 
     getEmployeeData(): void {
@@ -85,6 +88,19 @@ export class EventEditComponent implements OnInit {
             });
             this.dataSource = new MatTableDataSource(employeeList);
             this.localStorageService.setItem(this.localstorageSkillListKey, this.skillList);
+        });
+    }
+
+    geteventTypeList(): void {
+        this.eventTypeList = [];
+        this.afs.collection('event-types').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const masterSkill = new EventType();
+                masterSkill.name = doc.data()['name'];
+                masterSkill.color = doc.data()['color'];
+                masterSkill.uid = doc.id;
+                this.eventTypeList.push(masterSkill);
+            });
         });
     }
 
@@ -142,7 +158,7 @@ export class EventEditComponent implements OnInit {
         return array;
     }
 
-    update(): void {
+    update(navigate: boolean): void {
         this.afs
             .collection('events')
             .doc(this.eventId).update(this.selectedEvent).then(() => {
@@ -150,7 +166,9 @@ export class EventEditComponent implements OnInit {
                     {
                         duration: 10000,
                     });
-                this.router.navigate([`/event/list`]);
+                if (navigate) {
+                    this.router.navigate([`/event/list`]);
+                }
             });
     }
 
@@ -178,6 +196,16 @@ export class EventEditComponent implements OnInit {
                     });
             }
         });
+    }
+
+    bookingDone(): void {
+        this.selectedEvent.bookingDone = !this.selectedEvent.bookingDone;
+        this.update(false);
+    }
+
+    payoutDone(): void {
+        this.selectedEvent.payoutDone = !this.selectedEvent.payoutDone;
+        this.update(false);
     }
 
     getFilterData(): void {

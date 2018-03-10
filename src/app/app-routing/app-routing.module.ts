@@ -7,6 +7,7 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { EmployeeCreateComponent } from '../employee/create/create.component';
 import { EmployeeEditComponent } from '../employee/edit/edit.component';
 import { EmployeeListComponent } from '../employee/list/list.component';
+import { EventTypeComponent } from '../event-type/event-type.component';
 import { EventCreateComponent } from '../event/create/create.component';
 import { EventEditComponent } from '../event/edit/edit.component';
 import { EventListComponent } from '../event/list/list.component';
@@ -14,6 +15,7 @@ import { LoginEmailComponent } from '../login-email/login-email.component';
 import { LoginComponent } from '../login/login.component';
 import { SignupComponent } from '../signup/signup.component';
 import { SkillComponent } from '../skill/skill.component';
+import { WagerComponent } from '../wager/wager.component';
 
 
 const routes: Route[] = [
@@ -72,6 +74,16 @@ const routes: Route[] = [
     {
         path: 'skills',
         component: SkillComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'wager',
+        component: WagerComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'event-typer',
+        component: EventTypeComponent,
         canActivate: [AuthGuard]
     }
 ];

@@ -6,7 +6,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { EventObject } from '../../shared/event';
 
 @Component({
-    selector: 'app-list',
+    selector: 'app-event-list',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css']
 })
@@ -18,7 +18,10 @@ export class EventListComponent implements AfterViewInit {
         'location',
         'customer',
         'staffNeed',
+        'eventType',
         'billInfo',
+        'payoutDone',
+        'bookingDone',
     ];
     dataSource: MatTableDataSource<EventObject>;
 
@@ -40,6 +43,10 @@ export class EventListComponent implements AfterViewInit {
                 event.customer = doc.data()['customer'];
                 event.staffNeed = doc.data()['staffNeed'];
                 event.billInfo = doc.data()['billInfo'];
+                event.eventType = doc.data()['eventType'];
+                event.eventTypeColor = doc.data()['eventTypeColor'];
+                event.bookingDone = doc.data()['bookingDone'];
+                event.payoutDone = doc.data()['payoutDone'];
                 eventList.push(event);
             });
             eventList = eventList.sort((a, b) => new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime());

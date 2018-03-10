@@ -64,7 +64,7 @@
                 <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
                     <div fxFlex>
                         <h5>Start tidspunkt</h5>
-                        <input [disabled]="selectedEvent.bookingDone" atp-time-picker value="19:00" />
+                        <input type="time" [(ngModel)]="selectedEvent.timeFrom" />
                         <mat-form-field class="full-width">
                             <input [disabled]="selectedEvent.bookingDone" matInput [matDatepicker]="picker1" placeholder="Startdato" [formControl]="startDate"
                                 [min]="minDate">
@@ -74,10 +74,10 @@
                     </div>
                     <div fxFlex>
                         <h5>Slut tidspunkt</h5>
-                        <input [disabled]="selectedEvent.bookingDone" atp-time-picker value="19:00" />
+                        <input type="time" [(ngModel)]="selectedEvent.timeTo" />
                         <mat-form-field class="full-width">
                             <input [disabled]="selectedEvent.bookingDone" matInput [matDatepicker]="picker2" placeholder="Slutdato" [formControl]="endDate"
-                                [min]="startDate">
+                                [min]="minDate">
                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                             <mat-datepicker #picker2></mat-datepicker>
                         </mat-form-field>

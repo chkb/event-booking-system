@@ -41,6 +41,8 @@ export class EventEditComponent implements OnInit {
     employeeBlackList: string[] = [];
     emailList: string;
     copied = false;
+    timeFrom: string;
+    timeTo: string;
     displayedColumns = [
         'role',
         'displayName',
@@ -209,6 +211,8 @@ export class EventEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: EventObject) => {
                     this.selectedEvent = result;
+                    this.timeFrom = this.selectedEvent.timeFrom;
+                    this.timeTo = this.selectedEvent.timeTo;
                     if (this.selectedEvent.booked) {
                         this.selectedBookedList = this.selectedEvent.booked;
                         this.selectedBookedList.forEach(employee => {

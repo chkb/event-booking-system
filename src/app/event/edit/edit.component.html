@@ -250,7 +250,7 @@
     </mat-accordion>
 </div>
 
-<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+<div fxLayout="column wrap" class="padding-bottom" fxLayout.gt-xs="row" fxLayoutGap="2%">
     <div fxFlex>
         <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
             <mat-card-header class="card-header">
@@ -267,11 +267,55 @@
                         {{showFilters ? 'LUK FILTRE' : 'VIS FILTRE'}}
                     </button>
                     <div *ngIf="showFilters && skillList">
-                        <h3>
-                            Kompentence filtre
-                        </h3>
-                        <div *ngFor="let skill of skillList">
-                            <mat-checkbox (click)="addToSearchFilter(skill.name)" [(ngModel)]="skill.selected">{{skill.name}}</mat-checkbox>
+                        <h3>Vælg filtre</h3>
+                        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills">
+                                <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                                    <mat-card-header class="card-header">
+                                        <h3>
+                                            {{masterskill.name}}
+                                        </h3>
+                                    </mat-card-header>
+                                    <mat-card-content>
+                                        <mat-list>
+                                            <div *ngIf="masterskill.skills?.length ">
+                                                <div>
+                                                    <div *ngIf="!masterskill.hasRating">
+                                                        <mat-list-item *ngFor="let skill of masterskill.skills">
+                                                            <mat-icon class="btn" [class.book]="ifFilterisSelected(masterskill, skill, 0)" (click)="selectFilter(masterskill.uid, skill, 0)" mat-list-icon>
+                                                                {{ifFilterisSelected(masterskill, skill, 0) ? 'check':'star'}}
+                                                            </mat-icon>
+                                                            <h4 mat-line>{{skill}}</h4>
+                                                        </mat-list-item>
+                                                    </div>
+                                                    <div *ngIf="masterskill.hasRating">
+                                                        <mat-list-item *ngFor="let skill of masterskill.skills">
+                                                            <div>
+                                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="selectFilter(masterskill.uid, skill, 1)">
+                                                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
+                                                                        {{ifFilterisSelected(masterskill, skill, 1) ? 'check':'star'}}
+                                                                    </mat-icon>
+                                                                </button>
+                                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue2" (click)="selectFilter(masterskill.uid, skill, 2)">
+                                                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 2)">
+                                                                        {{ifFilterisSelected(masterskill, skill, 2) ? 'check':'star'}}
+                                                                    </mat-icon>
+                                                                </button>
+                                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue3" (click)="selectFilter(masterskill.uid, skill, 3)">
+                                                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 3)">
+                                                                        {{ifFilterisSelected(masterskill, skill, 3) ? 'check':'star'}}
+                                                                    </mat-icon>
+                                                                </button>
+                                                            </div>
+                                                            <h4>{{skill}}</h4>
+                                                        </mat-list-item>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-list>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
                         </div>
                     </div>
                 </div>

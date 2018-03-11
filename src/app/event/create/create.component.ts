@@ -49,7 +49,6 @@ export class EventCreateComponent implements AfterViewInit {
         private snackBar: MatSnackBar
     ) {
         this.getEmployeeData();
-        this.getFilterData();
     }
 
     getEmployeeData(): void {
@@ -149,30 +148,6 @@ export class EventCreateComponent implements AfterViewInit {
                 });
             this.router.navigate(['/event/list']);
         });
-    }
-
-    getFilterData(): void {
-        const localstorageSkillList = this.localStorageService.getItem<SkillExtended[]>(this.localstorageSkillListKey);
-        if (localstorageSkillList) {
-            this.searchFilterBucket = [];
-            this.skillList = localstorageSkillList;
-            this.skillList.forEach(skill => {
-                if (skill.selected) {
-                    this.searchFilterBucket.push(skill.name);
-                }
-            });
-            this.getEmployeeData();
-        } else {
-            this.skillList = [];
-            this.afs.collection('skills').ref.get().then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    const skill = new SkillExtended();
-                    skill.name = doc.data()['name'];
-                    skill.uid = doc.id;
-                    this.skillList.push(skill);
-                });
-            });
-        }
     }
 
     getRoleText(value: string): string {

@@ -9,7 +9,18 @@ export class MasterSkill {
     skills: string[] = [];
 }
 export class SkillExtended {
+    name: string;
+    rankValue: number;
+}
+
+export class MasterSkillExtended {
     uid: string;
     name: string;
-    selected: boolean;
+    onlyAdminEdit: boolean;
+    hasRating: boolean;
+    ratingValue1: string;
+    ratingValue2: string;
+    ratingValue3: string;
+    skills: string[] = [];
+    selectedSkills: SkillExtended[] = [];
 }

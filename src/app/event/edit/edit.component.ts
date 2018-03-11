@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource, TOOLTIP_PANEL_CLASS } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AmazingTimePickerService } from 'amazing-time-picker';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -8,11 +8,11 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
-import { Employee } from '../../shared/employee';
+import { Employee, Skill } from '../../shared/employee';
 import { EventObject } from '../../shared/event';
 import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
-import { SkillExtended } from '../../shared/skill';
+import { SkillExtended, MasterSkill, MasterSkillExtended } from '../../shared/skill';
 
 @Component({
     selector: 'app-edit',
@@ -25,7 +25,9 @@ import { SkillExtended } from '../../shared/skill';
 export class EventEditComponent implements OnInit {
     selectedEvent: EventObject;
     eventId: string;
-    searchFilterBucket: string[] = [];
+    // searchFilterBucket: string[] = [];
+    masterskills: MasterSkillExtended[] = [];
+    searchFilterBucket: Skill[] = [];
     showFilters: boolean;
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
@@ -96,8 +98,8 @@ export class EventEditComponent implements OnInit {
             });
             this.generalEmployeeList = employeeList;
             this.getListOfLeaders(employeeList);
-            this.localStorageService.setItem(this.localstorageSkillListKey, this.skillList);
             this.setDataTableData();
+            this.getFilterData();
         });
     }
 
@@ -110,7 +112,6 @@ export class EventEditComponent implements OnInit {
         });
 
         this.generalEmployeeList = tempList;
-
         this.dataSource = new MatTableDataSource(tempList);
     }
 
@@ -198,7 +199,6 @@ export class EventEditComponent implements OnInit {
     ngOnInit() {
         this.getEventDate();
         this.getEmployeeData();
-        this.getFilterData();
         this.geteventTypeList();
     }
 
@@ -234,23 +234,6 @@ export class EventEditComponent implements OnInit {
                     }
                 });
         });
-    }
-
-    applyFilter(filterValue: string) {
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
-    }
-
-    addToSearchFilter(skill: string): void {
-        if (this.isInArray(this.searchFilterBucket, skill)) {
-            this.removeInPlace(this.searchFilterBucket, skill);
-        } else {
-            this.searchFilterBucket.push(skill);
-        }
-        setInterval(() => {
-            // this.getEmployeeData();
-        }, 300);
     }
 
     isInArray(array, value) {
@@ -317,6 +300,12 @@ export class EventEditComponent implements OnInit {
         });
     }
 
+    applyFilter(filterValue: string) {
+        filterValue = filterValue.trim(); // Remove whitespace
+        filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+        this.dataSource.filter = filterValue;
+    }
+
     bookingDone(): void {
         this.selectedEvent.bookingDone = !this.selectedEvent.bookingDone;
         this.update(false);
@@ -328,27 +317,143 @@ export class EventEditComponent implements OnInit {
     }
 
     getFilterData(): void {
-        const localstorageSkillList = this.localStorageService.getItem<SkillExtended[]>(this.localstorageSkillListKey);
+        const localstorageSkillList = this.localStorageService.getItem<MasterSkillExtended[]>(this.localstorageSkillListKey);
         if (localstorageSkillList) {
-            this.searchFilterBucket = [];
-            this.skillList = localstorageSkillList;
-            this.skillList.forEach(skill => {
-                if (skill.selected) {
-                    this.searchFilterBucket.push(skill.name);
-                }
-            });
-            // this.getEmployeeData();
+            this.masterskills = [];
+            this.masterskills = localstorageSkillList;
+            this.filterEmployeeData();
         } else {
-            this.skillList = [];
-            this.afs.collection('skills').ref.get().then(querySnapshot => {
+            this.afs.collection('masterSkills').ref.get().then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    const skill = new SkillExtended();
-                    skill.name = doc.data()['name'];
-                    skill.uid = doc.id;
-                    this.skillList.push(skill);
+                    const masterskill = new MasterSkillExtended();
+                    masterskill.name = doc.data()['name'];
+                    masterskill.hasRating = doc.data()['hasRating'];
+                    masterskill.onlyAdminEdit = doc.data()['onlyAdminEdit'];
+                    masterskill.ratingValue1 = doc.data()['ratingValue1'];
+                    masterskill.ratingValue2 = doc.data()['ratingValue2'];
+                    masterskill.ratingValue3 = doc.data()['ratingValue3'];
+                    masterskill.skills = doc.data()['skills'];
+                    masterskill.uid = doc.id;
+                    this.masterskills.push(masterskill);
                 });
             });
         }
+    }
+
+    selectFilter(masterSkillId: string, skillName: string, rankingValue: number) {
+        const idx = this.masterskills.findIndex(x => x.uid === masterSkillId);
+        const selectedSkill = new SkillExtended();
+        selectedSkill.name = skillName;
+        selectedSkill.rankValue = rankingValue;
+        if (this.masterskills[idx].selectedSkills) {
+            const isInArray = this.containsObject(this.masterskills[idx].selectedSkills, selectedSkill);
+            if (isInArray) {
+                const idx2 = this.masterskills[idx].selectedSkills.indexOf(selectedSkill);
+                this.masterskills[idx].selectedSkills.splice(idx2, 1);
+
+            } else {
+                this.masterskills[idx].selectedSkills.push(selectedSkill);
+            }
+        } else {
+            this.masterskills[idx].selectedSkills.push(selectedSkill);
+        }
+        this.localStorageService.setItem(this.localstorageSkillListKey, this.masterskills);
+        this.filterEmployeeData();
+    }
+
+    filterEmployeeData(): void {
+        console.log('Filter employee');
+        const list: SkillExtended[] = [];
+        let employeelist: Employee[] = [];
+        this.masterskills.forEach(masterSkill => {
+            masterSkill.selectedSkills.forEach(skill => {
+                list.push(skill);
+            });
+        });
+
+        this.generalEmployeeList.forEach(employee => {
+            list.forEach(skill => {
+                let hasSkill = false;
+                if (employee.skills) {
+                    employee.skills.forEach(eSkill => {
+                        const tempSkills: SkillExtended[] = [];
+                        if (!this.containsEmployeeObject(employeelist, employee)) {
+                            if (skill.rankValue && eSkill.name === skill.name && eSkill.ranking >= skill.rankValue) {
+                                hasSkill = true;
+                            }
+                            if (eSkill.name === skill.name) {
+                                hasSkill = true;
+                            }
+                        } else {
+                            if (this.containsEmployeeObject(employeelist, employee)) {
+                                const idx = employeelist.findIndex(x => x.uid === employee.uid);
+                                employeelist.splice(idx, 1);
+                                console.log(employee.uid, 'har ikke denne');
+                                hasSkill = false;
+                            }
+                        }
+                    });
+                }
+                if (hasSkill) {
+                    employeelist.push(employee);
+                } else {
+                    if (employeelist.length) {
+                        employeelist = this.removeInPlace(employeelist, employee);
+                    }
+                }
+            });
+        });
+        if (list.length) {
+            this.dataSource = new MatTableDataSource(employeelist);
+        } else {
+            this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+        }
+    }
+
+    containsEmployeeObject(employeeList: Employee[], employee: Employee): boolean {
+        let result = false;
+        employeeList.forEach(item => {
+            if (item.uid === employee.uid) {
+                result = true;
+            }
+
+        });
+
+        return result;
+    }
+
+    containsObject(skillExtendedList: SkillExtended[], skillExtended: SkillExtended): boolean {
+        let result = false;
+        skillExtendedList.forEach(item => {
+            if (skillExtended.rankValue) {
+                if (item.name === skillExtended.name && item.rankValue === skillExtended.rankValue) {
+                    result = true;
+                }
+            } else {
+                if (item.name === skillExtended.name) {
+                    result = true;
+                }
+            }
+        });
+
+        return result;
+    }
+
+    ifFilterisSelected(masterSkill: MasterSkillExtended, skillName: string, rankingValue?: number): boolean {
+        let result = false;
+        masterSkill.selectedSkills.forEach(skill => {
+            if (rankingValue) {
+                if (skill.name === skillName && skill.rankValue >= rankingValue) {
+                    result = true;
+                }
+            } else {
+                if (skill.name === skillName) {
+                    result = true;
+                }
+            }
+        });
+
+        return result;
     }
 
     getRoleText(value: string): string {

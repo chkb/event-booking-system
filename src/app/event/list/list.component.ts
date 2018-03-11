@@ -8,7 +8,7 @@ import { EventObject } from '../../shared/event';
 @Component({
     selector: 'app-event-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.css']
+    styleUrls: ['./list.component.less']
 })
 export class EventListComponent implements AfterViewInit {
     displayedColumns = [

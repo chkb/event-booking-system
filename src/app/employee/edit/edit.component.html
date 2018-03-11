@@ -47,7 +47,7 @@
                     <input matInput *ngIf="showUniqueId" placeholder="CPR" disabled [(ngModel)]="selectedEmployee.uniqueId" name="uniqueId">
                 </mat-form-field>
 
-                <button mat-raised-button *ngIf="(isThisMe() || isAdminOrEventLeader()) && selectedEmployee.uniqueId" (click)="showUniqueId = !showUniqueId"
+                <button mat-raised-button *ngIf="(isThisMe() || isAdmin()) && selectedEmployee.uniqueId" (click)="showUniqueId = !showUniqueId"
                     color="primary">{{showUniqueId ? 'SKJUL CPR': 'VIS CPR'}}</button>
                 <br>
                 <br>
@@ -99,7 +99,7 @@
 
                 <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
                 <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
-                <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned">Kontrakt underskrevet?</mat-checkbox>
+                <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned" *ngIf="isAdmin()">Kontrakt underskrevet?</mat-checkbox>
 
             </mat-card-content>
             <mat-card-actions>

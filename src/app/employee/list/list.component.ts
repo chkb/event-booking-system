@@ -10,7 +10,7 @@ import { Role } from '../../shared/role';
 @Component({
     selector: 'app-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.css'],
+    styleUrls: ['./list.component.less'],
     animations: [moveIn()],
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }

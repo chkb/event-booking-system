@@ -204,4 +204,12 @@ export class EmployeeEditComponent implements OnInit {
 
         return false;
     }
+
+    isAdmin() {
+        if (this.lps.role === 'admin') {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -13,6 +13,8 @@ import { EventEditComponent } from '../event/edit/edit.component';
 import { EventListComponent } from '../event/list/list.component';
 import { LoginEmailComponent } from '../login-email/login-email.component';
 import { LoginComponent } from '../login/login.component';
+import { PayoutEditComponent } from '../payout/edit/edit.component';
+import { PayoutListComponent } from '../payout/list/list.component';
 import { SignupComponent } from '../signup/signup.component';
 import { SkillComponent } from '../skill/skill.component';
 import { WagerComponent } from '../wager/wager.component';
@@ -84,6 +86,16 @@ const routes: Route[] = [
     {
         path: 'event-typer',
         component: EventTypeComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'payout/list',
+        component: PayoutListComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'payout/:id',
+        component: PayoutEditComponent,
         canActivate: [AuthGuard]
     }
 ];

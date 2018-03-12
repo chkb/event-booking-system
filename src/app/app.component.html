@@ -26,6 +26,9 @@
             <a *ngFor="let item of eventTypeNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
                 <span>{{item.text}}</span>
             </a>
+            <a *ngFor="let item of payoutNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
+                <span>{{item.text}}</span>
+            </a>
             <h3>Medarbejdere</h3>
             <a *ngFor="let item of employeeNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
                 <span>{{item.text}}</span>

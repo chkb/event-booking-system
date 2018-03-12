@@ -1,5 +1,6 @@
 import { Employee } from './employee';
 import { EventType } from './event-type';
+import { Wager } from './wager';
 
 export class EventObject {
     uid: string;
@@ -18,6 +19,7 @@ export class EventObject {
     meetingLocation: string;
     meetingAdress: string;
     eventLeader: string;
+    eventLeaderId: string;
     staffNeed: number;
     booked: Employee[] = [];
     maybe: Employee[] = [];
@@ -29,4 +31,15 @@ export class EventObject {
     eventTypeColor: string;
     bookingDone: boolean;
     payoutDone: boolean;
+    payouts: Payout[] = [];
+}
+
+export class Payout {
+    timeFrom: string;
+    timeTo: string;
+    hours: number;
+    wager: number;
+    bonus: number;
+    sum: number;
+    employee: Employee;
 }

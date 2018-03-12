@@ -68,6 +68,13 @@ export class AppComponent {
         }
     ];
 
+    payoutNavigationItems: NavigationItem[] = [
+        {
+            url: '/payout/list',
+            text: 'Event lønning'
+        }
+    ];
+
 
     logout(): void {
         this.auth.signOut();

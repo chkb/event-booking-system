@@ -20,7 +20,7 @@ export class Employee {
     contractSigned: boolean;
     role: string;
     skills: Skill[] = [];
-    personalWager: Wager;
+    personalWager: number;
 }
 
 

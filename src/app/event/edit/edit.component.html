@@ -53,7 +53,7 @@
 
                 <mat-form-field class="full-width">
                     <mat-select placeholder="Eventleder" [(value)]="selectedEvent.eventLeader">
-                        <mat-option *ngFor="let employee of leaderList" [value]="employee.displayName">
+                        <mat-option *ngFor="let employee of leaderList" (click)="selectedEvent.eventLeaderId = employee.uid" [value]="employee.displayName">
                             {{employee.displayName}} ({{getRoleText(employee.role)}})
                         </mat-option>
                     </mat-select>
@@ -282,7 +282,8 @@
                                                 <div>
                                                     <div *ngIf="!masterskill.hasRating">
                                                         <mat-list-item *ngFor="let skill of masterskill.skills">
-                                                            <mat-icon class="btn" [class.book]="ifFilterisSelected(masterskill, skill, 0)" (click)="selectFilter(masterskill.uid, skill, 0)" mat-list-icon>
+                                                            <mat-icon class="btn" [class.book]="ifFilterisSelected(masterskill, skill, 0)" (click)="selectFilter(masterskill.uid, skill, 0)"
+                                                                mat-list-icon>
                                                                 {{ifFilterisSelected(masterskill, skill, 0) ? 'check':'star'}}
                                                             </mat-icon>
                                                             <h4 mat-line>{{skill}}</h4>

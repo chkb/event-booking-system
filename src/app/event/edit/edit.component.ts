@@ -81,6 +81,7 @@ export class EventEditComponent implements OnInit {
                 employee.skills = doc.data()['skills'];
                 employee.mobile = doc.data()['mobile'];
                 employee.hasCar = doc.data()['hasCar'];
+                employee.personalWager = doc.data()['personalWager'];
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
                 if (this.searchFilterBucket.length) {
                     let count = 0;

@@ -42,6 +42,8 @@ import { SignupComponent } from './signup/signup.component';
 import { SkillComponent } from './skill/skill.component';
 import { WagerComponent } from './wager/wager.component';
 import { WindowRef } from './window-reference';
+import { PayoutListComponent } from './payout/list/list.component';
+import { PayoutEditComponent } from './payout/edit/edit.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -64,7 +66,9 @@ registerLocaleData(daLocale);
         SkillComponent,
         WagerComponent,
         EventTypeComponent,
-        AnimationComponent
+        AnimationComponent,
+        PayoutListComponent,
+        PayoutEditComponent
     ],
     imports: [
         FlexLayoutModule,

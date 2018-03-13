@@ -8,7 +8,7 @@
             </mat-card-header>
             <mat-card-content>
                 <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                    <div fxFlex="50">
+                    <div fxFlex="30">
                         <h3>Eventinfo</h3>
                         <mat-list>
                             <mat-list-item>
@@ -48,10 +48,10 @@
                             </mat-list-item>
                         </mat-list>
                     </div>
-                    <div fxFlex="50">
+                    <div fxFlex="70">
                         <h3>{{selectedEvent.booked ? 'Medarbejder på dette event' : 'Ingen medarbejder på dette event'}}</h3>
                         <div *ngIf="selectedEvent.booked" fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
-                            <div fxFlex="100" fxFlex.gt-md="35" *ngFor="let bookedEmployee of selectedEvent.booked">
+                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let bookedEmployee of selectedEvent.booked">
                                 <mat-card *ngIf="bookedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                                     <mat-card-content>
                                         <img mat-card-image [src]="bookedEmployee.photoURL">
@@ -62,7 +62,7 @@
                                         </p>
                                     </mat-card-content>
                                     <mat-card-actions>
-                                        <button mat-mini-fab (click)="addToPayout(bookedEmployee)" matTooltip="Tidsregistrering for {{bookedEmployee.displayName}}">
+                                        <button [disabled]="selectedEvent.payoutDone" mat-mini-fab (click)="addToPayout(bookedEmployee)" matTooltip="Tidsregistrering for {{bookedEmployee.displayName}}">
                                             <mat-icon>access_time</mat-icon>
                                         </button>
                                     </mat-card-actions>
@@ -88,7 +88,7 @@
                             <ng-container matColumnDef="timeFrom">
                                 <mat-header-cell *matHeaderCellDef> Starttidspunkt </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                    <input type="time" (keyup)="updatePayout(row)" [(ngModel)]="row.timeFrom" />
+                                    <input type="time" [disabled]="selectedEvent.payoutDone" (keyup)="updatePayout(row)" [(ngModel)]="row.timeFrom" />
                                 </mat-cell>
                             </ng-container>
 
@@ -96,7 +96,7 @@
                             <ng-container matColumnDef="timeTo">
                                 <mat-header-cell *matHeaderCellDef> Sluttidspunkt </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                    <input type="time" (keyup)="updatePayout(row)" [(ngModel)]="row.timeTo" />
+                                    <input type="time" [disabled]="selectedEvent.payoutDone" (keyup)="updatePayout(row)" [(ngModel)]="row.timeTo" />
                                 </mat-cell>
                             </ng-container>
 
@@ -114,7 +114,7 @@
                                 <mat-cell *matCellDef="let row">
                                     <mat-form-field>
                                         <mat-select placeholder="Løn-niveau" (change)="updatePayout(row)" [(value)]="row.wager">
-                                            <mat-optgroup *ngFor="let parrent of wagerList" [label]="parrent.name" [disabled]="parrent.disabled">
+                                            <mat-optgroup *ngFor="let parrent of wagerList" [label]="parrent.name" [disabled]="selectedEvent.payoutDone">
                                                 <mat-option *ngFor="let wager of parrent.wager" [value]="wager.value">
                                                     {{ wager.name }} ({{wager.value}})
                                                 </mat-option>
@@ -144,7 +144,7 @@
                             <ng-container matColumnDef="selection">
                                 <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                    <button mat-mini-fab class="nogo" (click)="removePayout(row)">
+                                    <button mat-mini-fab class="nogo" [disabled]="selectedEvent.payoutDone" matTooltip="Fjern {{row.displayName}}" (click)="removePayout(row)">
                                         <mat-icon>remove_circle</mat-icon>
                                     </button>
                                 </mat-cell>
@@ -156,6 +156,11 @@
                     </div>
                 </div>
             </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="update()" [disabled]="selectedEvent.payoutDone">GEM ÆNDRINGER</button>
+                <button mat-raised-button *ngIf="!selectedEvent.payoutDone" (click)="payoutDone()">FÆRDIG MED LØNNING</button>
+                <button mat-raised-button *ngIf="selectedEvent.payoutDone && isAdmin()" (click)="payoutOpen()">GENÅBN LØNNING</button>
+            </mat-card-actions>
         </mat-card>
     </div>
 </div>

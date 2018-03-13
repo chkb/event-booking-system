@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar, MatTableDataSource } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { Subject } from 'rxjs';
 
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import { LoginProviderService } from '../../core/login-provider.service';
 import { Employee } from '../../shared/employee';
 import { EventObject, Payout } from '../../shared/event';
 import { Wager } from '../../shared/wager';
-import { debounceTime } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-edit',
@@ -35,7 +36,10 @@ export class PayoutEditComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private afs: AngularFirestore,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private dialog: MatDialog,
+        private router: Router,
+        private lps: LoginProviderService
     ) { }
 
     ngOnInit() {
@@ -47,16 +51,18 @@ export class PayoutEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: EventObject) => {
                     this.selectedEvent = result;
-                    this.selectedPayoutList = this.selectedEvent.payouts;
+                    if (this.selectedEvent.payouts) {
+                        this.selectedPayoutList = this.selectedEvent.payouts;
+                    }
                     this.dataSource = new MatTableDataSource(this.selectedPayoutList);
                     this.getWagerData();
                 });
         });
-        this.updateEvent.debounceTime(1000).subscribe((res: boolean) => {
-            if (res) {
-                this.update();
-            }
-        });
+        // this.updateEvent.debounceTime(1000).subscribe((res: boolean) => {
+        //     if (res) {
+        //         this.update();
+        //     }
+        // });
     }
 
     addToPayout(employee: Employee): void {
@@ -66,12 +72,15 @@ export class PayoutEditComponent implements OnInit {
         payout.timeTo = this.selectedEvent.timeTo;
         payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
         if (employee.personalWager) {
+            console.log('has wage', employee.personalWager);
             payout.sum = this.getSum(payout.hours, employee.personalWager);
             payout.wager = employee.personalWager;
             const idx = this.tempWagerList.findIndex(x => x.value === employee.personalWager);
+            const wagers: Wager[] = [];
+            wagers.push(this.tempWagerList[idx]);
             const wagerObject = {
                 name: 'Personligt løn-niveau',
-                wager: [this.tempWagerList[idx]]
+                wager: wagers
             };
             this.wagerList.push(wagerObject);
         }
@@ -138,7 +147,6 @@ export class PayoutEditComponent implements OnInit {
         const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
         this.selectedPayoutList[idx] = payout;
         this.dataSource = new MatTableDataSource(this.selectedPayoutList);
-        this.updateEvent.next(true);
     }
 
     removePayout(payout: Payout): void {
@@ -160,5 +168,39 @@ export class PayoutEditComponent implements OnInit {
                         duration: 10000,
                     });
             });
+    }
+
+    payoutDone(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent,
+            {
+                data: {
+                    text: `Er du sikker på at du er færdig med at lønne registrere timer på medarbejder,
+                    det er kun en administrator der kan åbne eventet op igen?`,
+                    title: `Er du helt færdig med at lønne eventet '${this.selectedEvent.name}'`,
+                    cancelButtonText: 'ANNULLER',
+                    confirmButtonText: 'FÆRDIG MED LØNNING'
+                }
+            });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.selectedEvent.payoutDone = true;
+                this.update();
+                this.router.navigate([`/payout/list`]);
+            }
+        });
+    }
+
+    payoutOpen(): void {
+        this.selectedEvent.payoutDone = false;
+        this.update();
+    }
+
+    isAdmin() {
+        if (this.lps.role === 'admin') {
+            return true;
+        }
+
+        return false;
     }
 }

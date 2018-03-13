@@ -11,6 +11,7 @@ import { EventObject } from '../../shared/event';
     styleUrls: ['./list.component.less']
 })
 export class EventListComponent implements AfterViewInit {
+    getAllCheckBox: boolean;
     displayedColumns = [
         'name',
         'eventLeader',
@@ -30,6 +31,10 @@ export class EventListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
+        this.getdata(false);
+    }
+
+    getdata(getAll: boolean): void {
         let eventList: EventObject[] = [];
         this.afs.collection('events').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -50,7 +55,14 @@ export class EventListComponent implements AfterViewInit {
                 event.bookingDone = doc.data()['bookingDone'];
                 event.payoutDone = doc.data()['payoutDone'];
                 event.booked = doc.data()['booked'];
-                eventList.push(event);
+                event.deative = doc.data()['deative'];
+                if (getAll) {
+                    eventList.push(event);
+                } else {
+                    if (!event.deative) {
+                        eventList.push(event);
+                    }
+                }
             });
             eventList = eventList.sort((a, b) => new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime());
             this.dataSource = new MatTableDataSource(eventList);

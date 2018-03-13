@@ -19,10 +19,18 @@ export class AppComponent {
 
     constructor(
         private router: Router,
-        public auth: LoginProviderService) {
+        public auth: LoginProviderService
+    ) {
         this.auth.user.subscribe(res => {
             if (res && res.uid) {
                 this.isAuthenticated = true;
+                if (this.isAdmin()) {
+                    this.gotoEventList();
+                } else if (this.isEventLeader()) {
+                    this.gotoPayoutList();
+                } else {
+                    this.gotoDashboard();
+                }
             } else {
                 this.isAuthenticated = false;
             }
@@ -78,5 +86,45 @@ export class AppComponent {
 
     logout(): void {
         this.auth.signOut();
+    }
+
+    isAdminOrEventLeader() {
+        if (this.auth.role === 'admin' || this.auth.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
+    }
+
+    isEventLeader() {
+        if (this.auth.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
+    }
+
+    isAdmin() {
+        if (this.auth.role === 'admin') {
+            return true;
+        }
+
+        return false;
+    }
+
+    gotomyprofile(): void {
+        this.router.navigate([`/employee`, this.auth.userId]);
+    }
+
+    gotoEventList(): void {
+        this.router.navigate([`/event/list`]);
+    }
+
+    gotoPayoutList(): void {
+        this.router.navigate([`/payout/list`]);
+    }
+
+    gotoDashboard(): void {
+        this.router.navigate([`/dashboard`]);
     }
 }

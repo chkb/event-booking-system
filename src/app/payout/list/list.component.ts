@@ -52,7 +52,8 @@ export class PayoutListComponent implements AfterViewInit {
                 event.payoutDone = doc.data()['payoutDone'];
                 event.booked = doc.data()['booked'];
                 event.eventLeaderId = doc.data()['eventLeaderId'];
-                if (this.lps.userId === event.eventLeaderId) {
+                event.deative = doc.data()['deative'];
+                if (this.lps.userId === event.eventLeaderId && !event.deative) {
                     eventList.push(event);
                 }
             });

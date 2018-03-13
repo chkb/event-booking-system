@@ -474,4 +474,32 @@ export class EventEditComponent implements OnInit {
 
         this.emailList = string;
     }
+
+    goToPayout(): void {
+        this.router.navigate([`/payout`, this.eventId]);
+    }
+
+    deativate(): void {
+        if (this.selectedEvent.deative) {
+            this.selectedEvent.deative = false;
+            this.update(false);
+        } else {
+            const dialogRef = this.dialog.open(ConfirmDialogComponent,
+                {
+                    data: {
+                        text: 'Vil du deaktivere dette event?, den vil ikke fremgå nogen liste, men vil stadig blive gemt i databasen?',
+                        title: `Vil du deaktivere ${this.selectedEvent.name}`,
+                        cancelButtonText: 'ANNULLER',
+                        confirmButtonText: 'DEAKTIVERE EVENT'
+                    }
+                });
+
+            dialogRef.afterClosed().subscribe((result: boolean) => {
+                if (result) {
+                    this.selectedEvent.deative = true;
+                    this.update(true);
+                }
+            });
+        }
+    }
 }

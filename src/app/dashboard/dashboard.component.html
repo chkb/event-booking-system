@@ -1,3 +1,17 @@
-<p>
-  dashboard works!
-</p>
+<div fxFlex="100" fxFlex.gt-md="30">
+    <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+        <mat-card-header class="card-header">
+            <h3 *ngIf="selectedEmployee">
+                Hej {{selectedEmployee.displayName}}
+            </h3>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                Opdater din profil her:
+            </p>
+            <button mat-raised-button (click)="gotomyprofile()">
+                GÅ TIL PROFIL
+            </button>
+        </mat-card-content>
+    </mat-card>
+</div>

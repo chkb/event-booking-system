@@ -11,6 +11,7 @@
                     <mat-form-field>
                         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Søg">
                     </mat-form-field>
+                    <mat-checkbox [(ngModel)]="getAllCheckBox" (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox>
                 </div>
                 <div class="table-overflow">
                     <div class="container">
@@ -116,7 +117,7 @@
                             </ng-container>
 
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" (click)="gotoEvent(row.uid)"></mat-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" [ngClass]="row.deative ? 'greyout': ''" (click)="gotoEvent(row.uid)"></mat-row>
                         </mat-table>
                     </div>
                 </div>

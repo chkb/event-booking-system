@@ -31,6 +31,7 @@ export class EventObject {
     eventTypeColor: string;
     bookingDone: boolean;
     payoutDone: boolean;
+    deative: boolean;
     payouts: Payout[] = [];
 }
 

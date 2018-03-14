@@ -262,6 +262,8 @@ export class EventEditComponent implements OnInit {
     }
 
     update(navigate: boolean): void {
+        this.selectedEvent.dateFrom = this.startDate.value;
+        this.selectedEvent.dateTo = this.endDate.value;
         this.afs
             .collection('events')
             .doc(this.eventId).update(JSON.parse(JSON.stringify(this.selectedEvent))).then(() => {

@@ -56,8 +56,42 @@ export class LoginComponent {
     navigateToList(): void {
         this.loginProvider.user.subscribe(res => {
             if (res && res.uid) {
-                this.router.navigate(['/event/list']);
+                if (this.isAdmin()) {
+                    this.gotoEventList();
+                } else if (this.isEventLeader()) {
+                    this.gotoPayoutList();
+                } else {
+                    this.gotoDashboard();
+                }
             }
         });
+    }
+
+    isEventLeader() {
+        if (this.loginProvider.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
+    }
+
+    isAdmin() {
+        if (this.loginProvider.role === 'admin') {
+            return true;
+        }
+
+        return false;
+    }
+
+    gotoEventList(): void {
+        this.router.navigate([`/event/list`]);
+    }
+
+    gotoPayoutList(): void {
+        this.router.navigate([`/payout/list`]);
+    }
+
+    gotoDashboard(): void {
+        this.router.navigate([`/dashboard`]);
     }
 }

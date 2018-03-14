@@ -58,11 +58,6 @@ export class PayoutEditComponent implements OnInit {
                     this.getWagerData();
                 });
         });
-        // this.updateEvent.debounceTime(1000).subscribe((res: boolean) => {
-        //     if (res) {
-        //         this.update();
-        //     }
-        // });
     }
 
     addToPayout(employee: Employee): void {
@@ -72,7 +67,6 @@ export class PayoutEditComponent implements OnInit {
         payout.timeTo = this.selectedEvent.timeTo;
         payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
         if (employee.personalWager) {
-            console.log('has wage', employee.personalWager);
             payout.sum = this.getSum(payout.hours, employee.personalWager);
             payout.wager = employee.personalWager;
             const idx = this.tempWagerList.findIndex(x => x.value === employee.personalWager);
@@ -101,7 +95,6 @@ export class PayoutEditComponent implements OnInit {
         const to = this.toSeconds(timeTo);
         let diff = Math.abs(to - from);
         if (to < from) {
-            console.log('yes!');
             diff = Math.abs(from - this.toSeconds('24:00'));
             diff = diff + Math.abs(this.toSeconds('00:00') - to);
         }
@@ -109,7 +102,6 @@ export class PayoutEditComponent implements OnInit {
         const h = Math.floor(diff / 3600);
         const m = Math.round(Math.floor(diff % 3600 / 60) * 0.0166666667 * 100) / 100;
         const time = h + m;
-
 
         return time;
     }

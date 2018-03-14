@@ -24,13 +24,6 @@ export class AppComponent {
         this.auth.user.subscribe(res => {
             if (res && res.uid) {
                 this.isAuthenticated = true;
-                if (this.isAdmin()) {
-                    this.gotoEventList();
-                } else if (this.isEventLeader()) {
-                    this.gotoPayoutList();
-                } else {
-                    this.gotoDashboard();
-                }
             } else {
                 this.isAuthenticated = false;
             }
@@ -114,17 +107,5 @@ export class AppComponent {
 
     gotomyprofile(): void {
         this.router.navigate([`/employee`, this.auth.userId]);
-    }
-
-    gotoEventList(): void {
-        this.router.navigate([`/event/list`]);
-    }
-
-    gotoPayoutList(): void {
-        this.router.navigate([`/payout/list`]);
-    }
-
-    gotoDashboard(): void {
-        this.router.navigate([`/dashboard`]);
     }
 }

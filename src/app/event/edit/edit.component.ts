@@ -363,7 +363,6 @@ export class EventEditComponent implements OnInit {
     }
 
     filterEmployeeData(): void {
-        console.log('Filter employee');
         const list: SkillExtended[] = [];
         let employeelist: Employee[] = [];
         this.masterskills.forEach(masterSkill => {
@@ -389,7 +388,6 @@ export class EventEditComponent implements OnInit {
                             if (this.containsEmployeeObject(employeelist, employee)) {
                                 const idx = employeelist.findIndex(x => x.uid === employee.uid);
                                 employeelist.splice(idx, 1);
-                                console.log(employee.uid, 'har ikke denne');
                                 hasSkill = false;
                             }
                         }

@@ -92,7 +92,14 @@ export class LoginProviderService {
             photoURL: user.photoURL
         };
 
-        return userRef.set(data);
+        this.afs.firestore.doc(`/users/${user.uid}`).get()
+            .then(docSnapshot => {
+                if (docSnapshot.exists) {
+                    return userRef.update(data);
+                } else {
+                    return userRef.set(data);
+                }
+            });
     }
     signOut() {
         this.afAuth.auth.signOut().then(() => {

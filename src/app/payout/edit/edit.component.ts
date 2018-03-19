@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Subject } from 'rxjs';
+import { Subject } from 'Rxjs';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
-import { Employee } from '../../shared/employee';
-import { EventObject, Payout } from '../../shared/event';
+import { Booked, EventObject, Payout } from '../../shared/event';
 import { Wager } from '../../shared/wager';
 
 @Component({
@@ -21,6 +20,7 @@ export class PayoutEditComponent implements OnInit {
     tempWagerList: Wager[] = [];
     eventId: string;
     wagerList: any[];
+    tempWagerPersonal: any;
     dataSource: MatTableDataSource<Payout>;
     updateEvent: Subject<boolean> = new Subject<boolean>();
     displayedColumns = [
@@ -28,6 +28,7 @@ export class PayoutEditComponent implements OnInit {
         'timeFrom',
         'timeTo',
         'hours',
+        'wagerList',
         'wager',
         'bonus',
         'sum',
@@ -60,23 +61,20 @@ export class PayoutEditComponent implements OnInit {
         });
     }
 
-    addToPayout(employee: Employee): void {
+    addToPayout(employee: Booked): void {
         const payout = new Payout();
         payout.employee = employee;
         payout.timeFrom = this.selectedEvent.timeFrom;
         payout.timeTo = this.selectedEvent.timeTo;
         payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
         if (employee.personalWager) {
+            const wager = new Wager();
+            wager.name = employee.displayName;
+            wager.value = employee.personalWager;
             payout.sum = this.getSum(payout.hours, employee.personalWager);
             payout.wager = employee.personalWager;
-            const idx = this.tempWagerList.findIndex(x => x.value === employee.personalWager);
             const wagers: Wager[] = [];
-            wagers.push(this.tempWagerList[idx]);
-            const wagerObject = {
-                name: 'Personligt løn-niveau',
-                wager: wagers
-            };
-            this.wagerList.push(wagerObject);
+            wagers.push(wager);
         }
         this.selectedPayoutList.push(payout);
         this.dataSource = new MatTableDataSource(this.selectedPayoutList);

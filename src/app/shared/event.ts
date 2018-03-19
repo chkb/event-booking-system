@@ -7,8 +7,8 @@ export class EventObject {
     name: string;
     dateFrom: Date;
     dateTo: Date;
-    timeFrom: string;
-    timeTo: string;
+    timeFrom = '18:00';
+    timeTo = '22:00';
     billInfo = '';
     language: string;
     eventDescription: string;
@@ -21,9 +21,9 @@ export class EventObject {
     eventLeader: string;
     eventLeaderId: string;
     staffNeed: number;
-    booked: Employee[] = [];
-    maybe: Employee[] = [];
-    nogo: Employee[] = [];
+    booked: Booked[] = [];
+    maybe: Booked[] = [];
+    nogo: Booked[] = [];
     agenda: string;
     customer: string;
     contactInfo: string;
@@ -42,5 +42,9 @@ export class Payout {
     wager: number;
     bonus: number;
     sum: number;
-    employee: Employee;
+    employee: Booked;
+}
+
+export class Booked extends Employee {
+    comments: number;
 }

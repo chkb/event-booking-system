@@ -1,91 +1,87 @@
-<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-    <div fxFlex>
-        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-            <mat-card-header class="card-header">
-                <h3>
-                    Opret Begivenhed
-                </h3>
-            </mat-card-header>
-            <mat-card-content>
+<mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+    <mat-card-header class="card-header">
+        <h3>
+            Opret Begivenhed
+        </h3>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field class="full-width">
+            <input matInput placeholder="Navn på begivenhed" [(ngModel)]="event.name" name="eventname">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <textarea matInput placeholder="Kommentar" [(ngModel)]="event.eventDescription" name="comment"></textarea>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <input matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)" [(ngModel)]="event.staffNeed" name="eventname">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-select [(value)]="event.billInfo">
+                <mat-option value="">Ingen fakturing udført</mat-option>
+                <mat-option value="0%">0%</mat-option>
+                <mat-option value="10%">10%</mat-option>
+                <mat-option value="20%">20%</mat-option>
+                <mat-option value="30%">30%</mat-option>
+                <mat-option value="40%">40%</mat-option>
+                <mat-option value="50%">50%</mat-option>
+                <mat-option value="60%">60%</mat-option>
+                <mat-option value="70%">70%</mat-option>
+                <mat-option value="80%">80%</mat-option>
+                <mat-option value="90%">90%</mat-option>
+                <mat-option value="99%">99%</mat-option>
+                <mat-option value="Færdig">Færdig</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-divider></mat-divider>
+        <h3>Tid og sted</h3>
+        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+            <div fxFlex>
+                <h5>Start tidspunkt</h5>
+                <input type="time" [(ngModel)]="event.timeFrom" />
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Navn på begivenhed" [(ngModel)]="event.name" name="eventname">
+                    <input matInput [matDatepicker]="picker1" placeholder="Startdato" [formControl]="startDate" [min]="minDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
                 </mat-form-field>
+            </div>
+            <div fxFlex>
+                <h5>Slut tidspunkt</h5>
+                <input type="time" [(ngModel)]="event.timeTo" />
                 <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Kommentar" [(ngModel)]="event.eventDescription" name="comment"></textarea>
+                    <input matInput [matDatepicker]="picker2" placeholder="Slutdato" [formControl]="endDate" [min]="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
                 </mat-form-field>
+            </div>
+        </div>
+        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+            <div fxFlex>
                 <mat-form-field class="full-width">
-                    <input matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)" [(ngModel)]="event.staffNeed" name="eventname">
+                    <input matInput placeholder="Lokation" [(ngModel)]="event.eventLocation" name="eventlocation">
                 </mat-form-field>
+            </div>
+            <div fxFlex>
                 <mat-form-field class="full-width">
-                    <mat-select [(value)]="event.billInfo">
-                        <mat-option value="">Ingen fakturing udført</mat-option>
-                        <mat-option value="0%">0%</mat-option>
-                        <mat-option value="10%">10%</mat-option>
-                        <mat-option value="20%">20%</mat-option>
-                        <mat-option value="30%">30%</mat-option>
-                        <mat-option value="40%">40%</mat-option>
-                        <mat-option value="50%">50%</mat-option>
-                        <mat-option value="60%">60%</mat-option>
-                        <mat-option value="70%">70%</mat-option>
-                        <mat-option value="80%">80%</mat-option>
-                        <mat-option value="90%">90%</mat-option>
-                        <mat-option value="99%">99%</mat-option>
-                        <mat-option value="Færdig">Færdig</mat-option>
-                    </mat-select>
+                    <input matInput placeholder="Adresse på lokation" [(ngModel)]="event.eventAdress" name="eventadress">
                 </mat-form-field>
-                <mat-divider></mat-divider>
-                <h3>Tid og sted</h3>
-                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                    <div fxFlex>
-                        <h5>Start tidspunkt</h5>
-                        <input atp-time-picker value="{{startTime}}" />
-                        <mat-form-field class="full-width">
-                            <input matInput [matDatepicker]="picker1" placeholder="Startdato" [formControl]="startDate" [min]="minDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex>
-                        <h5>Slut tidspunkt</h5>
-                        <input atp-time-picker value="{{endTime}}" />
-                        <mat-form-field class="full-width">
-                            <input matInput [matDatepicker]="picker2" placeholder="Slutdato" [formControl]="endDate" [min]="startDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                    <div fxFlex>
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Lokation" [(ngModel)]="event.eventLocation" name="eventlocation">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex>
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Adresse på lokation" [(ngModel)]="event.eventAdress" name="eventadress">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <mat-divider></mat-divider>
-                <h3>Kundeoplysninger</h3>
-                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                    <div fxFlex>
-                        <mat-form-field class="full-width">
-                            <input matInput placeholder="Kunde" [(ngModel)]="event.customer" name="customer">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex>
-                        <mat-form-field class="full-width">
-                            <textarea matInput placeholder="Kontaktoplysninger" [(ngModel)]="event.contactInfo" name="contactInfo"></textarea>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-raised-button color="primary" (click)="create()">OPRET BEGIVENHED</button>
-                <!-- <button mat-raised-button color="warn">SLET BEGIVENHED</button> -->
-            </mat-card-actions>
-        </mat-card>
-    </div>
-</div>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <h3>Kundeoplysninger</h3>
+        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Kunde" [(ngModel)]="event.customer" name="customer">
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <textarea matInput placeholder="Kontaktoplysninger" [(ngModel)]="event.contactInfo" name="contactInfo"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="create()">OPRET BEGIVENHED</button>
+        <!-- <button mat-raised-button color="warn">SLET BEGIVENHED</button> -->
+    </mat-card-actions>
+</mat-card>

@@ -66,8 +66,8 @@
                         <h5>Start tidspunkt</h5>
                         <input type="time" [(ngModel)]="selectedEvent.timeFrom" />
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput [matDatepicker]="picker1" placeholder="Startdato"
-                                [formControl]="startDate" [min]="minDate">
+                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" (dateChange)="setDateTwo()" matInput [matDatepicker]="picker1"
+                                placeholder="Startdato" [formControl]="startDate" [min]="minDate">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                         </mat-form-field>
@@ -77,7 +77,7 @@
                         <input type="time" [(ngModel)]="selectedEvent.timeTo" />
                         <mat-form-field class="full-width">
                             <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput [matDatepicker]="picker2" placeholder="Slutdato"
-                                [formControl]="endDate" [min]="minDate">
+                                [formControl]="endDate" [min]="minDate2">
                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                             <mat-datepicker #picker2></mat-datepicker>
                         </mat-form-field>
@@ -162,7 +162,102 @@
                 Der er ingen på denne liste
             </h4>
             <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
-                <div fxFlex="100" fxFlex.gt-md="15" *ngFor="let bookedEmployee of selectedBookedList">
+                <mat-accordion class="full-width">
+                    <mat-expansion-panel *ngFor="let bookedEmployee of selectedBookedList">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                {{bookedEmployee.displayName}}
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Kommentar: {{bookedEmployee.comments ? bookedEmployee.comments : 'Ingen kommentar'}}
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                            <div fxFlex="100" fxFlex.gt-md="25">
+                                <mat-list>
+                                    <!-- <mat-list-item>
+                                        <mat-icon mat-list-icon>
+                                            account_circle
+                                        </mat-icon>
+                                        <h4 mat-line>Navn</h4>
+                                        <p mat-line> {{bookedEmployee.displayName}} </p>
+                                    </mat-list-item> -->
+                                    <mat-list-item>
+                                        <mat-icon mat-list-icon>
+                                            email
+                                        </mat-icon>
+                                        <h4 mat-line>Email</h4>
+                                        <p mat-line> {{bookedEmployee.email}} </p>
+                                        <p mat-line> {{bookedEmployee.workEmail}} </p>
+                                    </mat-list-item>
+                                    <mat-list-item *ngIf="bookedEmployee.mobile">
+                                        <mat-icon mat-list-icon>
+                                            phone
+                                        </mat-icon>
+                                        <h4 mat-line>Mobil</h4>
+                                        <p mat-line> {{bookedEmployee.mobile}} </p>
+                                    </mat-list-item>
+                                    <mat-list-item *ngIf="bookedEmployee.adress">
+                                        <mat-icon mat-list-icon>
+                                            room
+                                        </mat-icon>
+                                        <h4 mat-line>Adresse</h4>
+                                        <p mat-line> {{bookedEmployee.adress}} </p>
+                                        <p mat-line> {{bookedEmployee.postal}} </p>
+                                    </mat-list-item>
+                                    <mat-list-item *ngIf="bookedEmployee.comment">
+                                        <mat-icon mat-list-icon>
+                                            note
+                                        </mat-icon>
+                                        <h4 mat-line>Kommentar</h4>
+                                        <p mat-line> {{bookedEmployee.comment}} </p>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <mat-icon mat-list-icon>
+                                            directions_car
+                                        </mat-icon>
+                                        <h4 mat-line>Har egen bil?</h4>
+                                        <p mat-line> {{bookedEmployee.hasCar ? 'Ja' : 'Nej' }} </p>
+                                    </mat-list-item>
+                                    <mat-list-item>
+                                        <mat-icon mat-list-icon>
+                                            account_box
+                                        </mat-icon>
+                                        <h4 mat-line>Har kørekort?</h4>
+                                        <p mat-line> {{bookedEmployee.hasDriverLicens ? 'Ja' : 'Nej' }} </p>
+                                    </mat-list-item>
+                                    <mat-list-item *ngIf="bookedEmployee.height">
+                                        <mat-icon mat-list-icon>
+                                            straighten
+                                        </mat-icon>
+                                        <h4 mat-line>Højde</h4>
+                                        <p mat-line> {{bookedEmployee.height}} </p>
+                                    </mat-list-item>
+                                </mat-list>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-md="25">
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-md="35">
+                                <mat-form-field class="full-width">
+                                    <input matInput placeholder="Booking kommentar" [(ngModel)]="bookedEmployee.comments" name="text">
+                                </mat-form-field>
+                                <button color="primary" mat-raised-button>
+                                    GEM KOMMENTAR
+                                </button>
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-md="10">
+                                <button class="maybe" (click)="removeBookedEmployee(bookedEmployee); maybeEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan kun måske">
+                                    <mat-icon>error_outline</mat-icon>
+                                </button>
+                                <button class="nogo" (click)="removeBookedEmployee(bookedEmployee); nogoEmployee(bookedEmployee);" mat-mini-fab matTooltip="{{bookedEmployee.displayName}} kan alligevel ikke">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <!-- <div fxFlex="100" fxFlex.gt-md="15">
                     <mat-card *ngIf="bookedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                         <mat-card-header class="card-header">
                             <h3>
@@ -186,8 +281,10 @@
                             </button>
                         </mat-card-actions>
                     </mat-card>
-                </div>
+                </div> -->
             </div>
+            <br>
+            <br>
             <mat-form-field class="full-width">
                 <input matInput placeholder="Email list" readonly [(ngModel)]="emailList" #inputTarget name="emaillist">
             </mat-form-field>
@@ -295,7 +392,7 @@
                     <div *ngIf="showFilters && skillList">
                         <h3>Vælg filtre</h3>
                         <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills">
+                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills | sort : 'order'">
                                 <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                                     <mat-card-header class="card-header">
                                         <h3>
@@ -346,7 +443,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-overflow mat-elevation-z8">
+                <div class="table-overflow">
                     <div class="container">
                         <mat-table #table [dataSource]="dataSource" matSort>
 
@@ -405,8 +502,19 @@
                                 </mat-cell>
                             </ng-container>
 
+                            <!-- Expanded Content Column - The detail row is made up of this one column -->
+                            <ng-container matColumnDef="expandedDetail">
+                                <mat-cell *matCellDef="let row">
+                                    The symbol for
+                                </mat-cell>
+                            </ng-container>
+
                             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row"></mat-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [class.expanded]="expandedElement == row"
+                                (click)="expandedElement = row"></mat-row>
+                            <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow" [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'"
+                                style="overflow: hidden">
+                            </mat-row>
                         </mat-table>
                     </div>
                 </div>

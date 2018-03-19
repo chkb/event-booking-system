@@ -11,13 +11,13 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { ClipboardModule } from 'ngx-clipboard';
 
 import { environment } from '../environments/environment';
 import { AnimationComponent } from './animation/animation.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app.material.module';
+import { ArraySortPipe } from './array-sort.pipe';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { CookieService } from './cookie.service';
 import { AuthGuard } from './core/auth-guard.service';
@@ -38,12 +38,12 @@ import { HoursMinutesSecondsPipe } from './hours-minutes-seconds.pipe';
 import { LocalStorageService } from './localstorage.service';
 import { LoginEmailComponent } from './login-email/login-email.component';
 import { LoginComponent } from './login/login.component';
+import { PayoutEditComponent } from './payout/edit/edit.component';
+import { PayoutListComponent } from './payout/list/list.component';
 import { SignupComponent } from './signup/signup.component';
 import { SkillComponent } from './skill/skill.component';
 import { WagerComponent } from './wager/wager.component';
 import { WindowRef } from './window-reference';
-import { PayoutListComponent } from './payout/list/list.component';
-import { PayoutEditComponent } from './payout/edit/edit.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -62,6 +62,7 @@ registerLocaleData(daLocale);
         SignupComponent,
         LoginEmailComponent,
         HoursMinutesSecondsPipe,
+        ArraySortPipe,
         ConfirmDialogComponent,
         SkillComponent,
         WagerComponent,
@@ -91,6 +92,7 @@ registerLocaleData(daLocale);
         LoginProviderService,
         AuthGuard,
         HoursMinutesSecondsPipe,
+        ArraySortPipe,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,

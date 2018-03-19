@@ -24,7 +24,7 @@
                 </h3>
             </mat-card-header>
             <mat-card-content>
-                <mat-form-field class="full-width"  *ngIf="isAdmin()">
+                <mat-form-field class="full-width" *ngIf="isAdmin()">
                     <mat-select placeholder="Rolle" [(value)]="selectedEmployee.role">
                         <mat-option *ngFor="let role of roles" [value]="role.value">
                             {{ role.viewValue }}
@@ -52,11 +52,15 @@
                 <br>
 
                 <mat-form-field class="full-width" *ngIf="isAdmin()">
-                    <mat-select placeholder="Personligt løn-nivaeu" [(value)]="selectedEmployee.personalWager">
-                        <mat-option *ngFor="let wager of wagerList" [value]="wager.value">
+                    <mat-select placeholder="Vælg løn-nivaeu">
+                        <mat-option *ngFor="let wager of wagerList" (click)="setWager(wager.value)" [value]="wager.value">
                             {{wager.name}} - {{wager.value}}
                         </mat-option>
                     </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" *ngIf="isAdmin()">
+                    <input type="number" matInput placeholder="Personligt løn-niveau" [(ngModel)]="selectedEmployee.personalWager" name="wager">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
@@ -89,16 +93,16 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Kontonummer" [(ngModel)]="selectedEmployee.bankAccount" name="account">
+                    <input matInput placeholder="Reg nummer" maxlength="4" [(ngModel)]="selectedEmployee.bankReg" name="text">
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Reg nummer" [(ngModel)]="selectedEmployee.bankReg" name="text">
+                    <input matInput placeholder="Kontonummer" maxlength="10" [(ngModel)]="selectedEmployee.bankAccount" name="account">
                 </mat-form-field>
 
                 <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
                 <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
-                <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned" *ngIf="isAdmin()">Kontrakt underskrevet?</mat-checkbox>
+                <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned" *ngIf="isAdminOrEventLeader()">Kontrakt underskrevet?</mat-checkbox>
 
             </mat-card-content>
             <mat-card-actions>

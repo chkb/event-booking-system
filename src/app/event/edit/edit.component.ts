@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { animate, Component, OnInit, state, style, transition, trigger } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatSnackBar, MatTableDataSource, TOOLTIP_PANEL_CLASS } from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AmazingTimePickerService } from 'amazing-time-picker';
 import { AngularFirestore } from 'angularfire2/firestore';
@@ -9,16 +9,22 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
 import { Employee, Skill } from '../../shared/employee';
-import { EventObject } from '../../shared/event';
+import { EventObject, Booked } from '../../shared/event';
 import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
-import { SkillExtended, MasterSkill, MasterSkillExtended } from '../../shared/skill';
+import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
 
 @Component({
     selector: 'app-edit',
     templateUrl: './edit.component.html',
     styleUrls: ['./edit.component.less'],
-    animations: [moveIn()],
+    animations: [
+        moveIn(),
+        trigger('detailExpand', [
+            state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+            state('expanded', style({ height: '*', visibility: 'visible' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ])],
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
@@ -32,14 +38,15 @@ export class EventEditComponent implements OnInit {
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
     minDate = new Date().toISOString();
+    minDate2 = new Date().toISOString();
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
     eventTypeList: EventType[] = [];
-    selectedBookedList: Employee[] = [];
-    selectedMaybeList: Employee[] = [];
-    selectedNogoList: Employee[] = [];
-    generalEmployeeList: Employee[] = [];
-    leaderList: Employee[] = [];
+    selectedBookedList: Booked[] = [];
+    selectedMaybeList: Booked[] = [];
+    selectedNogoList: Booked[] = [];
+    generalEmployeeList: Booked[] = [];
+    leaderList: Booked[] = [];
     employeeBlackList: string[] = [];
     emailList: string;
     copied = false;
@@ -54,8 +61,12 @@ export class EventEditComponent implements OnInit {
         'hasCar',
         'selection'
     ];
-    dataSource: MatTableDataSource<Employee>;
+    dataSource: MatTableDataSource<Booked>;
     private readonly localstorageSkillListKey: string = 'search_skill_list';
+
+    isExpansionDetailRow = (i, row) => row.hasOwnProperty('detailRow');
+    // tslint:disable-next-line:member-ordering
+    expandedElement: any;
 
     constructor(
         private route: ActivatedRoute,
@@ -68,11 +79,16 @@ export class EventEditComponent implements OnInit {
     ) {
     }
 
+    setDateTwo(): void {
+        this.endDate.setValue(this.startDate.value);
+        this.minDate2 = this.startDate.value;
+    }
+
     getEmployeeData(): void {
-        const employeeList: Employee[] = [];
+        const employeeList: Booked[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
-                const employee = new Employee();
+                const employee = new Booked();
                 employee.displayName = doc.data()['displayName'];
                 employee.email = doc.data()['email'];
                 employee.photoURL = doc.data()['photoURL'];
@@ -105,7 +121,7 @@ export class EventEditComponent implements OnInit {
     }
 
     setDataTableData(): void {
-        const tempList: Employee[] = [];
+        const tempList: Booked[] = [];
         this.generalEmployeeList.forEach(employee => {
             if (!this.isBlacklisted(employee.uid)) {
                 tempList.push(employee);
@@ -127,7 +143,7 @@ export class EventEditComponent implements OnInit {
         return result;
 
     }
-    getListOfLeaders(employeeList: Employee[]): void {
+    getListOfLeaders(employeeList: Booked[]): void {
         employeeList.forEach(employee => {
             if (employee.role === 'admin' || employee.role === 'eventLeader') {
                 this.leaderList.push(employee);
@@ -135,7 +151,7 @@ export class EventEditComponent implements OnInit {
         });
     }
 
-    updateArray(employeeList: Employee[]): void {
+    updateArray(employeeList: Booked[]): void {
         employeeList.forEach(employee => {
             this.removeInPlace(this.generalEmployeeList, employee);
         });
@@ -143,7 +159,7 @@ export class EventEditComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
     }
 
-    bookEmployee(employee: Employee): void {
+    bookEmployee(employee: Booked): void {
         this.selectedBookedList.push(employee);
         this.selectedEvent.booked = this.selectedBookedList;
         this.update(false);
@@ -151,34 +167,34 @@ export class EventEditComponent implements OnInit {
         this.getEmailList();
     }
 
-    removeBookedEmployee(employee: Employee): void {
+    removeBookedEmployee(employee: Booked): void {
         this.removeInPlace(this.selectedBookedList, employee);
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
         this.getEmailList();
     }
 
-    maybeEmployee(employee: Employee): void {
+    maybeEmployee(employee: Booked): void {
         this.selectedMaybeList.push(employee);
         this.selectedEvent.maybe = this.selectedMaybeList;
         this.update(false);
         this.updateArray(this.selectedMaybeList);
     }
 
-    removeMaybeEmployee(employee: Employee): void {
+    removeMaybeEmployee(employee: Booked): void {
         this.removeInPlace(this.selectedMaybeList, employee);
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
     }
 
-    nogoEmployee(employee: Employee): void {
+    nogoEmployee(employee: Booked): void {
         this.selectedNogoList.push(employee);
         this.selectedEvent.nogo = this.selectedNogoList;
         this.update(false);
         this.updateArray(this.selectedNogoList);
     }
 
-    removeNogoEmployee(employee: Employee): void {
+    removeNogoEmployee(employee: Booked): void {
         this.removeInPlace(this.selectedNogoList, employee);
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
@@ -198,12 +214,12 @@ export class EventEditComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getEventDate();
+        this.getEventData();
         this.getEmployeeData();
         this.geteventTypeList();
     }
 
-    getEventDate(): void {
+    getEventData(): void {
         this.route.params.subscribe(params => {
             this.eventId = params['id'];
             this.afs
@@ -214,6 +230,8 @@ export class EventEditComponent implements OnInit {
                     this.selectedEvent = result;
                     this.timeFrom = this.selectedEvent.timeFrom;
                     this.timeTo = this.selectedEvent.timeTo;
+                    this.startDate.setValue(this.selectedEvent.dateFrom);
+                    this.endDate.setValue(this.selectedEvent.dateTo);
                     if (this.selectedEvent.booked) {
                         this.selectedBookedList = this.selectedEvent.booked;
                         this.selectedBookedList.forEach(employee => {
@@ -336,10 +354,12 @@ export class EventEditComponent implements OnInit {
                     masterskill.ratingValue2 = doc.data()['ratingValue2'];
                     masterskill.ratingValue3 = doc.data()['ratingValue3'];
                     masterskill.skills = doc.data()['skills'];
+                    masterskill.order = doc.data()['order'];
                     masterskill.uid = doc.id;
                     this.masterskills.push(masterskill);
                 });
             });
+            this.masterskills.sort((a, b) => a.order - b.order);
         }
     }
 
@@ -366,7 +386,7 @@ export class EventEditComponent implements OnInit {
 
     filterEmployeeData(): void {
         const list: SkillExtended[] = [];
-        let employeelist: Employee[] = [];
+        let employeelist: Booked[] = [];
         this.masterskills.forEach(masterSkill => {
             masterSkill.selectedSkills.forEach(skill => {
                 list.push(skill);
@@ -411,13 +431,12 @@ export class EventEditComponent implements OnInit {
         }
     }
 
-    containsEmployeeObject(employeeList: Employee[], employee: Employee): boolean {
+    containsEmployeeObject(employeeList: Booked[], employee: Booked): boolean {
         let result = false;
         employeeList.forEach(item => {
             if (item.uid === employee.uid) {
                 result = true;
             }
-
         });
 
         return result;

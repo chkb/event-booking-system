@@ -1,6 +1,6 @@
 <mat-sidenav-container class="container" [class.fullscreen]="fullscreenActive">
     <mat-toolbar class="purple">
-        <button *ngIf="isAuthenticated && isAdminOrEventLeader()" mat-icon-button (click)="sidenav.open()">
+        <button *ngIf="isAuthenticated" mat-icon-button (click)="sidenav.open()">
             <mat-icon>menu</mat-icon>
         </button>
         <span>Event Booking System</span>
@@ -26,6 +26,12 @@
             <span>Menu</span>
         </div>
         <mat-nav-list class="nav-list">
+            <span *ngIf="!isAdminOrEventLeader()">
+                <h3>Dashboard</h3>
+                <a *ngFor="let item of dashboardNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
+                    <span>{{item.text}}</span>
+                </a>
+            </span>
             <span *ngIf="isAdminOrEventLeader()">
                 <h3>Events</h3>
                 <a *ngFor="let item of eventNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">

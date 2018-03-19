@@ -1,6 +1,7 @@
 export class MasterSkill {
     uid: string;
     name: string;
+    order: number;
     onlyAdminEdit: boolean;
     hasRating: boolean;
     ratingValue1: string;
@@ -16,6 +17,7 @@ export class SkillExtended {
 export class MasterSkillExtended {
     uid: string;
     name: string;
+    order: number;
     onlyAdminEdit: boolean;
     hasRating: boolean;
     ratingValue1: string;

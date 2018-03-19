@@ -21,8 +21,8 @@ export class Employee {
     role: string;
     skills: Skill[] = [];
     personalWager: number;
+    detailRow: boolean;
 }
-
 
 export class Skill {
     uid: string;

@@ -44,6 +44,19 @@
             </mat-card-header>
             <mat-card-content>
                 <mat-list>
+                    <div>
+                        Order {{masterSkill.order}}
+                        <button [disabled]="masterSkill.order == 1" (click)="orderUp(masterSkill)" mat-icon-button>
+                            <mat-icon>
+                                keyboard_arrow_up
+                            </mat-icon>
+                        </button>
+                        <button [disabled]="masterSkill.order == masterskillList.length" (click)="orderDown(masterSkill)" mat-icon-button>
+                            <mat-icon>
+                                keyboard_arrow_down
+                            </mat-icon>
+                        </button>
+                    </div>
                     <p>
                         {{masterSkill.onlyAdminEdit ? 'Kun admin og eventleder': 'Alle bruger'}}
                     </p>
@@ -67,8 +80,8 @@
                     <mat-divider></mat-divider>
                     <h3>Kompetenceliste</h3>
                     <p *ngIf="!masterSkill.skills.length">
-                            Ingen under kategorier oprettet endnu.
-                        </p>
+                        Ingen under kategorier oprettet endnu.
+                    </p>
                     <mat-list-item *ngFor="let skill of masterSkill.skills">
                         <mat-icon class="btn" (click)="delete(masterSkill, skill)" mat-list-icon>delete</mat-icon>
                         <h4 mat-line>{{skill}}</h4>

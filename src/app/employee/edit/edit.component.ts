@@ -156,6 +156,10 @@ export class EmployeeEditComponent implements OnInit {
 
     }
 
+    setWager(wager: number): void {
+        this.selectedEmployee.personalWager = wager;
+    }
+
     removeFromFEList(masterskillId: string, skill: string): void {
         // FE stuff
         const idx = this.masterskills.findIndex(x => x.uid === masterskillId);

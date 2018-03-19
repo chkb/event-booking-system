@@ -48,6 +48,13 @@ export class AppComponent {
         }
     ];
 
+    dashboardNavigationItems: NavigationItem[] = [
+        {
+            url: '/dashboard',
+            text: 'Dashboard'
+        }
+    ];
+
     skillNavigationItems: NavigationItem[] = [
         {
             url: '/skills',

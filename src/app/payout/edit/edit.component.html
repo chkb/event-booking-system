@@ -112,6 +112,14 @@
                             <ng-container matColumnDef="wager">
                                 <mat-header-cell *matHeaderCellDef> Løn-niveau </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
+                                    {{row.wager}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <!-- Wager Column -->
+                            <ng-container matColumnDef="wagerList">
+                                <mat-header-cell *matHeaderCellDef> Vælg andet niveau </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
                                     <mat-form-field>
                                         <mat-select placeholder="Løn-niveau" (change)="updatePayout(row)" [(value)]="row.wager">
                                             <mat-optgroup *ngFor="let parrent of wagerList" [label]="parrent.name" [disabled]="selectedEvent.payoutDone">
@@ -128,7 +136,9 @@
                             <ng-container matColumnDef="bonus">
                                 <mat-header-cell *matHeaderCellDef> Ekstra </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
-                                    <input type="number" matInput (change)="updatePayout(row)" [(ngModel)]="row.bonus">
+                                    <mat-form-field class="example-full-width">
+                                        <input type="number" matInput placeholder="Bonus" (change)="updatePayout(row)" [(ngModel)]="row.bonus">
+                                    </mat-form-field>
                                 </mat-cell>
                             </ng-container>
 

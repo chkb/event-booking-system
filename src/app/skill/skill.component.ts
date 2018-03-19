@@ -36,13 +36,45 @@ export class SkillComponent implements OnInit {
                 masterSkill.ratingValue1 = doc.data()['ratingValue1'];
                 masterSkill.ratingValue2 = doc.data()['ratingValue2'];
                 masterSkill.ratingValue3 = doc.data()['ratingValue3'];
+                masterSkill.order = doc.data()['order'];
                 masterSkill.uid = doc.id;
                 this.masterskillList.push(masterSkill);
             });
+            this.masterskillList.sort((a, b) => a.order - b.order);
         });
     }
 
+
+
+    orderDown(masterSkill: MasterSkill): void {
+        const idx1 = this.masterskillList.findIndex(x => x.order === masterSkill.order);
+        const idx2 = this.masterskillList.findIndex(x => x.order === masterSkill.order + 1);
+        this.masterskillList[idx2].order = masterSkill.order;
+        this.masterskillList[idx1].order = masterSkill.order + 1;
+        this.saveChanges(this.masterskillList[idx1]);
+        this.saveChanges(this.masterskillList[idx2]);
+        this.masterskillList.sort((a, b) => a.order - b.order);
+    }
+
+    orderUp(masterSkill: MasterSkill): void {
+        const idx1 = this.masterskillList.findIndex(x => x.order === masterSkill.order);
+        const idx2 = this.masterskillList.findIndex(x => x.order === masterSkill.order - 1);
+        this.masterskillList[idx2].order = masterSkill.order;
+        this.masterskillList[idx1].order = masterSkill.order - 1;
+        this.saveChanges(this.masterskillList[idx1]);
+        this.saveChanges(this.masterskillList[idx2]);
+        this.masterskillList.sort((a, b) => a.order - b.order);
+    }
+
+    saveChanges(masterSkill: MasterSkill): void {
+        this.afs
+            .collection('masterSkills')
+            .doc(masterSkill.uid).update(JSON.parse(JSON.stringify(masterSkill))).then(() => {
+            });
+    }
+
     createMasterSkill(): void {
+        this.masterSkill.order = this.masterskillList.length + 1;
         this.masterskillList.push(this.masterSkill);
         this.afs.collection('masterSkills').add(JSON.parse(JSON.stringify(this.masterSkill))).then(res => {
             this.snackBar.open('Kompetence kategori oprettet', 'LUK',

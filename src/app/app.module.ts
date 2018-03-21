@@ -44,6 +44,8 @@ import { SignupComponent } from './signup/signup.component';
 import { SkillComponent } from './skill/skill.component';
 import { WagerComponent } from './wager/wager.component';
 import { WindowRef } from './window-reference';
+import { EventHistoryComponent } from './event-history/event-history.component';
+import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -64,12 +66,14 @@ registerLocaleData(daLocale);
         HoursMinutesSecondsPipe,
         ArraySortPipe,
         ConfirmDialogComponent,
+        EmployeeDialogComponent,
         SkillComponent,
         WagerComponent,
         EventTypeComponent,
         AnimationComponent,
         PayoutListComponent,
-        PayoutEditComponent
+        PayoutEditComponent,
+        EventHistoryComponent
     ],
     imports: [
         FlexLayoutModule,
@@ -86,7 +90,9 @@ registerLocaleData(daLocale);
     ],
 
     entryComponents: [
-        ConfirmDialogComponent
+        ConfirmDialogComponent,
+        EventHistoryComponent,
+        EmployeeDialogComponent
     ],
     providers: [
         LoginProviderService,

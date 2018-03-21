@@ -5,14 +5,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AmazingTimePickerService } from 'amazing-time-picker';
 import { AngularFirestore } from 'angularfire2/firestore';
 
+import * as moment from 'moment';
+
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
 import { Employee, Skill } from '../../shared/employee';
-import { EventObject, Booked } from '../../shared/event';
+import { EventObject, Booked, EventHistory } from '../../shared/event';
 import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
 import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
+import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
 
 @Component({
     selector: 'app-edit',
@@ -61,7 +64,21 @@ export class EventEditComponent implements OnInit {
         'hasCar',
         'selection'
     ];
+
+    bookedColumns = [
+        'role',
+        'displayName',
+        'email',
+        'mobile',
+        'hasDriverLicens',
+        'hasCar',
+        'bookingComment',
+        'selection'
+    ];
     dataSource: MatTableDataSource<Booked>;
+    bookedSource: MatTableDataSource<Booked>;
+    maybeSource: MatTableDataSource<Booked>;
+    nogoSource: MatTableDataSource<Booked>;
     private readonly localstorageSkillListKey: string = 'search_skill_list';
 
     isExpansionDetailRow = (i, row) => row.hasOwnProperty('detailRow');
@@ -165,6 +182,46 @@ export class EventEditComponent implements OnInit {
         this.update(false);
         this.updateArray(this.selectedBookedList);
         this.getEmailList();
+        this.updateEventHistory(employee);
+    }
+
+    openEmployeeDialog(employeeId: string): void {
+        const dialogRef = this.dialog.open(EmployeeDialogComponent,
+            {
+                data: {
+                    employeeId: employeeId
+                }
+            });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+
+            }
+        });
+    }
+
+    updateEventHistory(employee: Booked): void {
+        const eventHistory = new EventHistory();
+        eventHistory.comments = employee.bookingComment;
+        eventHistory.employeeName = employee.displayName;
+        eventHistory.employeeUid = employee.uid;
+        eventHistory.eventName = this.selectedEvent.name;
+        eventHistory.eventUid = this.eventId;
+        eventHistory.date = this.selectedEvent.dateFrom;
+        const year = moment().year().toString();
+
+        this.afs
+            .collection(`event-history`)
+            .doc(employee.uid)
+            .collection(year)
+            .doc(this.eventId)
+            .set(JSON.parse(JSON.stringify(eventHistory)))
+            .then(res => {
+                this.snackBar.open('Booking oprettet', 'LUK',
+                    {
+                        duration: 10000,
+                    });
+            });
     }
 
     removeBookedEmployee(employee: Booked): void {
@@ -172,6 +229,7 @@ export class EventEditComponent implements OnInit {
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
         this.getEmailList();
+        this.updateBookedList();
     }
 
     maybeEmployee(employee: Booked): void {
@@ -185,6 +243,7 @@ export class EventEditComponent implements OnInit {
         this.removeInPlace(this.selectedMaybeList, employee);
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+        this.updateMaybeList();
     }
 
     nogoEmployee(employee: Booked): void {
@@ -198,6 +257,7 @@ export class EventEditComponent implements OnInit {
         this.removeInPlace(this.selectedNogoList, employee);
         this.generalEmployeeList.push(employee);
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+        this.updateNogoList();
     }
 
     geteventTypeList(): void {
@@ -219,6 +279,18 @@ export class EventEditComponent implements OnInit {
         this.geteventTypeList();
     }
 
+    updateBookedList(): void {
+        this.bookedSource = new MatTableDataSource(this.selectedBookedList);
+    }
+
+    updateMaybeList(): void {
+        this.maybeSource = new MatTableDataSource(this.selectedMaybeList);
+    }
+
+    updateNogoList(): void {
+        this.nogoSource = new MatTableDataSource(this.selectedNogoList);
+    }
+
     getEventData(): void {
         this.route.params.subscribe(params => {
             this.eventId = params['id'];
@@ -237,16 +309,19 @@ export class EventEditComponent implements OnInit {
                         this.selectedBookedList.forEach(employee => {
                             this.employeeBlackList.push(employee.uid);
                         });
+                        this.updateBookedList();
                         this.getEmailList();
                     }
                     if (this.selectedEvent.maybe) {
                         this.selectedMaybeList = this.selectedEvent.maybe;
+                        this.updateMaybeList();
                         this.selectedMaybeList.forEach(employee => {
                             this.employeeBlackList.push(employee.uid);
                         });
                     }
                     if (this.selectedEvent.nogo) {
                         this.selectedNogoList = this.selectedEvent.nogo;
+                        this.updateNogoList();
                         this.selectedNogoList.forEach(employee => {
                             this.employeeBlackList.push(employee.uid);
                         });

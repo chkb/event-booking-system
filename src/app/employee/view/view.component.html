@@ -1,3 +1,102 @@
-<p>
-  view works!
-</p>
+<div *ngIf="selectedEmployee">
+    <mat-tab-group>
+        <mat-tab label="Info">
+            <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                <div fxFlex="100" fxFlex.gt-md="30">
+                    <mat-card *ngIf="selectedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                        <mat-card-content>
+                            <img mat-card-image [src]="selectedEmployee.photoURL">
+                            <mat-card-title>{{selectedEmployee.displayName}}</mat-card-title>
+                            <mat-card-subtitle>{{selectedEmployee.email}}</mat-card-subtitle>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div fxFlex="100" fxFlex.gt-md="70">
+                    <mat-list>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>account_circle</mat-icon>
+                            <h4 mat-line>Navn</h4>
+                            <p mat-line> {{selectedEmployee.displayName}} </p>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>verified_user</mat-icon>
+                            <h4 mat-line>Rolle</h4>
+                            <p mat-line> {{selectedEmployee.role ? selectedEmployee.role : 'Ingen rolle angivet'}} </p>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="selectedEmployee.mobile">
+                            <mat-icon mat-list-icon>phone</mat-icon>
+                            <h4 mat-line>Role</h4>
+                            <p mat-line> {{selectedEmployee.mobile}} </p>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>email</mat-icon>
+                            <h4 mat-line>Role</h4>
+                            <p mat-line> {{selectedEmployee.email}} </p>
+                            <p mat-line> {{selectedEmployee.workEmail}} </p>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="selectedEmployee.adress">
+                            <mat-icon mat-list-icon>person_pin_circle</mat-icon>
+                            <h4 mat-line>Adresse</h4>
+                            <p mat-line> {{selectedEmployee.adress}} </p>
+                            <p mat-line> {{selectedEmployee.postal}} </p>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="selectedEmployee.height">
+                            <mat-icon mat-list-icon>line_weight</mat-icon>
+                            <h4 mat-line>Højde</h4>
+                            <p mat-line> {{selectedEmployee.height}} </p>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>directions_car</mat-icon>
+                            <h4 mat-line>Har egen bil?</h4>
+                            <p mat-line> {{selectedEmployee.hasCar ? 'Ja': 'Nej'}} </p>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>assignment_ind</mat-icon>
+                            <h4 mat-line>Har kørekort?</h4>
+                            <p mat-line> {{selectedEmployee.hasDriverLicens ? 'Ja': 'Nej'}} </p>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="selectedEmployee.comment">
+                            <mat-icon mat-list-icon>note</mat-icon>
+                            <h4 mat-line>Kommentar</h4>
+                            <p mat-line> {{selectedEmployee.comment}} </p>
+                        </mat-list-item>
+                        <mat-list-item *ngIf="selectedEmployee.internalComment">
+                            <mat-icon mat-list-icon>note</mat-icon>
+                            <h4 mat-line>Intern Kommentar</h4>
+                            <p mat-line> {{selectedEmployee.internalComment}} </p>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Kompetencer">
+            <mat-card *ngIf="selectedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                <mat-card-content>
+                    <h4 *ngIf="!selectedEmployee.skills">Ingen kompentencer tildelt endnu.</h4>
+                    <h3 *ngIf="selectedEmployee.skills">Medarbejders kompentencer</h3>
+                    <mat-list>
+                        <div *ngIf="selectedEmployee.skills">
+                            <div *ngFor="let skill of selectedEmployee.skills">
+                                <mat-list-item>
+                                    <h4 mat-line>{{skill.name}}</h4>
+                                    <div mat-line [matTooltip]="skill.ratingText" *ngIf="skill.ranking">
+                                        <mat-icon>star</mat-icon>
+                                        <mat-icon>
+                                            {{skill.ranking == 2 || skill.ranking > 2 ? 'star' : 'star_border'}}
+                                        </mat-icon>
+                                        <mat-icon>
+                                            {{skill.ranking == 3 ? 'star' : 'star_border'}}
+                                        </mat-icon>
+                                    </div>
+                                </mat-list-item>
+                            </div>
+                        </div>
+                    </mat-list>
+                </mat-card-content>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Historik">
+            <app-event-history [employeeId]="selectedEmployee.uid"></app-event-history>
+        </mat-tab>
+    </mat-tab-group>
+</div>

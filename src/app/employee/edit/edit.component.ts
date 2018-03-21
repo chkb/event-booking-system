@@ -9,6 +9,7 @@ import { moveIn } from '../../router.animations';
 import { Employee, Skill } from '../../shared/employee';
 import { MasterSkill } from '../../shared/skill';
 import { Wager } from '../../shared/wager';
+import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
 
 @Component({
     selector: 'app-edit',

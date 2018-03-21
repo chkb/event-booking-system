@@ -46,5 +46,14 @@ export class Payout {
 }
 
 export class Booked extends Employee {
-    comments: number;
+    bookingComment: string;
+}
+
+export class EventHistory {
+    employeeUid: string;
+    employeeName: string;
+    eventUid: string;
+    eventName: string;
+    comments: string;
+    date: Date;
 }

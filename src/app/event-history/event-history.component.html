@@ -1,4 +1,4 @@
-<div class="table-overflow">
+<div class="table-overflow" *ngIf="list?.length">
     <div class="container">
         <mat-table #table [dataSource]="dataSource">
 
@@ -34,4 +34,7 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" [ngClass]="row.deative ? 'greyout': ''" (click)="gotoEvent(row.eventUid)"></mat-row>
         </mat-table>
     </div>
+</div>
+<div *ngIf="!list?.length">
+    <h3>Ingen historik på denne medarbejder</h3>
 </div>

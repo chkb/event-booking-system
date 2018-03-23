@@ -16,6 +16,8 @@ import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
 import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
 import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
+import { debounce } from 'rxjs/operator/debounce';
+import { Subject } from 'Rxjs';
 
 @Component({
     selector: 'app-edit',
@@ -32,6 +34,7 @@ import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.c
     host: { '[@moveIn]': '' }
 })
 export class EventEditComponent implements OnInit {
+    debounceUpdate: Subject<boolean> = new Subject<boolean>();
     selectedEvent: EventObject;
     eventId: string;
     // searchFilterBucket: string[] = [];
@@ -200,7 +203,12 @@ export class EventEditComponent implements OnInit {
         });
     }
 
-    updateEventHistory(employee: Booked): void {
+    updateComment(employee: Booked, comment: string) {
+        employee.comment = comment;
+        this.updateEventHistory(employee, false);
+    }
+
+    updateEventHistory(employee: Booked, showSnackbar: boolean = true): void {
         const eventHistory = new EventHistory();
         eventHistory.comments = employee.bookingComment;
         eventHistory.employeeName = employee.displayName;
@@ -217,11 +225,14 @@ export class EventEditComponent implements OnInit {
             .doc(this.eventId)
             .set(JSON.parse(JSON.stringify(eventHistory)))
             .then(res => {
-                this.snackBar.open('Booking oprettet', 'LUK',
-                    {
-                        duration: 10000,
-                    });
+                if (showSnackbar) {
+                    this.snackBar.open('Booking oprettet', 'LUK',
+                        {
+                            duration: 10000,
+                        });
+                }
             });
+        this.updateBookedList();
     }
 
     removeBookedEmployee(employee: Booked): void {
@@ -277,6 +288,11 @@ export class EventEditComponent implements OnInit {
         this.getEventData();
         this.getEmployeeData();
         this.geteventTypeList();
+        this.debounceUpdate.debounceTime(500).subscribe(res => {
+            if (res) {
+                this.update(false);
+            }
+        });
     }
 
     updateBookedList(): void {
@@ -354,6 +370,10 @@ export class EventEditComponent implements OnInit {
         return array;
     }
 
+    updateWithDebounce() {
+        this.debounceUpdate.next(true);
+    }
+
     update(navigate: boolean): void {
         this.selectedEvent.dateFrom = this.startDate.value;
         this.selectedEvent.dateTo = this.endDate.value;
@@ -414,7 +434,7 @@ export class EventEditComponent implements OnInit {
 
     getFilterData(): void {
         const localstorageSkillList = this.localStorageService.getItem<MasterSkillExtended[]>(this.localstorageSkillListKey);
-        if (localstorageSkillList) {
+        if (localstorageSkillList && localstorageSkillList.length) {
             this.masterskills = [];
             this.masterskills = localstorageSkillList;
             this.filterEmployeeData();

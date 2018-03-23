@@ -204,16 +204,17 @@
                             <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
-                    <!-- HasDriverLicens Column -->
-                    <ng-container matColumnDef="bookingComment">
+                        <!-- HasDriverLicens Column -->
+                        <ng-container matColumnDef="bookingComment">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Kommentar </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
-                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" placeholder="Kommentar"></textarea>
+                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" (keyup)="updateWithDebounce(); updateComment(row, row.bookingComment)"
+                                        placeholder="Kommentar"></textarea>
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
-                        
+
                         <!-- Selection Column -->
                         <ng-container matColumnDef="selection">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
@@ -298,12 +299,12 @@
                             <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
-                    <!-- HasDriverLicens Column -->
-                    <ng-container matColumnDef="bookingComment">
+                        <!-- HasDriverLicens Column -->
+                        <ng-container matColumnDef="bookingComment">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Kommentar </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
-                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" placeholder="Kommentar"></textarea>
+                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" (keyup)="updateWithDebounce();" placeholder="Kommentar"></textarea>
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
@@ -391,7 +392,7 @@
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Kommentar </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
-                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" placeholder="Kommentar"></textarea>
+                                    <textarea matInput (click)="$event.stopPropagation()" [(ngModel)]="row.bookingComment" (keyup)="updateWithDebounce();" placeholder="Kommentar"></textarea>
                                 </mat-form-field>
                             </mat-cell>
                         </ng-container>
@@ -438,7 +439,7 @@
                     </button>
                     <div *ngIf="showFilters && skillList">
                         <h3>Vælg filtre</h3>
-                        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+                        <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
                             <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills | sort : 'order'">
                                 <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                                     <mat-card-header class="card-header">
@@ -448,7 +449,7 @@
                                     </mat-card-header>
                                     <mat-card-content>
                                         <mat-list>
-                                            <div *ngIf="masterskill.skills?.length ">
+                                            <div *ngIf="masterskill.skills?.length">
                                                 <div>
                                                     <div *ngIf="!masterskill.hasRating">
                                                         <mat-list-item *ngFor="let skill of masterskill.skills">
@@ -464,17 +465,17 @@
                                                             <div>
                                                                 <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="selectFilter(masterskill.uid, skill, 1)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 1) ? 'check':'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 1) ? 'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                                 <button mat-icon-button [matTooltip]="masterskill.ratingValue2" (click)="selectFilter(masterskill.uid, skill, 2)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 2)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 2) ? 'check':'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 2) ? 'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                                 <button mat-icon-button [matTooltip]="masterskill.ratingValue3" (click)="selectFilter(masterskill.uid, skill, 3)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 3)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 3) ? 'check':'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 3) ? 'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                             </div>
@@ -482,6 +483,9 @@
                                                         </mat-list-item>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div *ngIf="!masterskill.skills?.length">
+                                                <h3>Ingen kompetencer under denne kategori</h3>
                                             </div>
                                         </mat-list>
                                     </mat-card-content>

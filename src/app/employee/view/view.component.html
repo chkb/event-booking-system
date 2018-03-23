@@ -78,6 +78,7 @@
                         <div *ngIf="selectedEmployee.skills">
                             <div *ngFor="let skill of selectedEmployee.skills">
                                 <mat-list-item>
+                                    <mat-icon mat-list-icon>keyboard_arrow_right</mat-icon>
                                     <h4 mat-line>{{skill.name}}</h4>
                                     <div mat-line [matTooltip]="skill.ratingText" *ngIf="skill.ranking">
                                         <mat-icon>star</mat-icon>

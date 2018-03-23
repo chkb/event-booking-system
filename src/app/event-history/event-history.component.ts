@@ -13,6 +13,8 @@ import * as moment from 'moment';
 })
 export class EventHistoryComponent implements OnInit {
     @Input() employeeId: string;
+    list: EventHistory[] = [];
+
     dataSource: MatTableDataSource<EventHistory>;
     displayedColumns = [
         'employeeName',
@@ -32,7 +34,7 @@ export class EventHistoryComponent implements OnInit {
     }
 
     getEmployeeData(): void {
-        const list: EventHistory[] = [];
+        this.list = [];
         const year = moment().year().toString();
         this.afs.collection('event-history').ref.doc(this.employeeId).collection(year).get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -43,9 +45,10 @@ export class EventHistoryComponent implements OnInit {
                 eh.eventName = doc.data()['eventName'];
                 eh.eventUid = doc.data()['eventUid'];
                 eh.date = doc.data()['date'];
-                list.push(eh);
+                this.list.push(eh);
             });
-            this.dataSource = new MatTableDataSource(list);
+            this.list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            this.dataSource = new MatTableDataSource(this.list);
         });
     }
 

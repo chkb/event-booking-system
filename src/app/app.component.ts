@@ -83,6 +83,13 @@ export class AppComponent {
         }
     ];
 
+    messagesNavigationItems: NavigationItem[] = [
+        {
+            url: '/messages/admin',
+            text: 'Beskeder'
+        }
+    ];
+
 
     logout(): void {
         this.auth.signOut();

@@ -18,6 +18,7 @@ import { PayoutListComponent } from '../payout/list/list.component';
 import { SignupComponent } from '../signup/signup.component';
 import { SkillComponent } from '../skill/skill.component';
 import { WagerComponent } from '../wager/wager.component';
+import { MessagesAdminComponent } from '../messages/admin/admin.component';
 
 
 const routes: Route[] = [
@@ -96,6 +97,11 @@ const routes: Route[] = [
     {
         path: 'payout/:id',
         component: PayoutEditComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'messages/admin',
+        component: MessagesAdminComponent,
         canActivate: [AuthGuard]
     }
 ];

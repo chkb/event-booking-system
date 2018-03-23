@@ -46,6 +46,8 @@ import { WagerComponent } from './wager/wager.component';
 import { WindowRef } from './window-reference';
 import { EventHistoryComponent } from './event-history/event-history.component';
 import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
+import { MessagesAdminComponent } from './messages/admin/admin.component';
+import { MessagesViewComponent } from './messages/view/view.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -73,7 +75,9 @@ registerLocaleData(daLocale);
         AnimationComponent,
         PayoutListComponent,
         PayoutEditComponent,
-        EventHistoryComponent
+        EventHistoryComponent,
+        MessagesAdminComponent,
+        MessagesViewComponent
     ],
     imports: [
         FlexLayoutModule,
@@ -92,7 +96,8 @@ registerLocaleData(daLocale);
     entryComponents: [
         ConfirmDialogComponent,
         EventHistoryComponent,
-        EmployeeDialogComponent
+        EmployeeDialogComponent,
+        MessagesViewComponent
     ],
     providers: [
         LoginProviderService,

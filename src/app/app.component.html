@@ -26,7 +26,7 @@
             <span>Menu</span>
         </div>
         <mat-nav-list class="nav-list">
-            <span *ngIf="!isAdminOrEventLeader()">
+            <span>
                 <h3>Dashboard</h3>
                 <a *ngFor="let item of dashboardNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
                     <span>{{item.text}}</span>
@@ -57,6 +57,12 @@
                     <span>{{item.text}}</span>
                 </a>
                 <a *ngFor="let item of wagerNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
+                    <span>{{item.text}}</span>
+                </a>
+            </span>
+            <span *ngIf="isAdmin()">
+                <h3>Beskeder</h3>
+                <a *ngFor="let item of messagesNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
                     <span>{{item.text}}</span>
                 </a>
             </span>

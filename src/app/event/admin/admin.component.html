@@ -1,0 +1,26 @@
+<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+    <div fxFlex>
+        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Hent CSV for lønninger
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field>
+                    <input matInput [formControl]="startDate" [matDatepicker]="picker" placeholder="Startdato">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput [formControl]="endDate" [matDatepicker]="picker2" placeholder="Slutdato">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button (click)="generateTemp()">OPRET CSV</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

@@ -90,6 +90,13 @@ export class AppComponent {
         }
     ];
 
+    eventAdminNavigationItems: NavigationItem[] = [
+        {
+            url: '/event-admin',
+            text: 'Export event liste'
+        }
+    ];
+
 
     logout(): void {
         this.auth.signOut();

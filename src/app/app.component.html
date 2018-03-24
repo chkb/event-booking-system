@@ -66,6 +66,12 @@
                     <span>{{item.text}}</span>
                 </a>
             </span>
+            <span *ngIf="isAdmin()">
+                <h3>Export CSV</h3>
+                <a *ngFor="let item of eventAdminNavigationItems" mat-list-item [routerLink]="item.url" routerLinkActive="active-link" (click)="sidenav.close()">
+                    <span>{{item.text}}</span>
+                </a>
+            </span>
         </mat-nav-list>
     </mat-sidenav>
     <div class="content-container">

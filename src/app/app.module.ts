@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import daLocale from '@angular/common/locales/da';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -48,6 +48,7 @@ import { EventHistoryComponent } from './event-history/event-history.component';
 import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 import { MessagesAdminComponent } from './messages/admin/admin.component';
 import { MessagesViewComponent } from './messages/view/view.component';
+import { EventAdminComponent } from './event/admin/admin.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -77,7 +78,8 @@ registerLocaleData(daLocale);
         PayoutEditComponent,
         EventHistoryComponent,
         MessagesAdminComponent,
-        MessagesViewComponent
+        MessagesViewComponent,
+        EventAdminComponent
     ],
     imports: [
         FlexLayoutModule,
@@ -104,6 +106,7 @@ registerLocaleData(daLocale);
         AuthGuard,
         HoursMinutesSecondsPipe,
         ArraySortPipe,
+        DatePipe,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,

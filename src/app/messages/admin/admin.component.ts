@@ -5,6 +5,7 @@ import { Message } from '../../shared/message';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
 import { Employee } from '../../shared/employee';
+import { moveIn } from '../../router.animations';
 
 interface User {
     uid: string;
@@ -18,7 +19,10 @@ interface User {
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
-    styleUrls: ['./admin.component.less']
+    styleUrls: ['./admin.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class MessagesAdminComponent implements OnInit {
     message = new Message();

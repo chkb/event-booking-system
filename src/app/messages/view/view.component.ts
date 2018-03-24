@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from '../../shared/message';
 import { AngularFirestore } from 'angularfire2/firestore';
+import { moveIn } from '../../router.animations';
 
 @Component({
     selector: 'app-message-view',
     templateUrl: './view.component.html',
-    styleUrls: ['./view.component.less']
+    styleUrls: ['./view.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class MessagesViewComponent implements OnInit {
     messagesList: Message[] = [];

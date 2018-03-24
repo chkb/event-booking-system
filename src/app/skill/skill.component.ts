@@ -4,11 +4,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MasterSkill } from '../shared/skill';
+import { moveIn } from '../router.animations';
 
 @Component({
     selector: 'app-skill',
     templateUrl: './skill.component.html',
-    styleUrls: ['./skill.component.less']
+    styleUrls: ['./skill.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class SkillComponent implements OnInit {
     masterSkill = new MasterSkill();

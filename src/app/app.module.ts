@@ -49,6 +49,7 @@ import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.compo
 import { MessagesAdminComponent } from './messages/admin/admin.component';
 import { MessagesViewComponent } from './messages/view/view.component';
 import { EventAdminComponent } from './event/admin/admin.component';
+import { StatComponent } from './stat/stat.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -79,7 +80,8 @@ registerLocaleData(daLocale);
         EventHistoryComponent,
         MessagesAdminComponent,
         MessagesViewComponent,
-        EventAdminComponent
+        EventAdminComponent,
+        StatComponent
     ],
     imports: [
         FlexLayoutModule,
@@ -99,7 +101,8 @@ registerLocaleData(daLocale);
         ConfirmDialogComponent,
         EventHistoryComponent,
         EmployeeDialogComponent,
-        MessagesViewComponent
+        MessagesViewComponent,
+        StatComponent
     ],
     providers: [
         LoginProviderService,

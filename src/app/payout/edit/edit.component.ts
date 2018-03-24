@@ -8,11 +8,15 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { LoginProviderService } from '../../core/login-provider.service';
 import { Booked, EventObject, Payout } from '../../shared/event';
 import { Wager } from '../../shared/wager';
+import { moveIn } from '../../router.animations';
 
 @Component({
     selector: 'app-edit',
     templateUrl: './edit.component.html',
-    styleUrls: ['./edit.component.less']
+    styleUrls: ['./edit.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class PayoutEditComponent implements OnInit {
     selectedPayoutList: Payout[] = [];

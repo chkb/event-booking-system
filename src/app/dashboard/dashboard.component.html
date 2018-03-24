@@ -14,6 +14,9 @@
             </button>
         </mat-card-content>
     </mat-card>
+    <app-stat *ngIf="statContract" [stat]="statContract"></app-stat>
+    <app-stat *ngIf="statLicens" [stat]="statLicens"></app-stat>
+    <app-stat *ngIf="statCar" [stat]="statCar"></app-stat>
 </div>
 
 <div fxFlex="100" fxFlex.gt-md="70">

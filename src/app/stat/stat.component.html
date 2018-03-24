@@ -1,0 +1,13 @@
+<mat-card class="stat-card">
+    <h5 class="text">{{stat.text}}</h5>
+    <div class="chart-container">
+        <mat-progress-spinner [color]="stat.color" [mode]="stat.mode" [value]="stat.percentage">
+        </mat-progress-spinner>
+        <div class="percentage">
+            {{stat.percentage | number : '1.1-1'}}%
+        </div>
+        <div class="value">
+            {{stat.value}} {{stat.unit}}
+        </div>
+    </div>
+</mat-card>

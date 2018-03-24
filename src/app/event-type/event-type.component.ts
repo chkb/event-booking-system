@@ -5,11 +5,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MasterSkill } from '../shared/skill';
 import { EventType } from '../shared/event-type';
+import { moveIn } from '../router.animations';
 
 @Component({
     selector: 'app-wager',
     templateUrl: './event-type.component.html',
-    styleUrls: ['./event-type.component.less']
+    styleUrls: ['./event-type.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class EventTypeComponent implements OnInit {
     eventType = new EventType();

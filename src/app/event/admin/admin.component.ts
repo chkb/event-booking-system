@@ -5,6 +5,7 @@ import { EventObject, EventHistory, Payout } from '../../shared/event';
 import { Employee } from '../../shared/employee';
 import { DatePipe } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { moveIn } from '../../router.animations';
 
 export class PayoutDanish {
     Medarbejder: string;
@@ -20,7 +21,10 @@ declare function escape(s: string): string;
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
-    styleUrls: ['./admin.component.less']
+    styleUrls: ['./admin.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class EventAdminComponent implements OnInit {
     list: PayoutDanish[] = [];

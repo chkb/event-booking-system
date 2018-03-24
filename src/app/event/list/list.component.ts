@@ -5,11 +5,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as moment from 'moment';
 
 import { EventObject } from '../../shared/event';
+import { moveIn } from '../../router.animations';
 
 @Component({
     selector: 'app-event-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.less']
+    styleUrls: ['./list.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class EventListComponent implements AfterViewInit {
     getAllCheckBox: boolean;

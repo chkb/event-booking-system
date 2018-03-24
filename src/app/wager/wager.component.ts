@@ -5,11 +5,15 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MasterSkill } from '../shared/skill';
 import { Wager } from '../shared/wager';
+import { moveIn } from '../router.animations';
 
 @Component({
     selector: 'app-wager',
     templateUrl: './wager.component.html',
-    styleUrls: ['./wager.component.less']
+    styleUrls: ['./wager.component.less'],
+    animations: [moveIn()],
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { '[@moveIn]': '' }
 })
 export class WagerComponent implements OnInit {
     wager = new Wager();

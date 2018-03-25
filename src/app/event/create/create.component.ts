@@ -23,8 +23,6 @@ import { SkillExtended } from '../../shared/skill';
 export class EventCreateComponent implements AfterViewInit {
     searchFilterBucket: string[] = [];
     showFilters: boolean;
-    startDate = new FormControl((new Date()).toISOString());
-    endDate = new FormControl((new Date()).toISOString());
     minDate = new Date().toISOString();
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
@@ -129,6 +127,9 @@ export class EventCreateComponent implements AfterViewInit {
     }
 
     create(): void {
+        if (!this.event.dateTo) {
+            this.event.dateTo = this.event.dateFrom;
+        }
         if (!this.event && !this.event.name) {
             this.snackBar.open('Navn skal udfyldes før du kan oprette en begivenhed', 'LUK',
                 {
@@ -136,11 +137,6 @@ export class EventCreateComponent implements AfterViewInit {
                 });
             return;
         }
-        this.event.timeFrom = this.startTime;
-        this.event.timeTo = this.endTime;
-        this.event.timeTo = this.endTime;
-        this.event.dateFrom = this.startDate.value;
-        this.event.dateTo = this.endDate.value;
         this.afs.collection('events').add(JSON.parse(JSON.stringify(this.event))).then(res => {
             this.snackBar.open('Event oprettet', 'LUK',
                 {

@@ -3,7 +3,7 @@
         <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
             <mat-card-header class="card-header">
                 <h3>
-                    Begivenhed {{startDate.value | date: 'Den dd. MMMM yyyy'}}
+                    Begivenhed {{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}
                 </h3>
             </mat-card-header>
             <mat-card-content>
@@ -65,21 +65,17 @@
                     <div fxFlex>
                         <h5>Start tidspunkt</h5>
                         <input type="time" [(ngModel)]="selectedEvent.timeFrom" />
+                        <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" (dateChange)="setDateTwo()" matInput [matDatepicker]="picker1"
-                                placeholder="Startdato" [formControl]="startDate" [min]="minDate">
-                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                            <mat-datepicker #picker1></mat-datepicker>
+                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput type="date" placeholder="Startdato" [(ngModel)]="selectedEvent.dateFrom">
                         </mat-form-field>
                     </div>
                     <div fxFlex>
                         <h5>Slut tidspunkt</h5>
                         <input type="time" [(ngModel)]="selectedEvent.timeTo" />
+                        <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput [matDatepicker]="picker2" placeholder="Slutdato"
-                                [formControl]="endDate" [min]="minDate2">
-                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                            <mat-datepicker #picker2></mat-datepicker>
+                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput type="date" placeholder="Slutdato" [(ngModel)]="selectedEvent.dateTo">
                         </mat-form-field>
                     </div>
                 </div>

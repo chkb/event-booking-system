@@ -38,18 +38,14 @@
                 <h5>Start tidspunkt</h5>
                 <input type="time" [(ngModel)]="event.timeFrom" />
                 <mat-form-field class="full-width">
-                    <input matInput [matDatepicker]="picker1" placeholder="Startdato" [formControl]="startDate" [min]="minDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
+                    <input matInput type="date" placeholder="Startdato" [(ngModel)]="event.dateFrom">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <h5>Slut tidspunkt</h5>
                 <input type="time" [(ngModel)]="event.timeTo" />
                 <mat-form-field class="full-width">
-                    <input matInput [matDatepicker]="picker2" placeholder="Slutdato" [formControl]="endDate" [min]="startDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
+                    <input matInput type="date" placeholder="Slutdato" [(ngModel)]="event.dateTo">
                 </mat-form-field>
             </div>
         </div>
@@ -81,7 +77,7 @@
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="create()">OPRET BEGIVENHED</button>
+        <button mat-raised-button color="primary" [disabled]="!event.dateFrom" (click)="create()">OPRET BEGIVENHED</button>
         <!-- <button mat-raised-button color="warn">SLET BEGIVENHED</button> -->
     </mat-card-actions>
 </mat-card>

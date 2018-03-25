@@ -41,8 +41,6 @@ export class EventEditComponent implements OnInit {
     masterskills: MasterSkillExtended[] = [];
     searchFilterBucket: Skill[] = [];
     showFilters: boolean;
-    startDate = new FormControl((new Date()).toISOString());
-    endDate = new FormControl((new Date()).toISOString());
     minDate = new Date().toISOString();
     minDate2 = new Date().toISOString();
     skillList: SkillExtended[] = [];
@@ -97,11 +95,6 @@ export class EventEditComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog
     ) {
-    }
-
-    setDateTwo(): void {
-        this.endDate.setValue(this.startDate.value);
-        this.minDate2 = this.startDate.value;
     }
 
     getEmployeeData(): void {
@@ -318,8 +311,6 @@ export class EventEditComponent implements OnInit {
                     this.selectedEvent = result;
                     this.timeFrom = this.selectedEvent.timeFrom;
                     this.timeTo = this.selectedEvent.timeTo;
-                    this.startDate.setValue(this.selectedEvent.dateFrom);
-                    this.endDate.setValue(this.selectedEvent.dateTo);
                     if (this.selectedEvent.booked) {
                         this.selectedBookedList = this.selectedEvent.booked;
                         this.selectedBookedList.forEach(employee => {
@@ -375,8 +366,6 @@ export class EventEditComponent implements OnInit {
     }
 
     update(navigate: boolean): void {
-        this.selectedEvent.dateFrom = this.startDate.value;
-        this.selectedEvent.dateTo = this.endDate.value;
         this.afs
             .collection('events')
             .doc(this.eventId).update(JSON.parse(JSON.stringify(this.selectedEvent))).then(() => {

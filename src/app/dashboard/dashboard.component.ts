@@ -24,7 +24,8 @@ export class DashboardComponent implements OnInit {
         public auth: LoginProviderService,
         private route: ActivatedRoute,
         private router: Router,
-        private afs: AngularFirestore
+        private afs: AngularFirestore,
+        private lps: LoginProviderService
     ) { }
 
     ngOnInit() {
@@ -117,5 +118,13 @@ export class DashboardComponent implements OnInit {
 
     gotomyprofile(): void {
         this.router.navigate([`/employee`, this.auth.userId]);
+    }
+
+    isAdmin() {
+        if (this.lps.role === 'admin') {
+            return true;
+        }
+
+        return false;
     }
 }

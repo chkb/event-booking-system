@@ -65,19 +65,19 @@ export class EventListComponent implements AfterViewInit {
                 event.payoutDone = doc.data()['payoutDone'];
                 event.booked = doc.data()['booked'];
                 event.deative = doc.data()['deative'];
-                if (moment(event.dateFrom).isSame(now, 'year')) {
-                    if (!getAll && !event.deative) {
-                        if (moment(event.dateFrom).isSameOrAfter(now)) {
-                            eventList.push(event);
-                        } else {
+                if (!getAll && !event.deative) {
+                    if (moment(event.dateFrom).isSameOrAfter(now)) {
+                        eventList.push(event);
+                    } else {
+                        if (moment(event.dateFrom).isSame(now, 'year')) {
                             eventPrevList.push(event);
                         }
-                    } else if (getAll) {
-                        if (moment(event.dateFrom).isSameOrAfter(now)) {
-                            eventList.push(event);
-                        } else {
-                            eventPrevList.push(event);
-                        }
+                    }
+                } else if (getAll) {
+                    if (moment(event.dateFrom).isSameOrAfter(now)) {
+                        eventList.push(event);
+                    } else {
+                        eventPrevList.push(event);
                     }
                 }
             });

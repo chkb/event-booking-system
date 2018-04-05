@@ -13,7 +13,7 @@
                 <mat-form-field class="example-full-width">
                     <input matInput placeholder="Løn-niveau takst" type="number" [(ngModel)]="wager.value">
                 </mat-form-field>
-                <button mat-raised-button color="primary" (click)="create()" [disabled]="!wager.name">OPRET KOMPETENCE</button>
+                <button mat-raised-button color="primary" (click)="create()" [disabled]="!wager.name">OPRET LØNNIVEAU</button>
                 <mat-list>
                     <mat-list-item *ngFor="let wager of wagerList">
                         <mat-icon mat-list-icon (click)="delete(wager)">delete</mat-icon>

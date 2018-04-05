@@ -88,7 +88,7 @@ export class EventTypeComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: boolean) => {
             if (result) {
                 this.removeInPlace(this.eventTypeList, eventType);
-                this.afs.collection('wagers')
+                this.afs.collection('event-types')
                     .doc(eventType.uid)
                     .delete()
                     .then(res => {

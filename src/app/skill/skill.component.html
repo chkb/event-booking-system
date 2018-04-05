@@ -82,9 +82,19 @@
                     <p *ngIf="!masterSkill.skills.length">
                         Ingen under kategorier oprettet endnu.
                     </p>
-                    <mat-list-item *ngFor="let skill of masterSkill.skills">
+                    <mat-list-item *ngFor="let skill of masterSkill.skills; index as i">
                         <mat-icon class="btn" (click)="delete(masterSkill, skill)" mat-list-icon>delete</mat-icon>
                         <h4 mat-line>{{skill}}</h4>
+                        <button [disabled]="!i" (click)="skillSwap(masterSkill, skill, false)" mat-icon-button>
+                            <mat-icon>
+                                keyboard_arrow_up
+                            </mat-icon>
+                        </button>
+                        <button [disabled]="masterSkill.skills.length-1 == i" (click)="skillSwap(masterSkill, skill, true)" mat-icon-button>
+                            <mat-icon>
+                                keyboard_arrow_down
+                            </mat-icon>
+                        </button>
                     </mat-list-item>
                     <mat-list-item>
                         <mat-icon class="btn" (click)="createSubSkill(masterSkill, input.value); input.value =''" mat-list-icon>add</mat-icon>

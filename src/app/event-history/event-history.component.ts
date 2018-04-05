@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { EventHistory } from '../shared/event';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
+import { AngularFirestore } from 'angularfire2/firestore';
 import * as moment from 'moment';
+
+import { LoginProviderService } from '../core/login-provider.service';
+import { EventHistory } from '../shared/event';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class EventHistoryComponent implements OnInit {
     ];
     constructor(
         private afs: AngularFirestore,
-        private router: Router
+        private router: Router,
+        private lps: LoginProviderService
     ) { }
 
     ngOnInit() {
@@ -53,6 +56,17 @@ export class EventHistoryComponent implements OnInit {
     }
 
     gotoEvent(id: string): void {
+        if (!this.isAdminOrEventLeader()) {
+            return;
+        }
         this.router.navigate(['/event', id]);
+    }
+
+    isAdminOrEventLeader(): boolean {
+        if (this.lps.role === 'admin' || this.lps.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
     }
 }

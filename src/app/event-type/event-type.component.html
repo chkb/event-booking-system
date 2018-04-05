@@ -20,7 +20,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <button mat-raised-button color="primary" (click)="create()" [disabled]="!eventType.name">OPRET KOMPETENCE</button>
+                <button mat-raised-button color="primary" (click)="create()" [disabled]="!eventType.name">OPRET EVENTTYPE</button>
                 <mat-list>
                     <mat-list-item *ngFor="let eventType of eventTypeList">
                         <mat-icon mat-list-icon (click)="delete(eventType)">delete</mat-icon>

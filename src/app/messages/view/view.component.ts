@@ -13,6 +13,7 @@ import { moveIn } from '../../router.animations';
 })
 export class MessagesViewComponent implements OnInit {
     messagesList: Message[] = [];
+    step = 0;
 
     constructor(
         private afs: AngularFirestore,
@@ -20,6 +21,10 @@ export class MessagesViewComponent implements OnInit {
 
     ngOnInit() {
         this.getData();
+    }
+
+    setStep(index: number) {
+        this.step = index;
     }
 
     getData(): void {

@@ -9,7 +9,7 @@
             <input matInput placeholder="Navn på begivenhed" [(ngModel)]="event.name" name="eventname">
         </mat-form-field>
         <mat-form-field class="full-width">
-            <textarea matInput placeholder="Kommentar" [(ngModel)]="event.eventDescription" name="comment"></textarea>
+            <textarea matInput class="comment" placeholder="Kommentar" [(ngModel)]="event.eventDescription" name="comment"></textarea>
         </mat-form-field>
         <mat-form-field class="full-width">
             <input matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)" [(ngModel)]="event.staffNeed" name="eventname">
@@ -27,7 +27,7 @@
                 <mat-option value="70%">70%</mat-option>
                 <mat-option value="80%">80%</mat-option>
                 <mat-option value="90%">90%</mat-option>
-                <mat-option value="99%">99%</mat-option>
+                <mat-option value="100%">100%</mat-option>
                 <mat-option value="Færdig">Færdig</mat-option>
             </mat-select>
         </mat-form-field>

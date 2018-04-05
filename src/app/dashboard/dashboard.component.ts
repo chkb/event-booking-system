@@ -127,4 +127,12 @@ export class DashboardComponent implements OnInit {
 
         return false;
     }
+
+    isEmployee() {
+        if (this.lps.role === 'employee') {
+            return true;
+        }
+
+        return false;
+    }
 }

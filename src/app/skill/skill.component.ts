@@ -70,6 +70,17 @@ export class SkillComponent implements OnInit {
         this.masterskillList.sort((a, b) => a.order - b.order);
     }
 
+    skillSwap(masterSkill: MasterSkill, index: string, orderUp: boolean): void {
+        const idx = this.masterskillList.findIndex(x => x.uid === masterSkill.uid);
+        const id1 = this.masterskillList[idx].skills.findIndex(x => x === index);
+        const id2 = id1 + (orderUp ? 1 : -1);
+        const temp = this.masterskillList[idx].skills[id1];
+        this.masterskillList[idx].skills[id1] = this.masterskillList[idx].skills[id2];
+        this.masterskillList[idx].skills[id2] = temp;
+        this.saveChanges(this.masterskillList[idx]);
+    }
+
+
     saveChanges(masterSkill: MasterSkill): void {
         this.afs
             .collection('masterSkills')

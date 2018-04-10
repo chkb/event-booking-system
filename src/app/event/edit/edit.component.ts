@@ -281,7 +281,7 @@ export class EventEditComponent implements OnInit {
         this.getEventData();
         this.getEmployeeData();
         this.geteventTypeList();
-        this.debounceUpdate.debounceTime(500).subscribe(res => {
+        this.debounceUpdate.debounceTime(2000).subscribe(res => {
             if (res) {
                 this.update(false);
             }

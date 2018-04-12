@@ -13,7 +13,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { environment } from '../environments/environment';
-import { AnimationComponent } from './animation/animation.component';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { AppMaterialModule } from './app.material.module';
@@ -74,7 +73,6 @@ registerLocaleData(daLocale);
         SkillComponent,
         WagerComponent,
         EventTypeComponent,
-        AnimationComponent,
         PayoutListComponent,
         PayoutEditComponent,
         EventHistoryComponent,

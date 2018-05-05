@@ -95,6 +95,7 @@ export class EventEditComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog
     ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
     }
 
     getEmployeeData(): void {

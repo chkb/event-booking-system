@@ -38,6 +38,7 @@ export class EventListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
         this.getdata(false);
     }
 

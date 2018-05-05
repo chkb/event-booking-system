@@ -35,7 +35,9 @@ export class MessagesAdminComponent implements OnInit {
         private dialog: MatDialog,
         private snackBar: MatSnackBar,
         private auth: LoginProviderService
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.getData();

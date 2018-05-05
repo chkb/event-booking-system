@@ -46,6 +46,7 @@ export class EventCreateComponent implements AfterViewInit {
         private atp: AmazingTimePickerService,
         private snackBar: MatSnackBar
     ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
         this.getEmployeeData();
     }
 
@@ -142,7 +143,7 @@ export class EventCreateComponent implements AfterViewInit {
                 {
                     duration: 10000,
                 });
-            this.router.navigate(['/event/list']);
+            this.router.navigate(['/event/', res.id]);
         });
     }
 

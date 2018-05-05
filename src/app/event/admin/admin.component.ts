@@ -36,7 +36,9 @@ export class EventAdminComponent implements OnInit {
     constructor(
         private afs: AngularFirestore,
         private datepipe: DatePipe
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.getEmployeedata();

@@ -35,6 +35,7 @@ export class PayoutListComponent implements AfterViewInit {
         private router: Router,
         private lps: LoginProviderService
     ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
         let eventList: EventObject[] = [];
         this.afs.collection('events').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {

@@ -39,7 +39,9 @@ export class EmployeeEditComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private lps: LoginProviderService
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.route.params.subscribe(params => {

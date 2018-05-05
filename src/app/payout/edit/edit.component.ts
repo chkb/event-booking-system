@@ -45,7 +45,9 @@ export class PayoutEditComponent implements OnInit {
         private dialog: MatDialog,
         private router: Router,
         private lps: LoginProviderService
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.route.params.subscribe(params => {

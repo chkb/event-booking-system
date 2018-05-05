@@ -436,7 +436,7 @@
                     <div *ngIf="showFilters && skillList">
                         <h3>Vælg filtre</h3>
                         <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
-                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills | sort : 'order'">
+                            <div fxFlex="100" fxFlex.gt-md="33" *ngFor="let masterskill of masterskills | sort : 'order'">
                                 <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                                     <mat-card-header class="card-header">
                                         <h3>
@@ -458,7 +458,7 @@
                                                     </div>
                                                     <div *ngIf="masterskill.hasRating">
                                                         <mat-list-item *ngFor="let skill of masterskill.skills">
-                                                            <div>
+                                                            <div class="stars">
                                                                 <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="selectFilter(masterskill.uid, skill, 1)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
                                                                         {{ifFilterisSelected(masterskill, skill, 1) ? 'check' : 'star'}}

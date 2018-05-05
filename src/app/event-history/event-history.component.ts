@@ -28,7 +28,9 @@ export class EventHistoryComponent implements OnInit {
         private afs: AngularFirestore,
         private router: Router,
         private lps: LoginProviderService
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         if (this.employeeId) {

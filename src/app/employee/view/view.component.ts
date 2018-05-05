@@ -13,7 +13,9 @@ export class EmployeeViewComponent implements OnInit {
     selectedEmployee: Employee;
     constructor(
         private afs: AngularFirestore,
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.afs

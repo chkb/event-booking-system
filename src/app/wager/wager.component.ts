@@ -24,7 +24,9 @@ export class WagerComponent implements OnInit {
         private afs: AngularFirestore,
         private dialog: MatDialog,
         private snackBar: MatSnackBar
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.getData();

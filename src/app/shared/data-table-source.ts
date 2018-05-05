@@ -7,8 +7,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 export class DataTableSource extends DataSource<any> {
     /** Connect function called by the table to retrieve one stream containing the data to render. */
-    constructor(private angularFirestore: AngularFirestore, private _sort: MatSort) {
-        super();
+    constructor(
+        private angularFirestore: AngularFirestore,
+        private _sort: MatSort) {
+            super();
+            angularFirestore.firestore.settings({ timestampsInSnapshots: true }); 
     }
     private employeeList: Employee[] = [];
     private filterChange: BehaviorSubject<boolean>;

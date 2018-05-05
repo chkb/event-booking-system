@@ -26,7 +26,9 @@ export class DashboardComponent implements OnInit {
         private router: Router,
         private afs: AngularFirestore,
         private lps: LoginProviderService
-    ) { }
+    ) {
+        afs.firestore.settings({ timestampsInSnapshots: true });        
+    }
 
     ngOnInit() {
         this.employeeId = this.auth.userId;

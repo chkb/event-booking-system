@@ -18,6 +18,7 @@ import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
 import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
 import { debounce } from 'rxjs/operator/debounce';
 import { Subject } from 'Rxjs';
+import { LoginProviderService } from '../../core/login-provider.service';
 
 @Component({
     selector: 'app-edit',
@@ -93,7 +94,8 @@ export class EventEditComponent implements OnInit {
         private localStorageService: LocalStorageService,
         private atp: AmazingTimePickerService,
         private snackBar: MatSnackBar,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private lps: LoginProviderService
     ) {
         afs.firestore.settings({ timestampsInSnapshots: true });        
     }
@@ -157,6 +159,7 @@ export class EventEditComponent implements OnInit {
         return result;
 
     }
+
     getListOfLeaders(employeeList: Booked[]): void {
         employeeList.forEach(employee => {
             if (employee.role === 'admin' || employee.role === 'eventLeader') {
@@ -453,6 +456,15 @@ export class EventEditComponent implements OnInit {
         const selectedSkill = new SkillExtended();
         selectedSkill.name = skillName;
         selectedSkill.rankValue = rankingValue;
+        const hasDuplicates = this.containsDuplicate(this.masterskills[idx].selectedSkills, selectedSkill)
+        if(hasDuplicates){
+            this.masterskills[idx].selectedSkills.forEach(item => {
+                if(item.name === skillName && item.rankValue !== rankingValue){
+                    const idx2 = this.masterskills[idx].selectedSkills.indexOf(item);
+                    this.masterskills[idx].selectedSkills.splice(idx2, 1);
+                }
+            })
+        }
         if (this.masterskills[idx].selectedSkills) {
             const isInArray = this.containsObject(this.masterskills[idx].selectedSkills, selectedSkill);
             if (isInArray) {
@@ -486,9 +498,6 @@ export class EventEditComponent implements OnInit {
                         const tempSkills: SkillExtended[] = [];
                         if (!this.containsEmployeeObject(employeelist, employee)) {
                             if (skill.rankValue && eSkill.name === skill.name && eSkill.ranking >= skill.rankValue) {
-                                hasSkill = true;
-                            }
-                            if (eSkill.name === skill.name) {
                                 hasSkill = true;
                             }
                         } else {
@@ -543,6 +552,20 @@ export class EventEditComponent implements OnInit {
 
         return result;
     }
+
+    containsDuplicate(skillExtendedList: SkillExtended[], skillExtended: SkillExtended): boolean {
+        let result = false;
+        let count = 0;
+        skillExtendedList.forEach(item => {
+            if(item.name === skillExtended.name){
+                count ++;
+            }
+        });
+        result = count  >= 1 ? true : false;
+
+        return result;
+    }
+
 
     ifFilterisSelected(masterSkill: MasterSkillExtended, skillName: string, rankingValue?: number): boolean {
         let result = false;
@@ -605,5 +628,13 @@ export class EventEditComponent implements OnInit {
                 }
             });
         }
+    }
+
+    isAdminOrEventLeader() {
+        if (this.lps.role === 'admin' || this.lps.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -9,35 +9,8 @@
             <mat-card-content>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Navn på begivenhed" [(ngModel)]="selectedEvent.name"
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Kunde" [(ngModel)]="selectedEvent.name"
                         name="eventname">
-                </mat-form-field>
-
-                <mat-form-field class="full-width">
-                    <textarea class="comment" [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Kommentar"
-                        [(ngModel)]="selectedEvent.eventDescription" name="comment"></textarea>
-                </mat-form-field>
-
-                <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)"
-                        [(ngModel)]="selectedEvent.staffNeed" name="eventname">
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                    <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative" [(value)]="selectedEvent.billInfo">
-                        <mat-option value="">Ingen fakturing udført</mat-option>
-                        <mat-option value="0%">0%</mat-option>
-                        <mat-option value="10%">10%</mat-option>
-                        <mat-option value="20%">20%</mat-option>
-                        <mat-option value="30%">30%</mat-option>
-                        <mat-option value="40%">40%</mat-option>
-                        <mat-option value="50%">50%</mat-option>
-                        <mat-option value="60%">60%</mat-option>
-                        <mat-option value="70%">70%</mat-option>
-                        <mat-option value="80%">80%</mat-option>
-                        <mat-option value="90%">90%</mat-option>
-                        <mat-option value="100%">100%</mat-option>
-                        <mat-option value="Færdig">Færdig</mat-option>
-                    </mat-select>
                 </mat-form-field>
 
                 <mat-form-field class="full-width" *ngIf="eventTypeList">
@@ -52,10 +25,68 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Antal kunder" [(ngModel)]="selectedEvent.numberOfCustomer"
+                        name="kunder">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Antal hold" [(ngModel)]="selectedEvent.numberOfTeam"
+                        name="numberOfTeam">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Rollebesætning" [(ngModel)]="selectedEvent.crew"
+                        name="crew">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <textarea [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Tidsplan" [(ngModel)]="selectedEvent.timeline"
+                        name="timeline"></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <textarea class="comment" [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Event beskrivelse"
+                        [(ngModel)]="selectedEvent.eventDescription" name="comment"></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)"
+                        [(ngModel)]="selectedEvent.staffNeed" name="eventname">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
                     <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative" placeholder="Eventleder" [(value)]="selectedEvent.eventLeader">
                         <mat-option *ngFor="let employee of leaderList" (click)="selectedEvent.eventLeaderId = employee.uid" [value]="employee.displayName">
                             {{employee.displayName}} ({{getRoleText(employee.role)}})
                         </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width" *ngIf="isAdminOrEventLeader()">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Info til eventleder" [(ngModel)]="selectedEvent.eventLeaderInfo"
+                        name="eventLeaderInfo">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Sagsnr" [(ngModel)]="selectedEvent.eventNumber"
+                        name="eventNumber">
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative"  placeholder="Fakturering" [(value)]="selectedEvent.billInfo">
+                        <mat-option value="">Ingen fakturing udført</mat-option>
+                        <mat-option value="0%">0%</mat-option>
+                        <mat-option value="10%">10%</mat-option>
+                        <mat-option value="20%">20%</mat-option>
+                        <mat-option value="30%">30%</mat-option>
+                        <mat-option value="40%">40%</mat-option>
+                        <mat-option value="50%">50%</mat-option>
+                        <mat-option value="60%">60%</mat-option>
+                        <mat-option value="70%">70%</mat-option>
+                        <mat-option value="80%">80%</mat-option>
+                        <mat-option value="90%">90%</mat-option>
+                        <mat-option value="100%">100%</mat-option>
+                        <mat-option value="Færdig">Færdig</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -94,18 +125,18 @@
                     </div>
                 </div>
                 <mat-divider></mat-divider>
-                <h3>Kundeoplysninger</h3>
+                <h3>Kontaktoplysninger</h3>
                 <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Kunde" [(ngModel)]="selectedEvent.customer"
+                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Kundekontakt" [(ngModel)]="selectedEvent.customer"
                                 name="customer">
                         </mat-form-field>
                     </div>
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <textarea [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Kontaktoplysninger" [(ngModel)]="selectedEvent.contactInfo"
-                                name="contactInfo"></textarea>
+                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative" matInput placeholder="Lokationkontakt" [(ngModel)]="selectedEvent.contactInfo"
+                                name="contactInfo">
                         </mat-form-field>
                     </div>
                 </div>
@@ -436,7 +467,7 @@
                     <div *ngIf="showFilters && skillList">
                         <h3>Vælg filtre</h3>
                         <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
-                            <div fxFlex="100" fxFlex.gt-md="33" *ngFor="let masterskill of masterskills | sort : 'order'">
+                            <div fxFlex="100" fxFlex.gt-md="30" *ngFor="let masterskill of masterskills | sort : 'order'">
                                 <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                                     <mat-card-header class="card-header">
                                         <h3>

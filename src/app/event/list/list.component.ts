@@ -19,16 +19,15 @@ export class EventListComponent implements AfterViewInit {
     getAllCheckBox: boolean;
     getAllPrevCheckBox: boolean;
     displayedColumns = [
-        'name',
-        'eventLeader',
         'date',
         'time',
-        'location',
-        'customer',
+        'name',
         'eventType',
+        'location',
+        'eventLeader',
         'staffNeed',
-        'payoutDone',
         'bookingDone',
+        'payoutDone',
         'billInfo'
     ];
     dataSource: MatTableDataSource<EventObject>;

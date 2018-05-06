@@ -33,6 +33,12 @@ export class EventObject {
     payoutDone: boolean;
     deative: boolean;
     payouts: Payout[] = [];
+    eventNumber: string;
+    numberOfCustomer: string;
+    numberOfTeam: string;
+    timePlan: string;
+    crew: string;
+    eventLeaderInfo: string;
 }
 
 export class Payout {

@@ -9,11 +9,16 @@
             <div fxFlex>
                 <mat-icon class="lock" [@active]="lockstate">{{lockstate == 'inactive'? 'lock' : 'lock_open'}}</mat-icon>
             </div>
-            <div fxFlex>
+            <!-- <div fxFlex>
                 <button class="login-button" mat-raised-button (click)="facebookLogin()" id="fb">Login med Facebook</button>
-            </div>
+            </div> -->
             <div fxFlex>
                 <button class="login-button" mat-raised-button (click)="googleLogin()" id="google">Login med Google</button>
+            </div>
+            <div fxFlex>
+                <a routerLink="/login-email" routerLinkActive="active" class="alc">
+                    <strong>Login med email</strong>
+                </a>
             </div>
             <!-- <div fxFlex>
                 <a routerLink="/signup" routerLinkActive="active" class="alc">Har du ikke en bruger?

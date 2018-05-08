@@ -6,11 +6,11 @@
 export const environment = {
     production: false,
     firebase: {
-        apiKey: 'AIzaSyDUuusQ4DyMJipQSP6WXEc4n1JvAhvqOug',
-        authDomain: 'test-app-2d044.firebaseapp.com',
-        databaseURL: 'https://test-app-2d044.firebaseio.com',
-        projectId: 'test-app-2d044',
-        storageBucket: 'test-app-2d044.appspot.com',
-        messagingSenderId: '139369699496'
+        apiKey: 'AIzaSyBJGv8kHK9xsrHgdXMOrAT_LaR8oC3eg0U',
+        authDomain: 'midgaard-event-booking-system.firebaseapp.com',
+        databaseURL: 'https://midgaard-event-booking-system.firebaseio.com',
+        projectId: 'midgaard-event-booking-system',
+        storageBucket: 'midgaard-event-booking-system.appspot.com',
+        messagingSenderId: '788583887049'
     }
 };

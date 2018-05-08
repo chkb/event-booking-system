@@ -19,9 +19,10 @@ const PASSWORD_REGEX = /^.{6,}$/;
     host: { '[@moveIn]': '' }
 })
 export class SignupComponent {
-    emailFormControl = new FormControl('', [
-        Validators.required,
-        Validators.pattern(EMAIL_REGEX)]);
+    email: string;
+    password: string;
+    repeatPassword: string;
+    validation: string;
 
     passwordFormControl = new FormControl('', [
         Validators.required,
@@ -43,9 +44,29 @@ export class SignupComponent {
         this.navigateToDashboard();
     }
 
+    isValid(): boolean {
+        let result = false;
+        if(this.password !== this.repeatPassword){
+            result = false;
+        }
+        else if(!this.email || !EMAIL_REGEX.test(this.email)){
+            result = false;
+        }
+        else if(this.password.length < 6){
+            result = false;
+        }
+        else{
+            result = true;
+        }
+        
+        return result;
+    }
+
     createLogin() {
-        this.loginProvider.signup(this.emailFormControl.value, this.passwordFormControl.value);
-        this.navigateToDashboard();
+        if(this.isValid()){
+            this.loginProvider.signup(this.email, this.password);
+            this.navigateToDashboard();
+        }
     }
 
     navigateToDashboard(): void {

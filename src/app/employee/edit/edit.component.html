@@ -9,7 +9,8 @@
                         </h3>
                     </mat-card-header>
                     <mat-card-content>
-                        <img mat-card-image [src]="selectedEmployee.photoURL">
+                        <img mat-card-image *ngIf="selectedEmployee.photoURL" [src]="selectedEmployee.photoURL">
+                        <img mat-card-image *ngIf="!selectedEmployee.photoURL" src="assets/img/profile.png">                        
                         <mat-form-field class="full-width" *ngIf="isAdmin()">
                             <input matInput placeholder="Photo URL" [(ngModel)]="selectedEmployee.photoURL" name="fullName">
                         </mat-form-field>

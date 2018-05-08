@@ -7,10 +7,32 @@
                 </h1>
             </div>
             <div fxFlex>
-                <button class="login-button" mat-raised-button (click)="facebookLogin()" id="fb">Opret bruger med Facebook</button>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Email" alt="email" [(ngModel)]="email">
+                    <button mat-button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
             </div>
             <div fxFlex>
-                <button class="login-button" mat-raised-button (click)="googleLogin()" id="google">Opret bruger med Google</button>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" alt="password" placeholder="Password" [(ngModel)]="password">
+                    <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" alt="repeatPassword" placeholder="Repeat Password" [(ngModel)]="repeatPassword">
+                    <button mat-button *ngIf="repeatPassword" matSuffix mat-icon-button aria-label="Clear" (click)="repeatPassword=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <p class="validation">{{validation}}</p>
+                <button class="login-button" mat-raised-button [disabled]="!email || !password || !repeatPassword" (click)="createLogin()" id="bruger">Opret bruger</button>
             </div>
         </div>
     </mat-card>

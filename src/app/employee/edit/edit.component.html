@@ -10,7 +10,7 @@
                     </mat-card-header>
                     <mat-card-content>
                         <img mat-card-image *ngIf="selectedEmployee.photoURL" [src]="selectedEmployee.photoURL">
-                        <img mat-card-image *ngIf="!selectedEmployee.photoURL" src="assets/img/profile.png">                        
+                        <img mat-card-image *ngIf="!selectedEmployee.photoURL" src="assets/img/profile.png">
                         <mat-form-field class="full-width" *ngIf="isAdmin()">
                             <input matInput placeholder="Photo URL" [(ngModel)]="selectedEmployee.photoURL" name="fullName">
                         </mat-form-field>
@@ -22,7 +22,7 @@
                     </mat-card-content>
                 </mat-card>
             </div>
-            <div fxFlex="100" fxFlex.gt-md="30">
+            <div fxFlex="100" fxFlex.gt-md="70">
                 <mat-card *ngIf="selectedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                     <mat-card-header class="card-header">
                         <h3>
@@ -117,6 +117,10 @@
                     </mat-card-actions>
                 </mat-card>
             </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Medarbejderens kompetencer">
+        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
             <div fxFlex="100" fxFlex.gt-md="30">
                 <mat-card *ngIf="selectedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
                     <mat-card-header class="card-header">
@@ -146,36 +150,48 @@
                                 </div>
                             </div>
                         </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div fxFlex="100" fxFlex.gt-md="70">
+                <mat-card *ngIf="selectedEmployee" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+                    <mat-card-header class="card-header">
+                    </mat-card-header>
+                    <mat-card-content>
                         <h3>Liste af tilgænglige kompentencer</h3>
-                        <mat-list *ngFor="let masterskill of masterskills">
-                            <div *ngIf="masterskill.skills?.length ">
-                                <div *ngIf="!masterskill.onlyAdminEdit || (masterskill.onlyAdminEdit && isAdminOrEventLeader())">
-                                    <h3 mat-subheader>{{masterskill.name}}</h3>
-                                    <div *ngIf="!masterskill.hasRating">
-                                        <mat-list-item *ngFor="let skill of masterskill.skills">
-                                            <mat-icon class="btn" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)" mat-list-icon>add</mat-icon>
-                                            <h4 mat-line>{{skill}}</h4>
-                                        </mat-list-item>
-                                    </div>
-                                    <div *ngIf="masterskill.hasRating">
-                                        <mat-list-item *ngFor="let skill of masterskill.skills">
-                                            <div>
-                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit , 1, masterskill.ratingValue1)">
-                                                    <mat-icon>star</mat-icon>
-                                                </button>
-                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue2" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 2, masterskill.ratingValue2)">
-                                                    <mat-icon>star</mat-icon>
-                                                </button>
-                                                <button mat-icon-button [matTooltip]="masterskill.ratingValue3" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 3, masterskill.ratingValue3)">
-                                                    <mat-icon>star</mat-icon>
-                                                </button>
+                        <div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="5%">
+                            <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterskill of masterskills">
+                                <mat-list>
+                                    <div *ngIf="masterskill.skills?.length ">
+                                        <div *ngIf="!masterskill.onlyAdminEdit || (masterskill.onlyAdminEdit && isAdminOrEventLeader())">
+                                            <h3 mat-subheader>{{masterskill.name}}</h3>
+                                            <div *ngIf="!masterskill.hasRating">
+                                                <mat-list-item *ngFor="let skill of masterskill.skills">
+                                                    <mat-icon class="btn" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)" mat-list-icon>add</mat-icon>
+                                                    <h4 mat-line>{{skill}}</h4>
+                                                </mat-list-item>
                                             </div>
-                                            <h4>{{skill}}</h4>
-                                        </mat-list-item>
+                                            <div *ngIf="masterskill.hasRating">
+                                                <mat-list-item *ngFor="let skill of masterskill.skills">
+                                                    <div class="stars">
+                                                        <button mat-icon-button [matTooltip]="masterskill.ratingValue1" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit , 1, masterskill.ratingValue1)">
+                                                            <mat-icon>star</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button [matTooltip]="masterskill.ratingValue2" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 2, masterskill.ratingValue2)">
+                                                            <mat-icon>star</mat-icon>
+                                                        </button>
+                                                        <button mat-icon-button [matTooltip]="masterskill.ratingValue3" (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 3, masterskill.ratingValue3)">
+                                                            <mat-icon>star</mat-icon>
+                                                        </button>
+                                                    </div>
+                                                    <h4>{{skill}}</h4>
+                                                </mat-list-item>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </mat-list>
                             </div>
-                        </mat-list>
+                        </div>
                     </mat-card-content>
                 </mat-card>
             </div>

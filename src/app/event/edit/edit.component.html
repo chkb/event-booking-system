@@ -201,12 +201,6 @@
                             </mat-cell>
                         </ng-container>
 
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="role">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Rolle </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
-                        </ng-container>
-
                         <!-- Email Column -->
                         <ng-container matColumnDef="email">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
@@ -221,13 +215,13 @@
 
                         <!-- HasCar Column -->
                         <ng-container matColumnDef="hasCar">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Bil </mat-header-cell>
+                            <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
                         <!-- HasDriverLicens Column -->
                         <ng-container matColumnDef="hasDriverLicens">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Kørekort </mat-header-cell>
                             <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
@@ -296,12 +290,6 @@
                             </mat-cell>
                         </ng-container>
 
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="role">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Rolle </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
-                        </ng-container>
-
                         <!-- Email Column -->
                         <ng-container matColumnDef="email">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
@@ -316,14 +304,14 @@
 
                         <!-- HasCar Column -->
                         <ng-container matColumnDef="hasCar">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Bil </mat-header-cell>
+                            <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
                         <!-- HasDriverLicens Column -->
                         <ng-container matColumnDef="hasDriverLicens">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Kørekort </mat-header-cell>
+                            <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
                         <!-- HasDriverLicens Column -->
@@ -384,12 +372,6 @@
                             </mat-cell>
                         </ng-container>
 
-                        <!-- Name Column -->
-                        <ng-container matColumnDef="role">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Rolle </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
-                        </ng-container>
-
                         <!-- Email Column -->
                         <ng-container matColumnDef="email">
                             <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
@@ -404,14 +386,14 @@
 
                         <!-- HasCar Column -->
                         <ng-container matColumnDef="hasCar">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Bil </mat-header-cell>
+                            <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
                         <!-- HasDriverLicens Column -->
                         <ng-container matColumnDef="hasDriverLicens">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Kørekort </mat-header-cell>
+                            <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                         </ng-container>
 
                         <!-- HasDriverLicens Column -->
@@ -554,14 +536,14 @@
 
                             <!-- HasCar Column -->
                             <ng-container matColumnDef="hasCar">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> Har bil? </mat-header-cell>
-                                <mat-cell *matCellDef="let row"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Bil </mat-header-cell>
+                                <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
                             </ng-container>
 
                             <!-- HasDriverLicens Column -->
                             <ng-container matColumnDef="hasDriverLicens">
-                                <mat-header-cell *matHeaderCellDef mat-sort-header> Har kørekort? </mat-header-cell>
-                                <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                                <mat-header-cell *matHeaderCellDef mat-sort-header fxFlex="100px"> Kørekort </mat-header-cell>
+                                <mat-cell *matCellDef="let row" fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
                             </ng-container>
 
                             <!-- Selection Column -->

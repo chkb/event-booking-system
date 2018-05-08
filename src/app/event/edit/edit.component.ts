@@ -58,7 +58,6 @@ export class EventEditComponent implements OnInit {
     timeFrom: string;
     timeTo: string;
     displayedColumns = [
-        'role',
         'displayName',
         'email',
         'mobile',
@@ -68,7 +67,6 @@ export class EventEditComponent implements OnInit {
     ];
 
     bookedColumns = [
-        'role',
         'displayName',
         'email',
         'mobile',

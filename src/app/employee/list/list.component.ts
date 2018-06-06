@@ -30,7 +30,7 @@ export class EmployeeListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
         const employeeList: Employee[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {

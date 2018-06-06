@@ -40,7 +40,7 @@ export class EmployeeEditComponent implements OnInit {
         private dialog: MatDialog,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

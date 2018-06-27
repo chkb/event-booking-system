@@ -104,7 +104,9 @@ export class EmployeeEditComponent implements OnInit {
     saveChanges(): void {
         this.afs
             .collection('users')
-            .doc(this.employeeId).update(JSON.parse(JSON.stringify(this.selectedEmployee))).then(() => {
+            .doc(this.employeeId)
+            .update(JSON.parse(JSON.stringify(this.selectedEmployee)))
+            .then(() => {
                 this.snackBar.open('Medarbejder opdateret', 'LUK',
                     {
                         duration: 10000,

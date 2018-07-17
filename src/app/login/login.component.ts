@@ -1,11 +1,12 @@
 import 'rxjs/add/operator/switchMap';
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginProviderService } from '../core/login-provider.service';
 import { moveIn } from '../router.animations';
 import { trigger, transition, style, state, animate } from '@angular/animations';
+import { Subscription } from '../../../node_modules/rxjs';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,8 @@ import { trigger, transition, style, state, animate } from '@angular/animations'
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
+    private subcribtion: Subscription;
     lockstate = 'inactive';
     constructor(private loginProvider: LoginProviderService,
         private router: Router) {
@@ -54,7 +56,7 @@ export class LoginComponent {
     }
 
     navigateToList(): void {
-        this.loginProvider.user.subscribe(res => {
+        this.subcribtion = this.loginProvider.user.subscribe(res => {
             if (res && res.uid) {
                 if (this.isAdmin()) {
                     this.gotoEventList();
@@ -93,5 +95,11 @@ export class LoginComponent {
 
     gotoDashboard(): void {
         this.router.navigate([`/dashboard`]);
+    }
+
+    ngOnDestroy(): void {
+        if(this.subcribtion){
+            this.subcribtion.unsubscribe();
+        }
     }
 }

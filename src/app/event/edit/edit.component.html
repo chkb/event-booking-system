@@ -13,7 +13,7 @@
             <mat-card-content>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Kunde"
                            [(ngModel)]="selectedEvent.name"
@@ -22,7 +22,7 @@
 
                 <mat-form-field class="full-width"
                                 *ngIf="eventTypeList">
-                    <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <mat-select [disabled]=" selectedEvent.deative"
                                 placeholder="Event-type"
                                 [(value)]="selectedEvent.eventType">
                         <mat-option [style.background]="eventType.color"
@@ -38,7 +38,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Antal kunder"
                            [(ngModel)]="selectedEvent.numberOfCustomer"
@@ -46,7 +46,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Antal hold"
                            [(ngModel)]="selectedEvent.numberOfTeam"
@@ -54,7 +54,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Rollebesætning"
                            [(ngModel)]="selectedEvent.crew"
@@ -63,7 +63,7 @@
 
                 <mat-form-field class="full-width">
                     <textarea class="comment"
-                              [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                              [disabled]=" selectedEvent.deative"
                               matInput
                               placeholder="Event beskrivelse"
                               [(ngModel)]="selectedEvent.eventDescription"
@@ -71,7 +71,8 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <textarea [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <textarea class="comment"
+                              [disabled]=" selectedEvent.deative"
                               matInput
                               placeholder="Tidsplan"
                               [(ngModel)]="selectedEvent.timeline"
@@ -79,7 +80,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            type="number"
                            placeholder="Antal medarbejdere på event (kun heltal)"
@@ -88,7 +89,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <mat-select [disabled]=" selectedEvent.deative"
                                 placeholder="Eventleder"
                                 [(value)]="selectedEvent.eventLeader">
                         <mat-option *ngFor="let employee of leaderList"
@@ -101,7 +102,7 @@
 
                 <mat-form-field class="full-width"
                                 *ngIf="isAdminOrEventLeader()">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Info til eventleder"
                            [(ngModel)]="selectedEvent.eventLeaderInfo"
@@ -109,7 +110,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <input [disabled]=" selectedEvent.deative"
                            matInput
                            placeholder="Sagsnr"
                            [(ngModel)]="selectedEvent.eventNumber"
@@ -117,7 +118,7 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-select [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                    <mat-select [disabled]=" selectedEvent.deative"
                                 placeholder="Fakturering"
                                 [(value)]="selectedEvent.billInfo">
                         <mat-option value="">Ingen fakturing udført</mat-option>
@@ -144,11 +145,11 @@
                     <div fxFlex>
                         <h5>Start tidspunkt</h5>
                         <input type="time"
-                               [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                               [disabled]=" selectedEvent.deative"
                                [(ngModel)]="selectedEvent.timeFrom" />
                         <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    type="date"
                                    placeholder="Startdato"
@@ -158,11 +159,11 @@
                     <div fxFlex>
                         <h5>Slut tidspunkt</h5>
                         <input type="time"
-                               [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                               [disabled]=" selectedEvent.deative"
                                [(ngModel)]="selectedEvent.timeTo" />
                         <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    type="date"
                                    placeholder="Slutdato"
@@ -175,7 +176,7 @@
                      fxLayoutGap="2%">
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    placeholder="Lokation"
                                    [(ngModel)]="selectedEvent.eventLocation"
@@ -184,7 +185,7 @@
                     </div>
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    placeholder="Adresse på lokation"
                                    [(ngModel)]="selectedEvent.eventAdress"
@@ -193,13 +194,13 @@
                     </div>
                 </div>
                 <mat-divider></mat-divider>
-                <h3>Lokationkontakt</h3>
+                <h3>Kontaktoplysninger</h3>
                 <div fxLayout="column wrap"
                      fxLayout.gt-xs="row"
                      fxLayoutGap="2%">
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    placeholder="Kundekontakt"
                                    [(ngModel)]="selectedEvent.customer"
@@ -208,7 +209,7 @@
                     </div>
                     <div fxFlex>
                         <mat-form-field class="full-width">
-                            <input [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                            <input [disabled]=" selectedEvent.deative"
                                    matInput
                                    placeholder="Lokationkontakt"
                                    [(ngModel)]="selectedEvent.contactInfo"
@@ -230,7 +231,8 @@
                             </mat-list-item>
                         </mat-list>
                         <button mat-raised-button
-                                (click)="bookingDone()">{{selectedEvent.bookingDone ? 'GENÅBN EVENT': 'FÆRDIG MED BOOKING'}}</button>
+                                (click)="bookingDone()">{{selectedEvent.bookingDone ? 'GENÅBN EVENT': 'FÆRDIG MED
+                            BOOKING'}}</button>
                     </div>
                     <div fxFlex>
                         <mat-list>
@@ -241,7 +243,8 @@
                             </mat-list-item>
                         </mat-list>
                         <button mat-raised-button
-                                (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN LØNNING': 'FÆRDIG MED LØNNING'}}</button>
+                                (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN LØNNING': 'FÆRDIG MED
+                            LØNNING'}}</button>
                         <button mat-raised-button
                                 (click)="goToPayout()">GÅ TIL LØNNING</button>
                     </div>
@@ -249,15 +252,15 @@
             </mat-card-content>
             <mat-card-actions>
                 <button mat-raised-button
-                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                        [disabled]=" selectedEvent.deative"
                         color="primary"
                         (click)="update(true)">GEM ÆNDRINGER</button>
                 <button mat-raised-button
-                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                        [disabled]=" selectedEvent.deative"
                         color="accent"
                         (click)="deativate()">{{selectedEvent.deative ? 'AKTIVER BEGIVENHED' : 'DEATIVERE BEGIVENHED'}}</button>
                 <button mat-raised-button
-                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                        [disabled]=" selectedEvent.deative"
                         color="warn"
                         (click)="delete()">SLET BEGIVENHED</button>
             </mat-card-actions>
@@ -330,7 +333,7 @@
                                              mat-sort-header> Kommentar </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
-                                    <textarea [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                    <textarea [disabled]=" selectedEvent.deative"
                                               matInput
                                               (click)="$event.stopPropagation()"
                                               [(ngModel)]="row.bookingComment"
@@ -349,14 +352,14 @@
                                         <mat-icon>check</mat-icon>
                                     </button> -->
                                 <button class="maybe"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeBookedEmployee(row); maybeEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="{{row.displayName}} kan måske">
                                     <mat-icon>error_outline</mat-icon>
                                 </button>
                                 <button class="nogo"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeBookedEmployee(row); nogoEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="{{row.displayName}} kan ikke">
@@ -456,7 +459,7 @@
                                              mat-sort-header> Kommentar </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
-                                    <textarea [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                    <textarea [disabled]=" selectedEvent.deative"
                                               matInput
                                               (click)="$event.stopPropagation()"
                                               [(ngModel)]="row.bookingComment"
@@ -472,7 +475,7 @@
                                              mat-sort-header> </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <button class="book"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeMaybeEmployee(row); bookEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="Book {{row.displayName}}">
@@ -482,7 +485,7 @@
                                     <mat-icon>error_outline</mat-icon>
                                 </button> -->
                                 <button class="nogo"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeMaybeEmployee(row); nogoEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="{{row.displayName}} kan ikke">
@@ -568,7 +571,7 @@
                             <mat-cell *matCellDef="let row">
                                 <mat-form-field>
                                     <textarea matInput
-                                              [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                              [disabled]=" selectedEvent.deative"
                                               (click)="$event.stopPropagation()"
                                               [(ngModel)]="row.bookingComment"
                                               (keyup)="updateWithDebounce();"
@@ -583,14 +586,14 @@
                                              mat-sort-header> </mat-header-cell>
                             <mat-cell *matCellDef="let row">
                                 <button class="book"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeNogoEmployee(row); bookEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="Book {{row.displayName}}">
                                     <mat-icon>check</mat-icon>
                                 </button>
                                 <button class="maybe"
-                                        [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                        [disabled]=" selectedEvent.deative"
                                         (click)="removeNogoEmployee(row); maybeEmployee(row)"
                                         mat-mini-fab
                                         matTooltip="{{row.displayName}} kan måske">
@@ -661,7 +664,8 @@
                                                                       [class.book]="ifFilterisSelected(masterskill, skill, 0)"
                                                                       (click)="selectFilter(masterskill.uid, skill, 0)"
                                                                       mat-list-icon>
-                                                                {{ifFilterisSelected(masterskill, skill, 0) ? 'check':'star'}}
+                                                                {{ifFilterisSelected(masterskill, skill, 0) ?
+                                                                'check':'star'}}
                                                             </mat-icon>
                                                             <h4 mat-line>{{skill}}</h4>
                                                         </mat-list-item>
@@ -673,21 +677,24 @@
                                                                         [matTooltip]="masterskill.ratingValue1"
                                                                         (click)="selectFilter(masterskill.uid, skill, 1)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 1) ? 'check' : 'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 1) ?
+                                                                        'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                                 <button mat-icon-button
                                                                         [matTooltip]="masterskill.ratingValue2"
                                                                         (click)="selectFilter(masterskill.uid, skill, 2)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 2)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 2) ? 'check' : 'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 2) ?
+                                                                        'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                                 <button mat-icon-button
                                                                         [matTooltip]="masterskill.ratingValue3"
                                                                         (click)="selectFilter(masterskill.uid, skill, 3)">
                                                                     <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 3)">
-                                                                        {{ifFilterisSelected(masterskill, skill, 3) ? 'check' : 'star'}}
+                                                                        {{ifFilterisSelected(masterskill, skill, 3) ?
+                                                                        'check' : 'star'}}
                                                                     </mat-icon>
                                                                 </button>
                                                             </div>
@@ -767,21 +774,21 @@
                                                  mat-sort-header> Book </mat-header-cell>
                                 <mat-cell *matCellDef="let row">
                                     <button class="book"
-                                            [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                            [disabled]=" selectedEvent.deative"
                                             (click)="bookEmployee(row)"
                                             mat-mini-fab
                                             matTooltip="Book {{row.displayName}}">
                                         <mat-icon>check</mat-icon>
                                     </button>
                                     <button class="maybe"
-                                            [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                            [disabled]=" selectedEvent.deative"
                                             (click)="maybeEmployee(row)"
                                             mat-mini-fab
                                             matTooltip="{{row.displayName}} kan måske">
                                         <mat-icon>error_outline</mat-icon>
                                     </button>
                                     <button class="nogo"
-                                            [disabled]="selectedEvent.bookingDone || selectedEvent.deative"
+                                            [disabled]=" selectedEvent.deative"
                                             (click)="nogoEmployee(row)"
                                             mat-mini-fab
                                             matTooltip="{{row.displayName}} kan ikke">

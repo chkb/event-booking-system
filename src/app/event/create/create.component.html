@@ -1,4 +1,5 @@
-<mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+<mat-card class="card infocard"
+          [class.xs]="['card-xs', 'infocard-xs']">
     <mat-card-header class="card-header">
         <h3>
             Opret Begivenhed
@@ -6,13 +7,24 @@
     </mat-card-header>
     <mat-card-content>
         <mat-form-field class="full-width">
-            <input matInput placeholder="Navn på begivenhed" [(ngModel)]="event.name" name="eventname">
+            <input matInput
+                   placeholder="Navn på begivenhed"
+                   [(ngModel)]="event.name"
+                   name="eventname">
         </mat-form-field>
         <mat-form-field class="full-width">
-            <textarea matInput class="comment" placeholder="Kommentar" [(ngModel)]="event.eventDescription" name="comment"></textarea>
+            <textarea matInput
+                      class="comment"
+                      placeholder="Kommentar"
+                      [(ngModel)]="event.eventDescription"
+                      name="comment"></textarea>
         </mat-form-field>
         <mat-form-field class="full-width">
-            <input matInput type="number" placeholder="Antal medarbejdere på event (kun heltal)" [(ngModel)]="event.staffNeed" name="eventname">
+            <input matInput
+                   type="number"
+                   placeholder="Antal medarbejdere på event (kun heltal)"
+                   [(ngModel)]="event.staffNeed"
+                   name="eventname">
         </mat-form-field>
         <mat-form-field class="full-width">
             <mat-select [(value)]="event.billInfo">
@@ -33,51 +45,80 @@
         </mat-form-field>
         <mat-divider></mat-divider>
         <h3>Tid og sted</h3>
-        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+        <div fxLayout="column wrap"
+             fxLayout.gt-xs="row"
+             fxLayoutGap="2%">
             <div fxFlex>
                 <h5>Start tidspunkt</h5>
-                <input type="time" [(ngModel)]="event.timeFrom" />
+                <input type="time"
+                       [(ngModel)]="event.timeFrom" />
                 <mat-form-field class="full-width">
-                    <input matInput type="date" placeholder="Startdato" [(ngModel)]="event.dateFrom">
+                    <input matInput
+                           type="date"
+                           placeholder="Startdato"
+                           [(ngModel)]="event.dateFrom">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <h5>Slut tidspunkt</h5>
-                <input type="time" [(ngModel)]="event.timeTo" />
+                <input type="time"
+                       [(ngModel)]="event.timeTo" />
                 <mat-form-field class="full-width">
-                    <input matInput type="date" placeholder="Slutdato" [(ngModel)]="event.dateTo">
+                    <input matInput
+                           type="date"
+                           placeholder="Slutdato"
+                           [(ngModel)]="event.dateTo">
                 </mat-form-field>
             </div>
         </div>
-        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+        <div fxLayout="column wrap"
+             fxLayout.gt-xs="row"
+             fxLayoutGap="2%">
             <div fxFlex>
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Lokation" [(ngModel)]="event.eventLocation" name="eventlocation">
+                    <input matInput
+                           placeholder="Lokation"
+                           [(ngModel)]="event.eventLocation"
+                           name="eventlocation">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Adresse på lokation" [(ngModel)]="event.eventAdress" name="eventadress">
+                    <input matInput
+                           placeholder="Adresse på lokation"
+                           [(ngModel)]="event.eventAdress"
+                           name="eventadress">
                 </mat-form-field>
             </div>
         </div>
         <mat-divider></mat-divider>
         <h3>Kundeoplysninger</h3>
-        <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
+        <div fxLayout="column wrap"
+             fxLayout.gt-xs="row"
+             fxLayoutGap="2%">
             <div fxFlex>
                 <mat-form-field class="full-width">
-                    <input matInput placeholder="Kunde" [(ngModel)]="event.customer" name="customer">
+                    <input matInput
+                           placeholder="Kundekontakt"
+                           [(ngModel)]="event.customer"
+                           name="customer">
                 </mat-form-field>
             </div>
             <div fxFlex>
                 <mat-form-field class="full-width">
-                    <textarea matInput placeholder="Kontaktoplysninger" [(ngModel)]="event.contactInfo" name="contactInfo"></textarea>
+                    <textarea matInput
+                              placeholder="Lokationkontakt"
+                              [(ngModel)]="event.contactInfo"
+                              name="contactInfo"></textarea>
                 </mat-form-field>
             </div>
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <button mat-raised-button color="primary" [disabled]="!event.dateFrom" (click)="create()">OPRET BEGIVENHED</button>
+        <button mat-raised-button
+                color="primary"
+                [disabled]="!event.dateFrom"
+                (click)="create()">OPRET BEGIVENHED</button>
         <!-- <button mat-raised-button color="warn">SLET BEGIVENHED</button> -->
     </mat-card-actions>
 </mat-card>

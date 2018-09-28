@@ -34,7 +34,9 @@ export class LoginProviderService {
                     const _user = this.afs.doc<User>(`users/${user.uid}`).valueChanges();
                     // tslint:disable-next-line:no-shadowed-variable
                     _user.subscribe((user: User) => {
-                        this.role = user.role;
+                        if (user) {
+                            this.role = user.role;
+                        }
                     });
 
                     return _user;
@@ -90,7 +92,8 @@ export class LoginProviderService {
             uid: user.uid,
             email: user.email,
             displayName: user.displayName,
-            photoURL: user.photoURL
+            photoURL: user.photoURL,
+            role: ''
         };
 
         this.afs.firestore.doc(`/users/${user.uid}`).get()

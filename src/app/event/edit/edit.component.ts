@@ -79,7 +79,6 @@ export class EventEditComponent implements OnInit {
     bookedSource: MatTableDataSource<Booked>;
     maybeSource: MatTableDataSource<Booked>;
     nogoSource: MatTableDataSource<Booked>;
-    private readonly localstorageSkillListKey: string = 'search_skill_list';
 
     isExpansionDetailRow = (i, row) => row.hasOwnProperty('detailRow');
     // tslint:disable-next-line:member-ordering
@@ -89,13 +88,11 @@ export class EventEditComponent implements OnInit {
         private route: ActivatedRoute,
         private afs: AngularFirestore,
         private router: Router,
-        private localStorageService: LocalStorageService,
-        private atp: AmazingTimePickerService,
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     getEmployeeData(): void {
@@ -141,7 +138,6 @@ export class EventEditComponent implements OnInit {
                 tempList.push(employee);
             }
         });
-
         this.generalEmployeeList = tempList;
         this.dataSource = new MatTableDataSource(tempList);
     }
@@ -170,8 +166,8 @@ export class EventEditComponent implements OnInit {
         employeeList.forEach(employee => {
             this.removeInPlace(this.generalEmployeeList, employee);
         });
-
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
+        this.filterEmployeeData();
     }
 
     bookEmployee(employee: Booked): void {
@@ -236,6 +232,7 @@ export class EventEditComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.generalEmployeeList);
         this.getEmailList();
         this.updateBookedList();
+        this.filterEmployeeData();
     }
 
     maybeEmployee(employee: Booked): void {
@@ -424,29 +421,22 @@ export class EventEditComponent implements OnInit {
     }
 
     getFilterData(): void {
-        const localstorageSkillList = this.localStorageService.getItem<MasterSkillExtended[]>(this.localstorageSkillListKey);
-        if (localstorageSkillList && localstorageSkillList.length) {
-            this.masterskills = [];
-            this.masterskills = localstorageSkillList;
-            this.filterEmployeeData();
-        } else {
-            this.afs.collection('masterSkills').ref.get().then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    const masterskill = new MasterSkillExtended();
-                    masterskill.name = doc.data()['name'];
-                    masterskill.hasRating = doc.data()['hasRating'];
-                    masterskill.onlyAdminEdit = doc.data()['onlyAdminEdit'];
-                    masterskill.ratingValue1 = doc.data()['ratingValue1'];
-                    masterskill.ratingValue2 = doc.data()['ratingValue2'];
-                    masterskill.ratingValue3 = doc.data()['ratingValue3'];
-                    masterskill.skills = doc.data()['skills'];
-                    masterskill.order = doc.data()['order'];
-                    masterskill.uid = doc.id;
-                    this.masterskills.push(masterskill);
-                });
+        this.afs.collection('masterSkills').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const masterskill = new MasterSkillExtended();
+                masterskill.name = doc.data()['name'];
+                masterskill.hasRating = doc.data()['hasRating'];
+                masterskill.onlyAdminEdit = doc.data()['onlyAdminEdit'];
+                masterskill.ratingValue1 = doc.data()['ratingValue1'];
+                masterskill.ratingValue2 = doc.data()['ratingValue2'];
+                masterskill.ratingValue3 = doc.data()['ratingValue3'];
+                masterskill.skills = doc.data()['skills'];
+                masterskill.order = doc.data()['order'];
+                masterskill.uid = doc.id;
+                this.masterskills.push(masterskill);
             });
-            this.masterskills.sort((a, b) => a.order - b.order);
-        }
+        });
+        this.masterskills.sort((a, b) => a.order - b.order);
     }
 
     selectFilter(masterSkillId: string, skillName: string, rankingValue: number) {
@@ -454,14 +444,14 @@ export class EventEditComponent implements OnInit {
         const selectedSkill = new SkillExtended();
         selectedSkill.name = skillName;
         selectedSkill.rankValue = rankingValue;
-        const hasDuplicates = this.containsDuplicate(this.masterskills[idx].selectedSkills, selectedSkill)
-        if(hasDuplicates){
+        const hasDuplicates = this.containsDuplicate(this.masterskills[idx].selectedSkills, selectedSkill);
+        if (hasDuplicates) {
             this.masterskills[idx].selectedSkills.forEach(item => {
-                if(item.name === skillName && item.rankValue !== rankingValue){
+                if (item.name === skillName && item.rankValue !== rankingValue) {
                     const idx2 = this.masterskills[idx].selectedSkills.indexOf(item);
                     this.masterskills[idx].selectedSkills.splice(idx2, 1);
                 }
-            })
+            });
         }
         if (this.masterskills[idx].selectedSkills) {
             const isInArray = this.containsObject(this.masterskills[idx].selectedSkills, selectedSkill);
@@ -475,7 +465,6 @@ export class EventEditComponent implements OnInit {
         } else {
             this.masterskills[idx].selectedSkills.push(selectedSkill);
         }
-        this.localStorageService.setItem(this.localstorageSkillListKey, this.masterskills);
         this.filterEmployeeData();
     }
 
@@ -555,11 +544,11 @@ export class EventEditComponent implements OnInit {
         let result = false;
         let count = 0;
         skillExtendedList.forEach(item => {
-            if(item.name === skillExtended.name){
-                count ++;
+            if (item.name === skillExtended.name) {
+                count++;
             }
         });
-        result = count  >= 1 ? true : false;
+        result = count >= 1 ? true : false;
 
         return result;
     }

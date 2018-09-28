@@ -153,6 +153,13 @@
 
                         <mat-form-field class="full-width">
                             <input matInput
+                                   placeholder="By"
+                                   [(ngModel)]="selectedEmployee.city"
+                                   name="postal">
+                        </mat-form-field>
+
+                        <mat-form-field class="full-width">
+                            <input matInput
                                    placeholder="Postnr"
                                    [(ngModel)]="selectedEmployee.postal"
                                    name="postal">
@@ -267,7 +274,6 @@
                                                 <mat-list-item *ngFor="let skill of masterskill.skills">
                                                     <mat-icon class="btn"
                                                               (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)"
-                                                
                                                               mat-list-icon>add</mat-icon>
                                                     <h4 mat-line>{{skill}}</h4>
                                                 </mat-list-item>

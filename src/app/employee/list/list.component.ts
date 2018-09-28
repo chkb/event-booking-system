@@ -1,5 +1,5 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -15,7 +15,8 @@ import { Role } from '../../shared/role';
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EmployeeListComponent implements AfterViewInit {
+export class EmployeeListComponent implements OnInit {
+    employeeList: Employee[] = [];
     displayedColumns = [
         'role',
         'displayName',
@@ -25,12 +26,16 @@ export class EmployeeListComponent implements AfterViewInit {
         'hasCar'
     ];
     dataSource: MatTableDataSource<Employee>;
+    @ViewChild(MatSort) sort: MatSort;
 
     constructor(
         private afs: AngularFirestore,
         private router: Router
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
+    }
+
+    ngOnInit() {
+        this.afs.firestore.settings({ timestampsInSnapshots: true });
         const employeeList: Employee[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -45,11 +50,10 @@ export class EmployeeListComponent implements AfterViewInit {
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
                 employeeList.push(employee);
             });
+            this.employeeList = employeeList;
             this.dataSource = new MatTableDataSource(employeeList);
+            this.dataSource.sort = this.sort;
         });
-    }
-
-    ngAfterViewInit() {
     }
 
     applyFilter(filterValue: string) {

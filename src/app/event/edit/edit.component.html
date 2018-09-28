@@ -61,23 +61,31 @@
                            name="crew">
                 </mat-form-field>
 
-                <mat-form-field class="full-width">
-                    <textarea class="comment"
-                              [disabled]=" selectedEvent.deative"
-                              matInput
-                              placeholder="Event beskrivelse"
-                              [(ngModel)]="selectedEvent.eventDescription"
-                              name="comment"></textarea>
-                </mat-form-field>
+                <div fxLayout="column wrap"
+                     fxLayout.gt-xs="row"
+                     fxLayoutGap="2%">
+                    <div fxFlex>
+                        <mat-form-field class="full-width">
+                            <textarea class="comment"
+                                      [disabled]=" selectedEvent.deative"
+                                      matInput
+                                      placeholder="Event beskrivelse"
+                                      [(ngModel)]="selectedEvent.eventDescription"
+                                      name="comment"></textarea>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex>
 
-                <mat-form-field class="full-width">
-                    <textarea class="comment"
-                              [disabled]=" selectedEvent.deative"
-                              matInput
-                              placeholder="Tidsplan"
-                              [(ngModel)]="selectedEvent.timeline"
-                              name="timeline"></textarea>
-                </mat-form-field>
+                        <mat-form-field class="full-width">
+                            <textarea class="comment"
+                                      [disabled]=" selectedEvent.deative"
+                                      matInput
+                                      placeholder="Tidsplan"
+                                      [(ngModel)]="selectedEvent.timeline"
+                                      name="timeline"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
 
                 <mat-form-field class="full-width">
                     <input [disabled]=" selectedEvent.deative"

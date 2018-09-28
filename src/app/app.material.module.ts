@@ -17,6 +17,7 @@ import {
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
@@ -53,7 +54,8 @@ import { ClipboardModule } from 'ngx-clipboard';
         MatTooltipModule,
         MatStepperModule,
         MatExpansionModule,
-        ClipboardModule
+        ClipboardModule,
+        MatSlideToggleModule
     ]
 })
 export class AppMaterialModule {

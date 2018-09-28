@@ -5,9 +5,10 @@
         <mat-card class="card infocard"
                   [class.xs]="['card-xs', 'infocard-xs']">
             <mat-card-header class="card-header">
-                <h3>
-                    Eventliste
-                </h3>
+                <mat-card-title>Eventliste</mat-card-title>
+                <mat-card-subtitle>
+                    <mat-slide-toggle [(ngModel)]="viewAllUpcomming"></mat-slide-toggle>
+                </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <div class="search">
@@ -19,7 +20,7 @@
                     <mat-checkbox [(ngModel)]="getAllCheckBox"
                                   (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox>
                 </div>
-                <div class="table-overflow">
+                <div [ngClass]="viewAllUpcomming ?  '' : 'table-overflow'">
                     <div class="container">
                         <mat-table #table
                                    [dataSource]="dataSource">
@@ -69,7 +70,6 @@
                                                  class="center"> Personale </mat-header-cell>
                                 <mat-cell *matCellDef="let row"
                                           matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked"
-                            
                                           fxFlex="100px">
                                     <div class="center">
                                         <span *ngIf="row.staffNeed">
@@ -99,7 +99,8 @@
                                 <mat-cell *matCellDef="let row">
                                     <mat-chip-list>
                                         <mat-chip [style.background]="row.eventTypeColor"
-                                                  style="color:white;">{{row.eventType ? row.eventType : 'Ingen event type'}}</mat-chip>
+                                                  style="color:white;">{{row.eventType ? row.eventType : 'Ingen event
+                                            type'}}</mat-chip>
                                     </mat-chip-list>
                                 </mat-cell>
                             </ng-container>
@@ -153,9 +154,10 @@
         <mat-card class="card infocard"
                   [class.xs]="['card-xs', 'infocard-xs']">
             <mat-card-header class="card-header">
-                <h3>
-                    Tidligere Eventliste
-                </h3>
+                <mat-card-title>Tidligere Eventliste</mat-card-title>
+                <mat-card-subtitle>
+                    <mat-slide-toggle [(ngModel)]="viewAllPrev"></mat-slide-toggle>
+                </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
                 <div class="search">
@@ -165,7 +167,7 @@
                                placeholder="Søg">
                     </mat-form-field>
                 </div>
-                <div class="table-overflow">
+                <div [ngClass]="viewAllPrev ?  '' : 'table-overflow'">
                     <div class="container">
                         <mat-table #table
                                    [dataSource]="dataPrevSource">
@@ -212,7 +214,6 @@
                                                  fxFlex="100px"> Personale </mat-header-cell>
                                 <mat-cell *matCellDef="let row"
                                           matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked"
-                            
                                           fxFlex="100px">
                                     <span *ngIf="row.staffNeed">
                                         <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
@@ -246,7 +247,8 @@
                                 <mat-cell *matCellDef="let row">
                                     <mat-chip-list>
                                         <mat-chip [style.background]="row.eventTypeColor"
-                                                  style="color:white;">{{row.eventType ? row.eventType : 'Ingen event type'}}</mat-chip>
+                                                  style="color:white;">{{row.eventType ? row.eventType : 'Ingen event
+                                            type'}}</mat-chip>
                                     </mat-chip-list>
                                 </mat-cell>
                             </ng-container>

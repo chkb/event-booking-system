@@ -16,6 +16,8 @@ import { moveIn } from '../../router.animations';
     host: { '[@moveIn]': '' }
 })
 export class EventListComponent implements AfterViewInit {
+    viewAllUpcomming = false;
+    viewAllPrev = false;
     getAllCheckBox: boolean;
     getAllPrevCheckBox: boolean;
     displayedColumns = [
@@ -37,7 +39,7 @@ export class EventListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
         this.getdata(false);
     }
 

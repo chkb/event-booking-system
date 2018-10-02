@@ -6,9 +6,10 @@ import { Subject } from 'Rxjs';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
-import { Booked, EventObject, Payout } from '../../shared/event';
+import { Booked, EventObject, Payout, PayoutVM } from '../../shared/event';
 import { Wager } from '../../shared/wager';
 import { moveIn } from '../../router.animations';
+import { OrderByPipe } from '../../order-by.pipe';
 
 @Component({
     selector: 'app-edit',
@@ -45,7 +46,8 @@ export class PayoutEditComponent implements OnInit {
         private snackBar: MatSnackBar,
         private dialog: MatDialog,
         private router: Router,
-        private lps: LoginProviderService
+        private lps: LoginProviderService,
+        private orderByPipe: OrderByPipe
     ) {
         afs.firestore.settings({ timestampsInSnapshots: true });
     }
@@ -62,14 +64,15 @@ export class PayoutEditComponent implements OnInit {
                     if (this.selectedEvent.payouts) {
                         this.selectedPayoutList = this.selectedEvent.payouts;
                     }
-                    this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+                    this.updateTable();
                     this.getWagerData();
                 });
         });
     }
 
     addToPayout(employee: Booked): void {
-        const payout = new Payout();
+        const payout = new PayoutVM();
+        payout.employeeName = employee.displayName;
         payout.employee = employee;
         payout.timeFrom = this.selectedEvent.timeFrom;
         payout.timeTo = this.selectedEvent.timeTo;
@@ -84,8 +87,13 @@ export class PayoutEditComponent implements OnInit {
             wagers.push(wager);
         }
         this.selectedPayoutList.push(payout);
-        this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        this.updateTable();
         this.update();
+    }
+
+    updateTable(): void {
+        this.selectedPayoutList = this.orderByPipe.transform(this.selectedPayoutList, 'employeeName', true);
+        this.dataSource = new MatTableDataSource(this.selectedPayoutList);
     }
 
     getSum(time: number, wager: number, bonus: number = 0): number {
@@ -143,13 +151,14 @@ export class PayoutEditComponent implements OnInit {
         payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
         const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
         this.selectedPayoutList[idx] = payout;
-        this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        this.updateTable();
+
     }
 
     removePayout(payout: Payout): void {
         const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
         this.selectedPayoutList.splice(idx, 1);
-        this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        this.updateTable();
         this.updateEvent.next(true);
     }
 

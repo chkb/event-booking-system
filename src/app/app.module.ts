@@ -43,6 +43,7 @@ import { LoginEmailComponent } from './login-email/login-email.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesAdminComponent } from './messages/admin/admin.component';
 import { MessagesViewComponent } from './messages/view/view.component';
+import { OrderByPipe } from './order-by.pipe';
 import { PayoutEditComponent } from './payout/edit/edit.component';
 import { PayoutListComponent } from './payout/list/list.component';
 import { SignupComponent } from './signup/signup.component';
@@ -110,6 +111,7 @@ registerLocaleData(daLocale);
         HoursMinutesSecondsPipe,
         ArraySortPipe,
         DatePipe,
+        OrderByPipe,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,

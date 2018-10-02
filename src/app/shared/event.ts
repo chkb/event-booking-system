@@ -51,6 +51,17 @@ export class Payout {
     sum: number;
     employee: Booked;
 }
+export class PayoutVM {
+    employeeName: string;
+    timeFrom: string;
+    timeTo: string;
+    hours: number;
+    wager: number;
+    bonus: number;
+    comment: string;
+    sum: number;
+    employee: Booked;
+}
 
 export class Booked extends Employee {
     bookingComment: string;

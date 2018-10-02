@@ -47,6 +47,7 @@ export class Payout {
     hours: number;
     wager: number;
     bonus: number;
+    comment: string;
     sum: number;
     employee: Booked;
 }

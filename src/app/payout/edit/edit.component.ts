@@ -35,6 +35,7 @@ export class PayoutEditComponent implements OnInit {
         'wagerList',
         'wager',
         'bonus',
+        'comment',
         'sum',
         'selection'
     ];
@@ -46,7 +47,7 @@ export class PayoutEditComponent implements OnInit {
         private router: Router,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

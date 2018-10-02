@@ -82,7 +82,8 @@ registerLocaleData(daLocale);
         MessagesViewComponent,
         EventAdminComponent,
         StatComponent,
-        EventUpcommingComponent
+        EventUpcommingComponent,
+        OrderByPipe
     ],
     imports: [
         FlexLayoutModule,

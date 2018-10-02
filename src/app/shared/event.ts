@@ -64,3 +64,12 @@ export class EventHistory {
     comments: string;
     date: Date;
 }
+export class EventHistoryViewModel {
+    employeeUid: string;
+    employeeName: string;
+    eventUid: string;
+    eventName: string;
+    comments: string;
+    date: Date;
+    event: EventObject;
+}

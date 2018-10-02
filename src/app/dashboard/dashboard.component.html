@@ -1,27 +1,44 @@
-<div fxLayout="column" fxLayoutGap="2%">
+<div fxLayout="row"
+     fxLayoutAlign="space-between start"
+     fxLayoutGap="2%">
     <div fxFlex>
-        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
+        <mat-card class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
             <mat-card-header class="card-header">
                 <h3 *ngIf="selectedEmployee">
-                    Hej {{selectedEmployee.displayName}}
+                    Kommende events du er tilknyttet
                 </h3>
             </mat-card-header>
             <mat-card-content>
-                <p>
-                    Opdater din profil her:
-                </p>
-                <button mat-raised-button (click)="gotomyprofile()">
-                    GÅ TIL PROFIL
-                </button>
+                <app-event-upcomming [employeeId]="employeeId"></app-event-upcomming>
             </mat-card-content>
         </mat-card>
-        <!-- <div *ngIf="isAdmin && !isEmployee">
-            <app-stat *ngIf="statContract" [stat]="statContract"></app-stat>
-            <app-stat *ngIf="statLicens" [stat]="statLicens"></app-stat>
-            <app-stat *ngIf="statCar" [stat]="statCar"></app-stat>
-        </div> -->
     </div>
     <div fxFlex>
-        <app-message-view></app-message-view>
+        <div fxLayout="column"
+             fxLayoutGap="2%">
+            <div fxFlex>
+                <mat-card class="card infocard"
+                          [class.xs]="['card-xs', 'infocard-xs']">
+                    <mat-card-header class="card-header">
+                        <h3 *ngIf="selectedEmployee">
+                            Hej {{selectedEmployee.displayName}}
+                        </h3>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p>
+                            Opdater din profil her:
+                        </p>
+                        <button mat-raised-button
+                                (click)="gotomyprofile()">
+                            GÅ TIL PROFIL
+                        </button>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+            <div fxFlex>
+                <app-message-view></app-message-view>
+            </div>
+        </div>
     </div>
 </div>

@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
         private afs: AngularFirestore,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

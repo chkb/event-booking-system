@@ -1,4 +1,4 @@
-import { registerLocaleData, DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import daLocale from '@angular/common/locales/da';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -23,12 +23,16 @@ import { AuthGuard } from './core/auth-guard.service';
 import { LoginProviderService } from './core/login-provider.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MyDateAdapter } from './date-adapter';
+import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 import { EmployeeCreateComponent } from './employee/create/create.component';
 import { EmployeeEditComponent } from './employee/edit/edit.component';
 import { EmployeeListComponent } from './employee/list/list.component';
 import { EmployeeViewComponent } from './employee/view/view.component';
 import { ErrorInterceptor } from './error.interceptor';
+import { EventHistoryComponent } from './event-history/event-history.component';
 import { EventTypeComponent } from './event-type/event-type.component';
+import { EventUpcommingComponent } from './event-upcomming/event-upcomming.component';
+import { EventAdminComponent } from './event/admin/admin.component';
 import { EventCreateComponent } from './event/create/create.component';
 import { EventEditComponent } from './event/edit/edit.component';
 import { EventListComponent } from './event/list/list.component';
@@ -37,18 +41,15 @@ import { HoursMinutesSecondsPipe } from './hours-minutes-seconds.pipe';
 import { LocalStorageService } from './localstorage.service';
 import { LoginEmailComponent } from './login-email/login-email.component';
 import { LoginComponent } from './login/login.component';
+import { MessagesAdminComponent } from './messages/admin/admin.component';
+import { MessagesViewComponent } from './messages/view/view.component';
 import { PayoutEditComponent } from './payout/edit/edit.component';
 import { PayoutListComponent } from './payout/list/list.component';
 import { SignupComponent } from './signup/signup.component';
 import { SkillComponent } from './skill/skill.component';
+import { StatComponent } from './stat/stat.component';
 import { WagerComponent } from './wager/wager.component';
 import { WindowRef } from './window-reference';
-import { EventHistoryComponent } from './event-history/event-history.component';
-import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
-import { MessagesAdminComponent } from './messages/admin/admin.component';
-import { MessagesViewComponent } from './messages/view/view.component';
-import { EventAdminComponent } from './event/admin/admin.component';
-import { StatComponent } from './stat/stat.component';
 
 registerLocaleData(daLocale);
 @NgModule({
@@ -79,7 +80,8 @@ registerLocaleData(daLocale);
         MessagesAdminComponent,
         MessagesViewComponent,
         EventAdminComponent,
-        StatComponent
+        StatComponent,
+        EventUpcommingComponent
     ],
     imports: [
         FlexLayoutModule,

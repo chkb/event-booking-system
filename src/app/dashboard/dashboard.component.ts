@@ -4,8 +4,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 
 import { LoginProviderService } from '../core/login-provider.service';
 import { Employee } from '../shared/employee';
+import { Message } from '../shared/message';
 import { Stat } from '../shared/stat';
-import { VoronoiSite } from 'd3';
 
 @Component({
     selector: 'app-dashboard',
@@ -13,6 +13,8 @@ import { VoronoiSite } from 'd3';
     styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit {
+    messagesList: Message[] = [];
+    step = 0;
     displayName: string;
     employeeId: string;
     selectedEmployee: Employee;
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
                 });
         });
         this.getEmployees();
+        this.getMessages();
     }
 
     getEmployees(): void {
@@ -136,5 +139,27 @@ export class DashboardComponent implements OnInit {
         }
 
         return false;
+    }
+
+    getMessages(): void {
+        this.messagesList = [];
+        this.afs.collection('messages').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const message = new Message();
+                message.title = doc.data()['title'];
+                message.dateCreated = doc.data()['dateCreated'];
+                message.message = doc.data()['message'];
+                message.createdByName = doc.data()['createdByName'];
+                message.createdByImage = doc.data()['createdByImage'];
+                message.employeeList = doc.data()['employeeList'];
+                message.uid = doc.id;
+                this.messagesList.push(message);
+            });
+            this.messagesList.sort((a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime());
+        });
+    }
+
+    setStep(index: number) {
+        this.step = index;
     }
 }

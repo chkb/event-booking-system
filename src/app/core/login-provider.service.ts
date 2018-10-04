@@ -93,7 +93,6 @@ export class LoginProviderService {
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL,
-            role: ''
         };
 
         this.afs.firestore.doc(`/users/${user.uid}`).get()
@@ -101,6 +100,7 @@ export class LoginProviderService {
                 if (docSnapshot.exists) {
                     return userRef.update(data);
                 } else {
+                    data.role = '';
                     return userRef.set(data);
                 }
             });

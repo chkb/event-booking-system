@@ -18,7 +18,7 @@ export class MessagesViewComponent implements OnInit {
     constructor(
         private afs: AngularFirestore,
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

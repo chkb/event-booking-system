@@ -1,42 +1,43 @@
-<mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-    <mat-card-header class="card-header">
-        <h3>
-            Beskeder
-        </h3>
-    </mat-card-header>
-    <mat-card-content>
-        <div *ngIf="!messagesList?.length">
-            Ingen nye beskeder
-        </div>
-        <mat-accordion>
-            <mat-expansion-panel [expanded]="i == 0" *ngFor="let message of messagesList; let i = index">
-                <mat-expansion-panel-header>
-                    <mat-panel-title class="title">
-                        {{message.title}}
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-                    <div fxFlex="100" fxFlex.gt-md="60">
-                        <div class="besked">
-                            <p class="comment">{{message.message}}</p>
-                        </div>
-                    </div>
-                    <div fxFlex="100" fxFlex.gt-md="40">
-                        <mat-list>
-                            <mat-list-item>
-                                <img mat-list-icon [src]="message.createdByImage" />
-                                <h4 class="title" mat-line>Oprettet af</h4>
-                                <p mat-line>{{message.createdByName}}</p>
-                            </mat-list-item>
-                            <mat-list-item>
-                                <mat-icon mat-list-icon>date_range</mat-icon>
-                                <h4 class="title" mat-line>Dato</h4>
-                                <p mat-line>{{message.dateCreated | date: 'Den dd. MMMM yyyy kl: HH:MM'}}</p>
-                            </mat-list-item>
-                        </mat-list>
+<div *ngIf="!messagesList?.length">
+    Ingen nye beskeder
+</div>
+<div>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="i == 0"
+                             *ngFor="let message of messagesList; let i = index">
+            <mat-expansion-panel-header>
+                <mat-panel-title class="title">
+                    {{message.title}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div fxLayout="column wrap"
+                 fxLayout.gt-xs="row"
+                 fxLayoutGap="2%">
+                <div fxFlex="100"
+                     fxFlex.gt-md="60">
+                    <div class="besked">
+                        <p class="comment">{{message.message}}</p>
                     </div>
                 </div>
-            </mat-expansion-panel>
-        </mat-accordion>
-    </mat-card-content>
-</mat-card>
+                <div fxFlex="100"
+                     fxFlex.gt-md="40">
+                    <mat-list>
+                        <mat-list-item>
+                            <img mat-list-icon
+                                 [src]="message.createdByImage" />
+                            <h4 class="title"
+                                mat-line>Oprettet af</h4>
+                            <p mat-line>{{message.createdByName}}</p>
+                        </mat-list-item>
+                        <mat-list-item>
+                            <mat-icon mat-list-icon>date_range</mat-icon>
+                            <h4 class="title"
+                                mat-line>Dato</h4>
+                            <p mat-line>{{message.dateCreated | date: 'Den dd. MMMM yyyy kl: HH:MM'}}</p>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

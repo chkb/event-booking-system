@@ -188,6 +188,15 @@
                                    name="account">
                         </mat-form-field>
 
+                        <mat-form-field class="full-width"
+                                        *ngIf="isAdmin()">
+                            <input matInput
+                                   placeholder="Danløn Lønningsnummer"
+                                   maxlength="10"
+                                   [(ngModel)]="selectedEmployee.payrollNumber"
+                                   name="account">
+                        </mat-form-field>
+
                         <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
                         <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
                         <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned"

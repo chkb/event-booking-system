@@ -90,9 +90,6 @@ export class EventUpcommingComponent implements OnInit {
     }
 
     gotoEvent(id: string): void {
-        if (!this.isAdminOrEventLeader()) {
-            return;
-        }
         this.router.navigate(['/event', id]);
     }
 

@@ -8,18 +8,19 @@ import { EmployeeCreateComponent } from '../employee/create/create.component';
 import { EmployeeEditComponent } from '../employee/edit/edit.component';
 import { EmployeeListComponent } from '../employee/list/list.component';
 import { EventTypeComponent } from '../event-type/event-type.component';
+import { EventAdminComponent } from '../event/admin/admin.component';
 import { EventCreateComponent } from '../event/create/create.component';
 import { EventEditComponent } from '../event/edit/edit.component';
 import { EventListComponent } from '../event/list/list.component';
 import { LoginEmailComponent } from '../login-email/login-email.component';
 import { LoginComponent } from '../login/login.component';
+import { MessagesAdminComponent } from '../messages/admin/admin.component';
+import { PayoutAdminComponent } from '../payout/admin/admin.component';
 import { PayoutEditComponent } from '../payout/edit/edit.component';
 import { PayoutListComponent } from '../payout/list/list.component';
 import { SignupComponent } from '../signup/signup.component';
 import { SkillComponent } from '../skill/skill.component';
 import { WagerComponent } from '../wager/wager.component';
-import { MessagesAdminComponent } from '../messages/admin/admin.component';
-import { EventAdminComponent } from '../event/admin/admin.component';
 
 
 const routes: Route[] = [
@@ -108,6 +109,11 @@ const routes: Route[] = [
     {
         path: 'event-admin',
         component: EventAdminComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'payout-admin',
+        component: PayoutAdminComponent,
         canActivate: [AuthGuard]
     }
 ];

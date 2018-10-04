@@ -192,7 +192,7 @@ export class PayoutEditComponent implements OnInit {
             if (result) {
                 this.selectedEvent.payoutDone = true;
                 this.update();
-                this.router.navigate([`/payout/list`]);
+                this.router.navigate([`/event/list`]);
             }
         });
     }

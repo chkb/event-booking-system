@@ -1,11 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatSort, MatTableDataSource } from '@angular/material';
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as moment from 'moment';
-import { EventObject, EventHistory, Payout } from '../../shared/event';
-import { Employee } from '../../shared/employee';
-import { DatePipe } from '@angular/common';
-import { FormControl } from '@angular/forms';
+
 import { moveIn } from '../../router.animations';
+import { EventObject } from '../../shared/event';
+
+export class PayoutObject {
+    CVR: string;
+    Medarbejdernummer: string;
+    Loentype: string;
+    Enheder: number;
+    Sats: number;
+    Beloeb: number;
+    Child: PayoutDanish[];
+}
 
 export class PayoutDanish {
     Medarbejder: string;
@@ -26,12 +37,30 @@ declare function escape(s: string): string;
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EventAdminComponent implements OnInit {
+export class PayoutAdminComponent implements OnInit {
     list: PayoutDanish[] = [];
     eventList: EventObject[] = [];
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
-
+    dataSource: MatTableDataSource<PayoutObject>;
+    @ViewChild(MatSort) sort: MatSort;
+    displayedColumns = [
+        'Selection',
+        'Medarbejdernummer',
+        'Loentype',
+        'Enheder',
+        'Sats',
+        'Beloeb',
+    ];
+    // displayedColumns = [
+    //     'Medarbejder',
+    //     'Dato',
+    //     'Event',
+    //     'Takst',
+    //     'Timer',
+    //     'Bonus',
+    //     'Sum'
+    // ];
 
     constructor(
         private afs: AngularFirestore,
@@ -41,14 +70,20 @@ export class EventAdminComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getEmployeedata();
+        this.getEmployeeData();
+        this.getPayoutData();
     }
 
-    generateTemp() {
-        this.setList();
+    getEmployeeData(): void {
+        this.afs.collection('users').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                this.getAllEventHistory(false);
+            });
+
+        });
     }
 
-    getEmployeedata(): void {
+    getPayoutData(): void {
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 this.getAllEventHistory(false);
@@ -71,7 +106,8 @@ export class EventAdminComponent implements OnInit {
         });
     }
 
-    setList(): void {
+    search(): void {
+        // tslint:disable-next-line:no-debugger
         const list: PayoutDanish[] = [];
         this.eventList.forEach(event => {
             if (!event.deative && event.payouts) {
@@ -94,13 +130,68 @@ export class EventAdminComponent implements OnInit {
                             .startOf('day'));
 
                     if (isAfterStartDate && isBeforeStartDate) {
-
                         list.push(p);
                     }
                 });
                 this.list = list;
+                const parrentList = this.groupList(list, 'Medarbejder');
+                this.dataSource = new MatTableDataSource(parrentList);
+                this.dataSource.sort = this.sort;
             }
         });
+    }
+
+    groupList(collection: Array<any>, property: string): Array<any> {
+        // prevents the application from breaking if the array of objects doesn't exist yet
+        if (!collection) {
+            return null;
+        }
+        const groupedCollection = collection.reduce((previous, current) => {
+            if (!previous[current[property]]) {
+                previous[current[property]] = [current];
+            } else {
+                previous[current[property]].push(current);
+            }
+
+            return previous;
+        }, {});
+
+        // this will return an array of objects, each object containing a group of objects
+        return Object.keys(groupedCollection).map(key => {
+            const obj = new PayoutObject();
+            obj.CVR = '10105455';
+            obj.Medarbejdernummer = key;
+            obj.Loentype = 'Lønmodtager';
+            obj.Enheder = this.getValue(groupedCollection[key], 'Timer');
+            obj.Sats = this.getAvg(groupedCollection[key], 'Takst');
+            obj.Beloeb = this.getValue(groupedCollection[key], 'Sum');
+            obj.Child = groupedCollection[key];
+
+            return obj;
+        });
+    }
+
+    getValue(connections: any[], value: string): number {
+        let count = 0;
+        connections.forEach(element => {
+            count = count + element[value];
+        });
+
+        return count;
+    }
+
+    getAvg(connections: any[], value: string): number {
+        let sum = 0;
+        let count = 0;
+        connections.forEach(element => {
+            sum = sum + element[value];
+            count++;
+        });
+
+        return sum / count;
+    }
+
+    createCsv(): void {
         const startDateText = this.datepipe.transform(this.startDate.value).toString();
         const slutDateText = this.datepipe.transform(this.endDate.value).toString();
         const title = `Liste over lønninger for perioden: ${startDateText} til ${slutDateText} `;
@@ -150,7 +241,7 @@ export class EventAdminComponent implements OnInit {
             return;
         }
 
-        let fileName = 'MyReport_';
+        let fileName = 'Loen_data_';
         fileName += ReportTitle.replace(/ /g, '_');
 
         const uri = 'data:text/csv;charset=utf-8,' + escape(CSV);

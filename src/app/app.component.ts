@@ -94,6 +94,10 @@ export class AppComponent {
         {
             url: '/event-admin',
             text: 'Export event liste'
+        },
+        {
+            url: '/payout-admin',
+            text: 'Export løn data'
         }
     ];
 

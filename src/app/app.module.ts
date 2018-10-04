@@ -44,6 +44,7 @@ import { LoginComponent } from './login/login.component';
 import { MessagesAdminComponent } from './messages/admin/admin.component';
 import { MessagesViewComponent } from './messages/view/view.component';
 import { OrderByPipe } from './order-by.pipe';
+import { PayoutAdminComponent } from './payout/admin/admin.component';
 import { PayoutEditComponent } from './payout/edit/edit.component';
 import { PayoutListComponent } from './payout/list/list.component';
 import { SignupComponent } from './signup/signup.component';
@@ -83,7 +84,8 @@ registerLocaleData(daLocale);
         EventAdminComponent,
         StatComponent,
         EventUpcommingComponent,
-        OrderByPipe
+        OrderByPipe,
+        PayoutAdminComponent
     ],
     imports: [
         FlexLayoutModule,

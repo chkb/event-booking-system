@@ -1,0 +1,160 @@
+<div fxLayout="row wrap"
+     fxLayoutGap="2%">
+    <div fxFlex>
+        <mat-card class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Hent CSV for lønninger
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field>
+                    <input matInput
+                           [formControl]="startDate"
+                           [matDatepicker]="picker"
+                           placeholder="Startdato">
+                    <mat-datepicker-toggle matSuffix
+                                           [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput
+                           [formControl]="endDate"
+                           [matDatepicker]="picker2"
+                           placeholder="Slutdato">
+                    <mat-datepicker-toggle matSuffix
+                                           [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button
+                        (click)="search()">SØG</button>
+                <button mat-raised-button
+                        (click)="createCsv()">OPRET CSV</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<mat-card class="card infocard"
+          [class.xs]="['card-xs', 'infocard-xs']">
+    <div class="container">
+        <mat-table #table
+                   [dataSource]="dataSource"
+                   matSort>
+
+            <!-- Selection Column -->
+            <ng-container matColumnDef="Selection">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-checkbox></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Medarbejdernummer Column -->
+            <ng-container matColumnDef="Medarbejdernummer">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Medarbejdernummer </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.Medarbejdernummer}}
+                </mat-cell>
+            </ng-container>
+
+            <!-- Enheder Column -->
+            <ng-container matColumnDef="Loentype">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Løntype </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Loentype}} </mat-cell>
+            </ng-container>
+
+            <!-- Enheder Column -->
+            <ng-container matColumnDef="Enheder">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Enheder </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Enheder | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <!-- Sats Column -->
+            <ng-container matColumnDef="Sats">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Sats </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Sats | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <!-- Beloeb Column -->
+            <ng-container matColumnDef="Beloeb">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Beloeb </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Beloeb | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                     class="row">
+            </mat-row>
+        </mat-table>
+    </div>
+</mat-card>
+
+<!-- <mat-card class="card infocard"
+          [class.xs]="['card-xs', 'infocard-xs']">
+    <div class="container">
+        <mat-table #table
+                   [dataSource]="dataSource"
+                   matSort>
+
+            <ng-container matColumnDef="Medarbejder">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row.Medarbejder}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Dato">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Dato </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Dato}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Event">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Event </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Event}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Takst">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Takst </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Takst | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Timer">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Timer </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Timer}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Bonus">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Bonus </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Bonus | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Sum">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Sum </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.Sum | number : '1.2-2'}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"
+                     class="row">
+            </mat-row>
+        </mat-table>
+    </div>
+</mat-card> -->

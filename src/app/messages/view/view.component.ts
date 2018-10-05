@@ -12,6 +12,7 @@ import { moveIn } from '../../router.animations';
     host: { '[@moveIn]': '' }
 })
 export class MessagesViewComponent implements OnInit {
+    loading = true;
     messagesList: Message[] = [];
     step = 0;
 
@@ -43,6 +44,7 @@ export class MessagesViewComponent implements OnInit {
                 message.uid = doc.id;
                 this.messagesList.push(message);
             });
+            this.loading = false;
             this.messagesList.sort((a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime());
         });
     }

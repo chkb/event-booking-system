@@ -13,6 +13,7 @@ import { Stat } from '../shared/stat';
     styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit {
+    loading = false;
     messagesList: Message[] = [];
     step = 0;
     displayName: string;
@@ -142,6 +143,7 @@ export class DashboardComponent implements OnInit {
     }
 
     getMessages(): void {
+        this.loading = true;
         this.messagesList = [];
         this.afs.collection('messages').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -155,6 +157,7 @@ export class DashboardComponent implements OnInit {
                 message.uid = doc.id;
                 this.messagesList.push(message);
             });
+            this.loading = false;
             this.messagesList.sort((a, b) => new Date(b.dateCreated).getTime() - new Date(a.dateCreated).getTime());
         });
     }

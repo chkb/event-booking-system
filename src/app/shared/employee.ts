@@ -13,6 +13,7 @@ export class Employee {
     adress: string;
     postal: string;
     height: string;
+    paymentMethod: string;
     payrollNumber: string;
     city: string;
     bankAccount: string;

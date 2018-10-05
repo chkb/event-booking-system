@@ -16,6 +16,7 @@ import { Role } from '../../shared/role';
     host: { '[@moveIn]': '' }
 })
 export class EmployeeListComponent implements OnInit {
+    loading = false;
     employeeList: Employee[] = [];
     displayedColumns = [
         'role',
@@ -32,6 +33,7 @@ export class EmployeeListComponent implements OnInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
+        this.loading = true;
     }
 
     ngOnInit() {
@@ -50,6 +52,7 @@ export class EmployeeListComponent implements OnInit {
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
                 employeeList.push(employee);
             });
+            this.loading = false;
             this.employeeList = employeeList;
             this.dataSource = new MatTableDataSource(employeeList);
             this.dataSource.sort = this.sort;

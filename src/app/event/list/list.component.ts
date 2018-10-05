@@ -16,6 +16,7 @@ import { moveIn } from '../../router.animations';
     host: { '[@moveIn]': '' }
 })
 export class EventListComponent implements AfterViewInit {
+    loading = false;
     viewAllUpcomming = false;
     viewAllPrev = false;
     getAllCheckBox: boolean;
@@ -40,6 +41,7 @@ export class EventListComponent implements AfterViewInit {
         private router: Router
     ) {
         afs.firestore.settings({ timestampsInSnapshots: true });
+        this.loading = true;
         this.getdata(false);
     }
 
@@ -83,6 +85,7 @@ export class EventListComponent implements AfterViewInit {
                     }
                 }
             });
+            this.loading = false;
             eventList = eventList.sort((a, b) => new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime());
             this.dataSource = new MatTableDataSource(eventList);
             eventPrevList = eventPrevList.sort((a, b) => new Date(b.dateFrom).getTime() - new Date(a.dateFrom).getTime());

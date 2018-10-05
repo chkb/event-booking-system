@@ -5,7 +5,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import * as moment from 'moment';
 
 import { LoginProviderService } from '../core/login-provider.service';
-import { EventHistory, EventObject, EventHistoryViewModel } from '../shared/event';
+import { EventHistory, EventObject, EventHistoryViewModel, Booked } from '../shared/event';
 
 
 @Component({
@@ -14,6 +14,7 @@ import { EventHistory, EventObject, EventHistoryViewModel } from '../shared/even
     styleUrls: ['./event-upcomming.component.less']
 })
 export class EventUpcommingComponent implements OnInit {
+    loading = false;
     @Input() employeeId: string;
     list: EventHistory[] = [];
 
@@ -36,54 +37,29 @@ export class EventUpcommingComponent implements OnInit {
 
     ngOnInit() {
         if (this.employeeId) {
+            this.loading = true;
             this.getEmployeeData();
         }
     }
 
     getEmployeeData(): void {
         this.list = [];
-        const year = moment().year().toString();
-        this.afs.collection('event-history').ref.doc(this.employeeId).collection(year).get().then(querySnapshot => {
+        this.afs.collection('events').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
-                const eh = new EventHistoryViewModel();
-                eh.comments = doc.data()['comments'];
-                eh.employeeName = doc.data()['employeeName'];
-                eh.employeeUid = doc.data()['employeeUid'];
-                eh.eventName = doc.data()['eventName'];
-                eh.eventUid = doc.data()['eventUid'];
-                eh.date = doc.data()['date'];
-
-                this.afs
-                    .collection('events')
-                    .doc(eh.eventUid)
-                    .valueChanges()
-                    .subscribe((result: EventObject) => {
-                        eh.event = result;
-                    });
-
-                this.list.push(eh);
+                const bookedList = doc.data()['booked'];
+                bookedList.forEach((booked: Booked) => {
+                    const eh = new EventHistoryViewModel();
+                    if (booked.uid === this.employeeId) {
+                        eh.comments = booked.comment;
+                        eh.employeeName = booked.displayName;
+                        eh.employeeUid = booked.uid;
+                        eh.eventUid = doc.id;
+                        eh.event = doc.data();
+                        this.list.push(eh);
+                    }
+                });
             });
-        });
-        this.afs.collection('event-history').ref.doc(this.employeeId).collection(year + 1).get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                const eh = new EventHistoryViewModel();
-                eh.comments = doc.data()['comments'];
-                eh.employeeName = doc.data()['employeeName'];
-                eh.employeeUid = doc.data()['employeeUid'];
-                eh.eventName = doc.data()['eventName'];
-                eh.eventUid = doc.data()['eventUid'];
-                eh.date = doc.data()['date'];
-
-                this.afs
-                    .collection('events')
-                    .doc(eh.eventUid)
-                    .valueChanges()
-                    .subscribe((result: EventObject) => {
-                        eh.event = result;
-                    });
-
-                this.list.push(eh);
-            });
+            this.loading = false;
         });
         this.list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         this.dataSource = new MatTableDataSource(this.list);

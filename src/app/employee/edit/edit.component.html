@@ -197,6 +197,16 @@
                                    name="account">
                         </mat-form-field>
 
+                        <mat-form-field class="full-width"
+                                        *ngIf="isAdmin()">
+                            <mat-select placeholder="Udbetalingsform"
+                                        [(value)]="selectedEmployee.paymentMethod">
+                                <mat-option value="A-indkomst">A-Indkomst</mat-option>
+                                <mat-option value="B-indkomst">B-Indkomst</mat-option>
+                                <mat-option value="Faktura">Faktura</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
                         <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
                         <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
                         <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned"

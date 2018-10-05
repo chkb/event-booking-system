@@ -82,5 +82,5 @@ export class EventHistoryViewModel {
     eventName: string;
     comments: string;
     date: Date;
-    event: EventObject;
+    event: any;
 }

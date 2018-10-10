@@ -38,19 +38,28 @@
     </div>
 </div>
 
-<mat-card class="card infocard"
-          [class.xs]="['card-xs', 'infocard-xs']">
-    <div class="container">
+<div *ngIf="dataSource">
+    <mat-card class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
         <mat-table #table
                    [dataSource]="dataSource"
                    matSort>
 
             <!-- Selection Column -->
             <ng-container matColumnDef="Selection">
-                <mat-header-cell *matHeaderCellDef
-                                 mat-sort-header> </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null; selectAllChanges($event)"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                    Betalt?
+                </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <mat-checkbox></mat-checkbox>
+                    <mat-checkbox #checkbox
+                                  (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null; checkboxChanges($event, row)"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
                 </mat-cell>
             </ng-container>
 
@@ -92,13 +101,26 @@
             </ng-container>
 
 
+            <!-- Expand Column -->
+            <ng-container matColumnDef="expandedDetail">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Expand </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <h1>Hallo!</h1>
+                </mat-cell>
+            </ng-container>
+
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"
-                     class="row">
+            <mat-row *matRowDef="let row; columns: displayedColumns; when: isParrent"
+                     class="element-row"
+                     (click)="toggle(row)">
             </mat-row>
+            <mat-row mat-row
+                     *matRowDef="let element; columns: ['expandedDetail']; when: isChild"
+                     class="detail-row"></mat-row>
         </mat-table>
-    </div>
-</mat-card>
+    </mat-card>
+</div>
 
 <!-- <mat-card class="card infocard"
           [class.xs]="['card-xs', 'infocard-xs']">

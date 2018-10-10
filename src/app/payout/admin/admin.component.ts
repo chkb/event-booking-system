@@ -1,3 +1,5 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -33,7 +35,13 @@ declare function escape(s: string): string;
     selector: 'app-admin',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.less'],
-    animations: [moveIn()],
+    animations: [moveIn(),
+    trigger('detailExpand', [
+        state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
+        state('expanded', style({ height: '*' })),
+        transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ])
+    ],
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
@@ -43,6 +51,8 @@ export class PayoutAdminComponent implements OnInit {
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
     dataSource: MatTableDataSource<PayoutObject>;
+    selection = new SelectionModel<PayoutObject>(true, []);
+    expandedElements: string[] = [];
     @ViewChild(MatSort) sort: MatSort;
     displayedColumns = [
         'Selection',
@@ -256,4 +266,30 @@ export class PayoutAdminComponent implements OnInit {
         document.body.removeChild(link);
     }
 
+    /** Whether the number of selected elements matches the total number of rows. */
+    isAllSelected() {
+        const numSelected = this.selection.selected.length;
+        const numRows = this.dataSource.data.length;
+
+        return numSelected === numRows;
+    }
+
+    /** Selects all rows if they are not all selected; otherwise clear selection. */
+    masterToggle() {
+        this.isAllSelected() ?
+            this.selection.clear() :
+            this.dataSource.data.forEach(row => this.selection.select(row));
+    }
+
+    isParrent = (i: number, row: Object) => row.hasOwnProperty('CVR');
+
+    isChild = (i: number, row: Object) => row.hasOwnProperty('CVR');
+
+    toggle(row: PayoutObject): void {
+        const i: number = this.expandedElements.indexOf(row.Medarbejdernummer);
+        (i > -1
+            ? this.expandedElements.splice(i, 1)
+            : this.expandedElements.push(row.Medarbejdernummer));
+        this.selection.toggle(row);
+    }
 }

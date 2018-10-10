@@ -62,12 +62,31 @@ export class PayoutEditComponent implements OnInit {
                 .subscribe((result: EventObject) => {
                     this.selectedEvent = result;
                     if (this.selectedEvent.payouts) {
-                        this.selectedPayoutList = this.selectedEvent.payouts;
+                        console.log(this.selectedEvent.payouts);
+                        this.selectedPayoutList = this.getPayoutVmObject(this.selectedEvent.payouts);
                     }
                     this.updateTable();
                     this.getWagerData();
                 });
         });
+    }
+
+    getPayoutVmObject(payouts: Payout[]): PayoutVM[] {
+        const payoutVms = payouts.map(payout => {
+            const payoutVm = new PayoutVM();
+            payoutVm.employeeName = payout.employee.displayName;
+            payoutVm.employee = payout.employee;
+            payoutVm.timeFrom = payout.timeFrom;
+            payoutVm.timeTo = payout.timeTo;
+            payoutVm.hours = payout.hours;
+            payoutVm.sum = payout.sum;
+            payoutVm.bonus = payout.bonus;
+            payoutVm.comment = payout.comment;
+            payoutVm.wager = payout.wager;
+            return payoutVm;
+        });
+
+        return payoutVms;
     }
 
     addToPayout(employee: Booked): void {
@@ -92,8 +111,10 @@ export class PayoutEditComponent implements OnInit {
     }
 
     updateTable(): void {
-        this.selectedPayoutList = this.orderByPipe.transform(this.selectedPayoutList, 'employeeName', true);
-        this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        if (this.selectedPayoutList.length) {
+            this.selectedPayoutList = this.orderByPipe.transform(this.selectedPayoutList, 'employeeName', true);
+            this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        }
     }
 
     getSum(time: number, wager: number, bonus: number = 0): number {

@@ -1,9 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-import { AmazingTimePickerService } from 'amazing-time-picker';
-import { AngularFirestore } from 'angularfire2/firestore';
 
 import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
@@ -43,10 +41,9 @@ export class EventCreateComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router,
         private localStorageService: LocalStorageService,
-        private atp: AmazingTimePickerService,
         private snackBar: MatSnackBar
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+
         this.getEmployeeData();
     }
 

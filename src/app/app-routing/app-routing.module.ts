@@ -15,7 +15,7 @@ import { EventListComponent } from '../event/list/list.component';
 import { LoginEmailComponent } from '../login-email/login-email.component';
 import { LoginComponent } from '../login/login.component';
 import { MessagesAdminComponent } from '../messages/admin/admin.component';
-import { PayoutAdminComponent } from '../payout/admin/admin.component';
+import { TableExpandableRowsComponent } from '../payout/admin-temp/admin.component';
 import { PayoutEditComponent } from '../payout/edit/edit.component';
 import { PayoutListComponent } from '../payout/list/list.component';
 import { SignupComponent } from '../signup/signup.component';
@@ -113,7 +113,7 @@ const routes: Route[] = [
     },
     {
         path: 'payout-admin',
-        component: PayoutAdminComponent,
+        component: TableExpandableRowsComponent,
         canActivate: [AuthGuard]
     }
 ];

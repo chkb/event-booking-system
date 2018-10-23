@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Subject } from 'Rxjs';
+// tslint:disable-next-line:import-blacklist
+import { Subject } from 'rxjs';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
+import { OrderByPipe } from '../../order-by.pipe';
+import { moveIn } from '../../router.animations';
 import { Booked, EventObject, Payout, PayoutVM } from '../../shared/event';
 import { Wager } from '../../shared/wager';
-import { moveIn } from '../../router.animations';
-import { OrderByPipe } from '../../order-by.pipe';
 
 @Component({
     selector: 'app-edit',
@@ -49,7 +50,6 @@ export class PayoutEditComponent implements OnInit {
         private lps: LoginProviderService,
         private orderByPipe: OrderByPipe
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

@@ -1,10 +1,9 @@
-import 'rxjs/add/operator/switchMap';
-
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginProviderService } from '../core/login-provider.service';
 import { moveIn } from '../router.animations';
+
 
 
 @Component({

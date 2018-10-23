@@ -1,17 +1,16 @@
 import { DataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Rx';
-import { Employee } from './employee';
-import { AngularFirestore } from 'angularfire2/firestore';
 import { MatSort } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// tslint:disable-next-line:import-blacklist
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Employee } from './employee';
 
 export class DataTableSource extends DataSource<any> {
     /** Connect function called by the table to retrieve one stream containing the data to render. */
     constructor(
-        private angularFirestore: AngularFirestore,
         private _sort: MatSort) {
-            super();
-            angularFirestore.firestore.settings({ timestampsInSnapshots: true }); 
+        super();
     }
     private employeeList: Employee[] = [];
     private filterChange: BehaviorSubject<boolean>;
@@ -31,9 +30,10 @@ export class DataTableSource extends DataSource<any> {
             this.connect
         ];
 
-        return Observable.merge(...displayDataChanges).map(() => {
-            return this.getSortedData();
-        });
+        return of(...displayDataChanges).pipe(
+            map(() => {
+                return this.getSortedData();
+            }));
     }
 
     disconnect() { }

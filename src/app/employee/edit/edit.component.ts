@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
@@ -40,7 +40,6 @@ export class EmployeeEditComponent implements OnInit {
         private dialog: MatDialog,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

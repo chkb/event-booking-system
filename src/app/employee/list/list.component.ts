@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { moveIn } from '../../router.animations';
 import { Employee } from '../../shared/employee';
@@ -37,7 +37,6 @@ export class EmployeeListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.afs.firestore.settings({ timestampsInSnapshots: true });
         const employeeList: Employee[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {

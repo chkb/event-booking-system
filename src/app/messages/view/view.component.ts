@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Message } from '../../shared/message';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { moveIn } from '../../router.animations';
 
 @Component({
@@ -19,7 +19,7 @@ export class MessagesViewComponent implements OnInit {
     constructor(
         private afs: AngularFirestore,
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
+
     }
 
     ngOnInit() {

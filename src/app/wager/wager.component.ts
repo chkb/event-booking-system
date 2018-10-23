@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
-import { AngularFirestore } from 'angularfire2/firestore';
-
+import { AngularFirestore } from '@angular/fire/firestore';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { MasterSkill } from '../shared/skill';
 import { Wager } from '../shared/wager';
@@ -25,7 +24,6 @@ export class WagerComponent implements OnInit {
         private dialog: MatDialog,
         private snackBar: MatSnackBar
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
     }
 
     ngOnInit() {

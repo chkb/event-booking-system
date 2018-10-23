@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { LoginProviderService } from '../../core/login-provider.service';
 import { EventObject } from '../../shared/event';
@@ -35,7 +35,7 @@ export class PayoutListComponent implements AfterViewInit {
         private router: Router,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+
         let eventList: EventObject[] = [];
         this.afs.collection('events').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {

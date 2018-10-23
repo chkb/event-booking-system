@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 
 import { EventObject } from '../../shared/event';
@@ -40,7 +40,7 @@ export class EventListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
+
         this.loading = true;
         this.getdata(false);
     }

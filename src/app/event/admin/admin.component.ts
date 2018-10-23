@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 import { EventObject, EventHistory, Payout } from '../../shared/event';
 import { Employee } from '../../shared/employee';
@@ -37,7 +37,6 @@ export class EventAdminComponent implements OnInit {
         private afs: AngularFirestore,
         private datepipe: DatePipe
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

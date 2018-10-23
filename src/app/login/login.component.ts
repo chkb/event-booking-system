@@ -1,12 +1,11 @@
-import 'rxjs/add/operator/switchMap';
-
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Subscription } from '../../../node_modules/rxjs';
 import { LoginProviderService } from '../core/login-provider.service';
 import { moveIn } from '../router.animations';
-import { trigger, transition, style, state, animate } from '@angular/animations';
-import { Subscription } from '../../../node_modules/rxjs';
+
 
 @Component({
     selector: 'app-login',

@@ -1,0 +1,208 @@
+<div fxLayout="row wrap"
+     fxLayoutGap="2%">
+    <div fxFlex>
+        <mat-card class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+            <mat-card-header class="card-header">
+                <h3>
+                    Hent CSV for lønninger
+                </h3>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field>
+                    <input matInput
+                           [formControl]="startDate"
+                           [matDatepicker]="picker"
+                           placeholder="Startdato">
+                    <mat-datepicker-toggle matSuffix
+                                           [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput
+                           [formControl]="endDate"
+                           [matDatepicker]="picker2"
+                           placeholder="Slutdato">
+                    <mat-datepicker-toggle matSuffix
+                                           [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button
+                        (click)="search()">SØG</button>
+                <button mat-raised-button
+                        (click)="createCsv()">OPRET CSV</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<div *ngIf="dataSource">
+    <mat-card class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+        <table mat-table
+               [dataSource]="dataSource"
+               multiTemplateDataRows>
+            <!-- <ng-container matColumnDef="{{column}}"
+                          *ngFor="let column of displayedColumns">
+                <<th mat-header-cell
+                    *matHeaderCellDef> {{column}} </th>
+                <td td mat-cell
+                    *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container> -->
+            <ng-container matColumnDef="Selection">
+                <th mat-header-cell
+                    *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? masterToggle() : null; selectAllChanges($event)"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+                    </mat-checkbox>
+                    Udbetalt?
+                </th>
+                <td mat-cell
+                    *matCellDef="let row">
+                    <mat-checkbox #checkbox
+                                  (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(row) : null; checkboxChanges($event, row)"
+                                  [checked]="selection.isSelected(row)">
+                    </mat-checkbox>
+                <td>
+            </ng-container>
+
+            <!-- Medarbejdernummer Column -->
+            <ng-container matColumnDef="Medarbejdernummer">
+                <th mat-header-cell
+                    *matHeaderCellDef> Medarbejdernummer </th>
+                <td mat-cell
+                    *matCellDef="let row">
+                    {{row.Medarbejdernummer}}
+                <td>
+            </ng-container>
+
+            <!-- Enheder Column -->
+            <ng-container matColumnDef="Loentype">
+                <th mat-header-cell
+                    *matHeaderCellDef> Løntype </th>
+                <td mat-cell
+                    *matCellDef="let row"> {{row.Loentype}} <td>
+            </ng-container>
+
+            <!-- Enheder Column -->
+            <ng-container matColumnDef="Enheder">
+                <th mat-header-cell
+                    *matHeaderCellDef> Enheder </th>
+                <td mat-cell
+                    *matCellDef="let row"> {{row.Enheder | number : '1.2-2'}} <td>
+            </ng-container>
+
+            <!-- Sats Column -->
+            <ng-container matColumnDef="Sats">
+                <th mat-header-cell
+                    *matHeaderCellDef> Sats </th>
+                <td mat-cell
+                    *matCellDef="let row"> {{row.Sats | number : '1.2-2'}} <td>
+            </ng-container>
+
+            <!-- Beloeb Column -->
+            <ng-container matColumnDef="Beloeb">
+                <th mat-header-cell
+                    *matHeaderCellDef> Beloeb </th>
+                <td mat-cell
+                    *matCellDef="let row"> {{row.Beloeb | number : '1.2-2'}} <td>
+            </ng-container>
+
+            <!-- function Column -->
+            <ng-container matColumnDef="function">
+                <th mat-header-cell
+                    *matHeaderCellDef> </th>
+                <td mat-cell
+                    *matCellDef="let row">
+                    <button *ngIf="!expandedElement"
+                            mat-icon-button
+                            (click)="expandedElement = row">
+                        <mat-icon>
+                            keyboard_arrow_down
+                        </mat-icon>
+                    </button>
+                    <button *ngIf="expandedElement"
+                            mat-icon-button
+                            (click)="expandedElement = ''">
+                        <mat-icon>
+                            keyboard_arrow_up
+                        </mat-icon>
+                    </button>
+                <td>
+            </ng-container>
+
+            <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+            <ng-container matColumnDef="expandedDetail">
+                <td td
+                    mat-cell
+                    *matCellDef="let element"
+                    [attr.colspan]="displayedColumns.length">
+                    <div class="example-element-detail"
+                         [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                        <table>
+                            <thead>
+                                <tr class="custom-table-row">
+                                    <th>Udbetalt?</th>
+                                    <th>Dato</th>
+                                    <th>Timer</th>
+                                    <th>Sats</th>
+                                    <th>Bonus</th>
+                                    <th>Sum</th>
+                                    <th>Event</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of element.Child">
+                                    <td>
+                                        <mat-checkbox #checkbox
+                                                      (click)="$event.stopPropagation()"
+                                                      (change)="$event ? selection.toggle(row) : null; checkboxChanges($event, row)"
+                                                      [checked]="selection.isSelected(row)">
+                                        </mat-checkbox>
+                                    </td>
+                                    <td>
+                                        {{item.Dato}}
+                                    </td>
+                                    <td>
+                                        {{item.Timer | number : '1.2-2'}}
+                                    </td>
+                                    <td>
+                                        {{item.Takst | number : '1.2-2'}}
+                                    </td>
+                                    <td>
+                                        {{item.Bonus | number : '1.2-2'}}
+                                    </td>
+                                    <td>
+                                        {{item.Sum | number : '1.2-2'}}
+                                    </td>
+                                    <td>
+                                        <a target="_blank"
+                                           [routerLink]="['/payout', item.EventId]">
+                                            {{item.Event}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row
+                *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row
+                *matRowDef="let element; columns: displayedColumns;"
+                class="example-element-row"
+                [class.example-expanded-row]="expandedElement === element">
+            </tr>
+            <tr mat-row
+                *matRowDef="let row; columns: ['expandedDetail']"
+                class="example-detail-row"
+                (click)="expandedElement = ''"></tr>
+        </table>
+    </mat-card>
+</div>

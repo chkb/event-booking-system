@@ -1,12 +1,11 @@
-import 'rxjs/add/operator/switchMap';
-
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
-import { Observable } from 'rxjs/Observable';
-
+// tslint:disable-next-line:import-blacklist
+import { of, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 interface User {
     uid: string;
@@ -25,10 +24,9 @@ export class LoginProviderService {
     constructor(private afAuth: AngularFireAuth,
         private afs: AngularFirestore,
         private router: Router) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
         //// Get auth data, then get firestore user document || null
-        this.user = this.afAuth.authState
-            .switchMap(user => {
+        this.user = this.afAuth.authState.pipe(
+            switchMap(user => {
                 if (user) {
                     this.userId = user.uid;
                     const _user = this.afs.doc<User>(`users/${user.uid}`).valueChanges();
@@ -41,9 +39,10 @@ export class LoginProviderService {
 
                     return _user;
                 } else {
-                    return Observable.of(null);
+                    return of(null);
                 }
-            });
+            })
+        );
     }
 
     googleLogin() {

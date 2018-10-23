@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Message } from '../../shared/message';
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
@@ -36,7 +36,7 @@ export class MessagesAdminComponent implements OnInit {
         private snackBar: MatSnackBar,
         private auth: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
+
     }
 
     ngOnInit() {

@@ -50,6 +50,7 @@ export class Payout {
     comment: string;
     sum: number;
     employee: Booked;
+    udbetalt: boolean;
 }
 export class PayoutVM {
     employeeName: string;
@@ -61,6 +62,7 @@ export class PayoutVM {
     comment: string;
     sum: number;
     employee: Booked;
+    udbetalt: boolean;
 }
 
 export class Booked extends Employee {

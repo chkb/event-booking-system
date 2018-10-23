@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../shared/employee';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
     selector: 'app-employee-view',
@@ -14,7 +14,6 @@ export class EmployeeViewComponent implements OnInit {
     constructor(
         private afs: AngularFirestore,
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });        
     }
 
     ngOnInit() {

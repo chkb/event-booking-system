@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { LoginProviderService } from '../core/login-provider.service';
 import { Employee } from '../shared/employee';
@@ -30,7 +30,6 @@ export class DashboardComponent implements OnInit {
         private afs: AngularFirestore,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     ngOnInit() {

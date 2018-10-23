@@ -1,4 +1,4 @@
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from 'rxjs/operators';
 
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';

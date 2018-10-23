@@ -1,24 +1,22 @@
-import { animate, Component, OnInit, state, style, transition, trigger } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AmazingTimePickerService } from 'amazing-time-picker';
-import { AngularFirestore } from 'angularfire2/firestore';
-
 import * as moment from 'moment';
+// tslint:disable-next-line:import-blacklist
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
-import { LocalStorageService } from '../../localstorage.service';
+import { LoginProviderService } from '../../core/login-provider.service';
+import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
 import { moveIn } from '../../router.animations';
-import { Employee, Skill } from '../../shared/employee';
-import { EventObject, Booked, EventHistory } from '../../shared/event';
+import { Skill } from '../../shared/employee';
+import { Booked, EventHistory, EventObject } from '../../shared/event';
 import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
 import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
-import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
-import { debounce } from 'rxjs/operator/debounce';
-import { Subject } from 'Rxjs';
-import { LoginProviderService } from '../../core/login-provider.service';
 
 @Component({
     selector: 'app-edit',
@@ -92,7 +90,6 @@ export class EventEditComponent implements OnInit {
         private dialog: MatDialog,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
     }
 
     getEmployeeData(): void {
@@ -280,7 +277,7 @@ export class EventEditComponent implements OnInit {
         this.getEventData();
         this.getEmployeeData();
         this.geteventTypeList();
-        this.debounceUpdate.debounceTime(2000).subscribe(res => {
+        this.debounceUpdate.pipe(debounceTime(2000)).subscribe(res => {
             if (res) {
                 this.update(false);
             }

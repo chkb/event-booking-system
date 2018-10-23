@@ -2,15 +2,14 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import daLocale from '@angular/common/locales/da';
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AmazingTimePickerModule } from 'amazing-time-picker';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing/app-routing.module';
@@ -44,6 +43,7 @@ import { LoginComponent } from './login/login.component';
 import { MessagesAdminComponent } from './messages/admin/admin.component';
 import { MessagesViewComponent } from './messages/view/view.component';
 import { OrderByPipe } from './order-by.pipe';
+import { TableExpandableRowsComponent } from './payout/admin-temp/admin.component';
 import { PayoutAdminComponent } from './payout/admin/admin.component';
 import { PayoutEditComponent } from './payout/edit/edit.component';
 import { PayoutListComponent } from './payout/list/list.component';
@@ -85,7 +85,8 @@ registerLocaleData(daLocale);
         StatComponent,
         EventUpcommingComponent,
         OrderByPipe,
-        PayoutAdminComponent
+        PayoutAdminComponent,
+        TableExpandableRowsComponent
     ],
     imports: [
         FlexLayoutModule,
@@ -97,8 +98,7 @@ registerLocaleData(daLocale);
         AngularFireAuthModule, // imports firebase/auth, only needed for auth features
         ReactiveFormsModule,
         AppMaterialModule,
-        FormsModule,
-        AmazingTimePickerModule
+        FormsModule
     ],
 
     entryComponents: [

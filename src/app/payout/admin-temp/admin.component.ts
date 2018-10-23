@@ -2,22 +2,25 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { SelectionModel } from '@angular/cdk/collections';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { FormControl } from '@angular/forms';
+import { MatSort } from '@angular/material';
 import * as moment from 'moment';
 
 import { moveIn } from '../../router.animations';
-import { EventObject } from '../../shared/event';
+import { EventObject, Payout } from '../../shared/event';
+import { Observable } from 'rxjs';
 
 export class PayoutDanish {
     Medarbejder: string;
     Dato: string;
     Event: string;
+    EventId: string;
     Takst: number;
     Timer: number;
     Bonus: number;
     Sum: number;
+    Udbetalt: boolean;
 }
 
 export class PayoutObject {
@@ -28,11 +31,11 @@ export class PayoutObject {
     Sats: number;
     Beloeb: number;
     Child: PayoutDanish[];
+    Udbetalt: boolean;
 }
 
-declare function escape(s: string): string;
 @Component({
-    selector: 'app-admin',
+    selector: 'app-admin-2',
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.less'],
     animations: [moveIn(),
@@ -45,15 +48,15 @@ declare function escape(s: string): string;
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class PayoutAdminComponent implements OnInit {
+export class TableExpandableRowsComponent implements OnInit {
+    selection = new SelectionModel<PayoutObject>(true, []);
     list: PayoutDanish[] = [];
     eventList: EventObject[] = [];
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
-    dataSource: MatTableDataSource<PayoutObject>;
-    selection = new SelectionModel<PayoutObject>(true, []);
     expandedElements: string[] = [];
     @ViewChild(MatSort) sort: MatSort;
+
     displayedColumns = [
         'Selection',
         'Medarbejdernummer',
@@ -61,22 +64,14 @@ export class PayoutAdminComponent implements OnInit {
         'Enheder',
         'Sats',
         'Beloeb',
+        'function',
     ];
-    // displayedColumns = [
-    //     'Medarbejder',
-    //     'Dato',
-    //     'Event',
-    //     'Takst',
-    //     'Timer',
-    //     'Bonus',
-    //     'Sum'
-    // ];
+    dataSource = [];
 
     constructor(
         private afs: AngularFirestore,
         private datepipe: DatePipe
-    ) {
-    }
+    ) { }
 
     ngOnInit() {
         this.getEmployeeData();
@@ -108,6 +103,7 @@ export class PayoutAdminComponent implements OnInit {
                 const event = new EventObject();
                 event.payouts = doc.data()['payouts'];
                 event.name = doc.data()['name'];
+                event.uid = doc.id;
                 event.dateFrom = doc.data()['dateFrom'];
                 list.push(event);
             });
@@ -125,9 +121,11 @@ export class PayoutAdminComponent implements OnInit {
                     p.Medarbejder = payout.employee.displayName;
                     p.Dato = this.datepipe.transform(event.dateFrom).toString();
                     p.Event = event.name;
+                    p.EventId = event.uid;
                     p.Takst = payout.wager;
                     p.Timer = payout.hours;
                     p.Sum = payout.sum;
+                    p.Udbetalt = this.getIsPayed(payout.employee.uid, moment(this.startDate.value).year(), event.uid);
                     const isAfterStartDate = moment(event.dateFrom)
                         .startOf('day')
                         .isSameOrAfter(moment(this.startDate.value)
@@ -144,10 +142,20 @@ export class PayoutAdminComponent implements OnInit {
                 });
                 this.list = list;
                 const parrentList = this.groupList(list, 'Medarbejder');
-                this.dataSource = new MatTableDataSource(parrentList);
-                this.dataSource.sort = this.sort;
+                this.dataSource = parrentList;
             }
         });
+    }
+
+    getIsPayed(employeeId, year, eventId): Subscri<Payout> {
+        return this.afs.collection(`event-history`)
+            .doc(employeeId)
+            .collection(year)
+            .doc(eventId)
+            .valueChanges()
+            .subscribe((result: Payout) => {
+                return result;
+            });
     }
 
     groupList(collection: Array<any>, property: string): Array<any> {
@@ -174,6 +182,7 @@ export class PayoutAdminComponent implements OnInit {
             obj.Enheder = this.getValue(groupedCollection[key], 'Timer');
             obj.Sats = this.getAvg(groupedCollection[key], 'Takst');
             obj.Beloeb = this.getValue(groupedCollection[key], 'Sum');
+            obj.Udbetalt = this.getValueBoolean(groupedCollection[key], 'Udbetalt');
             obj.Child = groupedCollection[key];
 
             return obj;
@@ -187,6 +196,19 @@ export class PayoutAdminComponent implements OnInit {
         });
 
         return count;
+    }
+
+    getValueBoolean(connections: any[], value: string): boolean {
+        let returnValue = false;
+        connections.forEach(element => {
+            if (element[value]) {
+                returnValue = true;
+            } else {
+                returnValue = false;
+            }
+        });
+
+        return returnValue;
     }
 
     getAvg(connections: any[], value: string): number {
@@ -217,6 +239,18 @@ export class PayoutAdminComponent implements OnInit {
         return unique_array;
     }
 
+    // update(): void {
+    //     this.afs
+    //         .collection('events')
+    //         .doc(this.eventId)
+    //         .update(JSON.parse(JSON.stringify(this.selectedEvent)))
+    //         .then(() => {
+    //             this.snackBar.open('Begivenhed opdateret', 'LUK',
+    //                 {
+    //                     duration: 10000,
+    //                 });
+    //         });
+    // }
 
     JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
         const arrData = typeof JSONData !== 'object' ? JSON.parse(JSONData) : JSONData;
@@ -263,32 +297,5 @@ export class PayoutAdminComponent implements OnInit {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }
-
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource.data.length;
-
-        return numSelected === numRows;
-    }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    masterToggle() {
-        this.isAllSelected() ?
-            this.selection.clear() :
-            this.dataSource.data.forEach(row => this.selection.select(row));
-    }
-
-    isParrent = (i: number, row: Object) => row.hasOwnProperty('CVR');
-
-    isChild = (i: number, row: Object) => row.hasOwnProperty('CVR');
-
-    toggle(row: PayoutObject): void {
-        const i: number = this.expandedElements.indexOf(row.Medarbejdernummer);
-        (i > -1
-            ? this.expandedElements.splice(i, 1)
-            : this.expandedElements.push(row.Medarbejdernummer));
-        this.selection.toggle(row);
     }
 }

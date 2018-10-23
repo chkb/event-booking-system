@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 
 import { LoginProviderService } from '../core/login-provider.service';
@@ -29,7 +29,7 @@ export class EventHistoryComponent implements OnInit {
         private router: Router,
         private lps: LoginProviderService
     ) {
-        afs.firestore.settings({ timestampsInSnapshots: true });
+
     }
 
     ngOnInit() {

@@ -1,30 +1,30 @@
-<div fxLayout="column" fxLayoutAlign="space-between center">
-    <mat-card class="login-card">
-        <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
-            <div fxFlex>
-                <h1>
-                    Login
-                </h1>
-            </div>
-            <div fxFlex>
-                <mat-icon class="lock" [@active]="lockstate">{{lockstate == 'inactive'? 'lock' : 'lock_open'}}</mat-icon>
-            </div>
-            <!-- <div fxFlex>
-                <button class="login-button" mat-raised-button (click)="facebookLogin()" id="fb">Login med Facebook</button>
-            </div> -->
-            <div fxFlex>
-                <button class="login-button" mat-raised-button (click)="googleLogin()" id="google">Login med Google</button>
-            </div>
-            <div fxFlex>
-                <a routerLink="/login-email" routerLinkActive="active" class="alc">
-                    <strong>Login med email</strong>
-                </a>
-            </div>
-            <!-- <div fxFlex>
-                <a routerLink="/signup" routerLinkActive="active" class="alc">Har du ikke en bruger?
-                    <strong>Opret bruger her</strong>
-                </a>
-            </div> -->
-        </div>
-    </mat-card>
+<div fxLayout="column"
+     fxLayoutAlign="space-between center">
+  <mat-card class="login-card">
+    <div fxLayout="column"
+         fxLayoutGap="2%"
+         fxLayoutAlign="space-between center">
+      <div fxFlex>
+        <h1>
+          Login
+        </h1>
+      </div>
+      <div fxFlex>
+        <mat-icon class="lock"
+                  [@active]="lockstate">{{lockstate == 'inactive'? 'lock' : 'lock_open'}}</mat-icon>
+      </div>
+      <div fxFlex>
+        <button class="login-button"
+                mat-raised-button
+                (click)="googleLogin()"
+                id="google">Login med Google</button>
+      </div>
+      <div fxFlex>
+        <button class="login-button"
+                mat-raised-button
+                routerLink="/login-email"
+                routerLinkActive="active">Login med Email</button>
+      </div>
+    </div>
+  </mat-card>
 </div>

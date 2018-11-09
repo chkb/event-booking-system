@@ -19,5 +19,7 @@ script:
   - npm install
   - ng build --prod
 
-after_success:
-  - firebase deploy --token $FIREBASE_TOKEN --non-interactive # firebase deploy after angular-cli build
+deploy:
+  provider: firebase
+  token:
+    secure: $FIREBASE_TOKEN

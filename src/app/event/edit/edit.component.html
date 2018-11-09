@@ -251,7 +251,7 @@
                   <h4 mat-line>Er timeregistrering udført?</h4>
                   <p mat-line> {{selectedEvent.payoutDone ? 'JA': 'NEJ'}} </p>
                   <p mat-line
-                     *ngIf="selectedEvent.payoutDone">
+                     *ngIf="selectedEvent.payoutDone && selectedEvent.payoutDoneBy">
                     Udført af {{selectedEvent.payoutDoneBy.displayName}}
                     ({{getRoleText(selectedEvent.payoutDoneBy.role)}}) </p>
                 </mat-list-item>

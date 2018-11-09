@@ -28,9 +28,7 @@ export class EventHistoryComponent implements OnInit {
         private afs: AngularFirestore,
         private router: Router,
         private lps: LoginProviderService
-    ) {
-
-    }
+    ) { }
 
     ngOnInit() {
         if (this.employeeId) {

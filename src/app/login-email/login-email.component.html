@@ -1,39 +1,72 @@
-<div fxLayout="column" fxLayoutAlign="space-between center">
-    <mat-card class="login-card">
-        <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
-            <div fxFlex>
-                <h1>
-                    <mat-icon>lock_open</mat-icon>
-                </h1>
-            </div>
-            <div fxFlex>
-                <mat-form-field class="full-width">
-                    <input matInput placeholder="Email" alt="email" [(ngModel)]="email">
-                    <button mat-button *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-            </div>
-            <div fxFlex>
-                <mat-form-field class="full-width">
-                    <input matInput type="password" alt="password" placeholder="Password" [(ngModel)]="password">
-                    <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                </mat-form-field>
-            </div>
-            <div fxFlex>
-                <button class="login-button" mat-raised-button (click)="login()">LOGIN</button>
-            </div>
-            <div fxFlex>
-                <button class="login-button" mat-raised-button routerLink="/login">BACK</button>
-            </div>
-            <mat-divider></mat-divider>
-            <div fxFlex>
-                <a routerLink="/signup" routerLinkActive="active" class="alc">No account?
-                    <strong>Create one here</strong>
-                </a>
-            </div>
-        </div>
-    </mat-card>
+<div fxLayout="column"
+     fxLayoutAlign="space-between center">
+  <mat-card class="login-card">
+    <div fxLayout="column"
+         fxLayoutGap="2%"
+         fxLayoutAlign="space-between center">
+      <div fxFlex>
+        <h1>
+          <mat-icon>lock_open</mat-icon>
+        </h1>
+      </div>
+      <div fxFlex>
+        <mat-form-field class="full-width">
+          <input matInput
+                 placeholder="Email"
+                 alt="email"
+                 [(ngModel)]="email">
+          <button mat-button
+                  *ngIf="email"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="email=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div fxFlex>
+        <mat-form-field class="full-width">
+          <input matInput
+                 type="password"
+                 alt="password"
+                 placeholder="Password"
+                 [(ngModel)]="password">
+          <button mat-button
+                  *ngIf="password"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="password=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div fxFlex>
+        <button class="login-button"
+                mat-raised-button
+                (click)="login()">LOGIN</button>
+      </div>
+      <div fxFlex>
+        <button class="login-button"
+                mat-raised-button
+                routerLink="/login">BACK</button>
+      </div>
+      <mat-divider></mat-divider>
+      <div fxFlex>
+        <a routerLink="/signup"
+           routerLinkActive="active"
+           class="alc">No account?
+          <strong>Create one here</strong>
+        </a>
+      </div>
+      <div fxFlex>
+        <a routerLink="/forgot"
+           routerLinkActive="active"
+           class="alc">
+          <strong>Forgot password</strong>
+        </a>
+      </div>
+    </div>
+  </mat-card>
 </div>

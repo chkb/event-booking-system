@@ -21,6 +21,7 @@ import { PayoutListComponent } from '../payout/list/list.component';
 import { SignupComponent } from '../signup/signup.component';
 import { SkillComponent } from '../skill/skill.component';
 import { WagerComponent } from '../wager/wager.component';
+import { ForgotComponent } from '../forgot/forgot.component';
 
 
 const routes: Route[] = [
@@ -40,6 +41,10 @@ const routes: Route[] = [
     {
         path: 'signup',
         component: SignupComponent,
+    },
+    {
+        path: 'forgot',
+        component: ForgotComponent,
     },
     {
         path: 'dashboard',

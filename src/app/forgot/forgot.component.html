@@ -1,0 +1,58 @@
+<div fxLayout="column"
+     fxLayoutAlign="space-between center">
+  <mat-card class="login-card">
+    <div fxLayout="column"
+         fxLayoutGap="2%"
+         fxLayoutAlign="space-between center">
+      <div fxFlex>
+        <h1 *ngIf="!validation">
+          Glemt password
+        </h1>
+        <h1 *ngIf="validation">
+          Email er nu sendt!
+        </h1>
+      </div>
+      <div fxFlex
+           *ngIf="!validation">
+        <mat-form-field class="full-width">
+          <input matInput
+                 placeholder="Email"
+                 name="email"
+                 alt="email"
+                 [(ngModel)]="email">
+          <button mat-button
+                  *ngIf="email"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="email=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex
+           *ngIf="!validation">
+        <p class="validation">{{validation}}</p>
+        <button class="login-button"
+                mat-raised-button
+                [disabled]="!email"
+                (click)="sendMail()"
+                id="bruger">Send Password</button>
+      </div>
+      <div fxFlex
+           *ngIf="validation">
+        <button routerLink="/login-email"
+                mat-raised-button
+                routerLinkActive="active">
+          Tilbage til login
+        </button>
+      </div>
+      <div fxFlex
+           *ngIf="wrong">
+        Please enter a valid email that is already registed
+      </div>
+
+    </div>
+  </mat-card>
+</div>

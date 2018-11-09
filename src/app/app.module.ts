@@ -36,6 +36,7 @@ import { EventCreateComponent } from './event/create/create.component';
 import { EventEditComponent } from './event/edit/edit.component';
 import { EventListComponent } from './event/list/list.component';
 import { EventViewComponent } from './event/view/view.component';
+import { ForgotComponent } from './forgot/forgot.component';
 import { HoursMinutesSecondsPipe } from './hours-minutes-seconds.pipe';
 import { LocalStorageService } from './localstorage.service';
 import { LoginEmailComponent } from './login-email/login-email.component';
@@ -68,6 +69,7 @@ registerLocaleData(daLocale);
         DashboardComponent,
         LoginComponent,
         SignupComponent,
+        ForgotComponent,
         LoginEmailComponent,
         HoursMinutesSecondsPipe,
         ArraySortPipe,

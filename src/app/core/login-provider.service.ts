@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
-// tslint:disable-next-line:import-blacklist
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+// tslint:disable-next-line:import-blacklist
 interface User {
     uid: string;
     email: string;
@@ -21,7 +22,9 @@ export class LoginProviderService {
     user: Observable<User>;
     userId: string;
     role: string;
-    constructor(private afAuth: AngularFireAuth,
+    constructor(
+        private afAuth: AngularFireAuth,
+        private snackBar: MatSnackBar,
         private afs: AngularFirestore,
         private router: Router) {
         //// Get auth data, then get firestore user document || null
@@ -74,6 +77,11 @@ export class LoginProviderService {
         return this.afAuth.auth.signInWithEmailAndPassword(email, password)
             .then((credential) => {
                 this.updateUserData(credential.user);
+            }).catch(error => {
+                this.snackBar.open(error, 'LUK',
+                    {
+                        duration: 10000,
+                    });
             });
     }
 

@@ -12,7 +12,7 @@ import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.comp
 import { LoginProviderService } from '../../core/login-provider.service';
 import { EmployeeDialogComponent } from '../../employee-dialog/employee-dialog.component';
 import { moveIn } from '../../router.animations';
-import { Skill } from '../../shared/employee';
+import { Skill, Employee } from '../../shared/employee';
 import { Booked, EventHistory, EventObject } from '../../shared/event';
 import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
@@ -413,8 +413,15 @@ export class EventEditComponent implements OnInit {
     }
 
     payoutDone(): void {
-        this.selectedEvent.payoutDone = !this.selectedEvent.payoutDone;
-        this.update(false);
+        this.afs
+            .collection('users')
+            .doc(this.lps.userId)
+            .valueChanges()
+            .subscribe((result: Employee) => {
+                this.selectedEvent.payoutDone = !this.selectedEvent.payoutDone;
+                this.selectedEvent.payoutDoneBy = result;
+                this.update(false);
+            });
     }
 
     getFilterData(): void {

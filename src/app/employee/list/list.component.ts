@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatSort } from '@angular/material';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { MatSort, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { moveIn } from '../../router.animations';
 import { Employee } from '../../shared/employee';
@@ -15,7 +15,7 @@ import { Role } from '../../shared/role';
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeeListComponent implements OnInit, AfterViewInit {
     loading = false;
     employeeList: Employee[] = [];
     displayedColumns = [
@@ -33,10 +33,14 @@ export class EmployeeListComponent implements OnInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
-        this.loading = true;
     }
 
     ngOnInit() {
+        this.getData();
+    }
+
+    getData(): void {
+        this.loading = true;
         const employeeList: Employee[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
@@ -54,8 +58,13 @@ export class EmployeeListComponent implements OnInit {
             this.loading = false;
             this.employeeList = employeeList;
             this.dataSource = new MatTableDataSource(employeeList);
-            this.dataSource.sort = this.sort;
         });
+    }
+
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.dataSource.sort = this.sort;
+        }, 1000);
     }
 
     applyFilter(filterValue: string) {

@@ -40,6 +40,7 @@ export class EventObject {
     timePlan: string;
     crew: string;
     eventLeaderInfo: string;
+    timeline: string;
 }
 
 export class Payout {

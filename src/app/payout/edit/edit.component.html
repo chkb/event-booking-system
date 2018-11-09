@@ -232,10 +232,10 @@
                 [disabled]="selectedEvent.payoutDone">GEM ÆNDRINGER</button>
         <button mat-raised-button
                 *ngIf="!selectedEvent.payoutDone"
-                (click)="payoutDone()">FÆRDIG MED LØNNING</button>
+                (click)="payoutDone()">FÆRDIG MED TIMEREGISTRERING</button>
         <button mat-raised-button
                 *ngIf="selectedEvent.payoutDone && isAdmin()"
-                (click)="payoutOpen()">GENÅBN LØNNING</button>
+                (click)="payoutOpen()">GENÅBN TIMEREGISTRERING</button>
       </mat-card-actions>
     </mat-card>
   </div>

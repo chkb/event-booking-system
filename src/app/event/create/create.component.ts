@@ -3,10 +3,12 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 
+import { LoginProviderService } from '../../core/login-provider.service';
 import { LocalStorageService } from '../../localstorage.service';
 import { moveIn } from '../../router.animations';
 import { Employee } from '../../shared/employee';
-import { EventObject } from '../../shared/event';
+import { Booked, EventObject } from '../../shared/event';
+import { EventType } from '../../shared/event-type';
 import { Role } from '../../shared/role';
 import { SkillExtended } from '../../shared/skill';
 
@@ -24,6 +26,8 @@ export class EventCreateComponent implements AfterViewInit {
     minDate = new Date().toISOString();
     skillList: SkillExtended[] = [];
     event: EventObject = new EventObject();
+    leaderList: Booked[] = [];
+    eventTypeList: EventType[] = [];
     startTime = '18:00';
     endTime = '22:00';
     displayedColumns = [
@@ -41,14 +45,15 @@ export class EventCreateComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router,
         private localStorageService: LocalStorageService,
-        private snackBar: MatSnackBar
+        private snackBar: MatSnackBar,
+        private lps: LoginProviderService
     ) {
-
+        this.geteventTypeList();
         this.getEmployeeData();
     }
 
     getEmployeeData(): void {
-        const employeeList: Employee[] = [];
+        const employeeList: any[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
                 const employee = new Employee();
@@ -75,12 +80,35 @@ export class EventCreateComponent implements AfterViewInit {
                     employeeList.push(employee);
                 }
             });
+            this.getListOfLeaders(employeeList);
             this.dataSource = new MatTableDataSource(employeeList);
             this.localStorageService.setItem(this.localstorageSkillListKey, this.skillList);
         });
     }
 
+
     ngAfterViewInit() {
+    }
+
+    geteventTypeList(): void {
+        this.eventTypeList = [];
+        this.afs.collection('event-types').ref.get().then(querySnapshot => {
+            querySnapshot.forEach(doc => {
+                const masterSkill = new EventType();
+                masterSkill.name = doc.data()['name'];
+                masterSkill.color = doc.data()['color'];
+                masterSkill.uid = doc.id;
+                this.eventTypeList.push(masterSkill);
+            });
+        });
+    }
+
+    getListOfLeaders(employeeList: Booked[]): void {
+        employeeList.forEach(employee => {
+            if (employee.role === 'admin' || employee.role === 'eventLeader') {
+                this.leaderList.push(employee);
+            }
+        });
     }
 
     applyFilter(filterValue: string) {
@@ -151,5 +179,13 @@ export class EventCreateComponent implements AfterViewInit {
         const roleText = Role[value];
 
         return roleText;
+    }
+
+    isAdminOrEventLeader() {
+        if (this.lps.role === 'admin' || this.lps.role === 'eventLeader') {
+            return true;
+        }
+
+        return false;
     }
 }

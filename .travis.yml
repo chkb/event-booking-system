@@ -22,4 +22,4 @@ deploy:
   provider: firebase
   token:
     secure: "FIREBASE_TOKEN"
-  project: "event-viewer"
+  project: "midgaard-event-booking-system"

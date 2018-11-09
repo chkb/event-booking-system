@@ -11,6 +11,7 @@ import { OrderByPipe } from '../../order-by.pipe';
 import { moveIn } from '../../router.animations';
 import { Booked, EventObject, Payout, PayoutVM } from '../../shared/event';
 import { Wager } from '../../shared/wager';
+import { Employee } from '../../shared/employee';
 
 @Component({
     selector: 'app-edit',
@@ -90,24 +91,30 @@ export class PayoutEditComponent implements OnInit {
     }
 
     addToPayout(employee: Booked): void {
-        const payout = new PayoutVM();
-        payout.employeeName = employee.displayName;
-        payout.employee = employee;
-        payout.timeFrom = this.selectedEvent.timeFrom;
-        payout.timeTo = this.selectedEvent.timeTo;
-        payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
-        if (employee.personalWager) {
-            const wager = new Wager();
-            wager.name = employee.displayName;
-            wager.value = employee.personalWager;
-            payout.sum = this.getSum(payout.hours, employee.personalWager);
-            payout.wager = employee.personalWager;
-            const wagers: Wager[] = [];
-            wagers.push(wager);
-        }
-        this.selectedPayoutList.push(payout);
-        this.updateTable();
-        this.update();
+        this.afs
+            .collection('users')
+            .doc(employee.uid)
+            .valueChanges()
+            .subscribe((result: Employee) => {
+                const payout = new PayoutVM();
+                payout.employeeName = result.displayName;
+                payout.employee = employee;
+                payout.timeFrom = this.selectedEvent.timeFrom;
+                payout.timeTo = this.selectedEvent.timeTo;
+                payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
+                if (result.personalWager) {
+                    const wager = new Wager();
+                    wager.name = result.displayName;
+                    wager.value = result.personalWager;
+                    payout.sum = this.getSum(payout.hours, result.personalWager);
+                    payout.wager = result.personalWager;
+                    const wagers: Wager[] = [];
+                    wagers.push(wager);
+                }
+                this.selectedPayoutList.push(payout);
+                this.updateTable();
+                this.update();
+            });
     }
 
     updateTable(): void {
@@ -177,10 +184,16 @@ export class PayoutEditComponent implements OnInit {
     }
 
     removePayout(payout: Payout): void {
-        const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
-        this.selectedPayoutList.splice(idx, 1);
-        this.updateTable();
+        if (this.selectedPayoutList.length > 1) {
+            const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
+            this.selectedPayoutList.splice(idx, 1);
+            this.updateTable();
+        } else {
+            this.selectedPayoutList = [];
+            this.dataSource = new MatTableDataSource(this.selectedPayoutList);
+        }
         this.updateEvent.next(true);
+        this.update();
     }
 
     update(): void {

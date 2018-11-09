@@ -55,14 +55,19 @@ export class EventUpcommingComponent implements OnInit {
                         eh.employeeUid = booked.uid;
                         eh.eventUid = doc.id;
                         eh.event = doc.data();
-                        this.list.push(eh);
+                        eh.date = doc.data()['dateFrom'];
+                        const today = moment().endOf('day');
+                        if (moment(eh.date).isAfter(today)) {
+                            console.table(eh);
+                            this.list.push(eh);
+                        }
                     }
                 });
             });
+            this.list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            this.dataSource = new MatTableDataSource(this.list);
             this.loading = false;
         });
-        this.list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        this.dataSource = new MatTableDataSource(this.list);
     }
 
     gotoEvent(id: string): void {

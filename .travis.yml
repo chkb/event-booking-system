@@ -18,8 +18,5 @@ script:
   - npm install
   - ng build --prod
 
-deploy:
-  provider: firebase
-  token:
-    secure: "FIREBASE_TOKEN"
-  project: "midgaard-event-booking-system"
+after_success:
+  - firebase deploy --token $FIREBASE_TOKEN

@@ -249,7 +249,7 @@
                 <mat-list-item>
                   <mat-icon mat-list-icon>{{selectedEvent.payoutDone ? 'check_circle':
                     'remove_circle'}}</mat-icon>
-                  <h4 mat-line>Er udbetaling udført?</h4>
+                  <h4 mat-line>Er timeregistrering udført?</h4>
                   <p mat-line> {{selectedEvent.payoutDone ? 'JA': 'NEJ'}} </p>
                   <p mat-line
                      *ngIf="selectedEvent.payoutDone">
@@ -258,10 +258,10 @@
                 </mat-list-item>
               </mat-list>
               <button mat-raised-button
-                      (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN LØNNING': 'FÆRDIG MED
-                LØNNING'}}</button>
+                      (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN TIMEREGISTRERING': 'FÆRDIG MED
+                TIMEREGISTRERING'}}</button>
               <button mat-raised-button
-                      (click)="goToPayout()">GÅ TIL LØNNING</button>
+                      (click)="goToPayout()">GÅ TIL TIMEREGISTRERING</button>
             </div>
           </div>
         </div>

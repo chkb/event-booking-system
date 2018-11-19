@@ -1,109 +1,164 @@
-<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-    <div fxFlex="100" fxFlex.gt-md="50">
-        <mat-card *ngIf="masterskillList" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-            <mat-card-header class="card-header">
-                <h3>
-                    Opret en kompetence kategori
-                </h3>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Tilføj kompetence kategori" [(ngModel)]="masterSkill.name">
-                </mat-form-field>
-                <mat-checkbox [(ngModel)]="masterSkill.onlyAdminEdit">Kun admin og eventleder?</mat-checkbox>
-                <mat-checkbox [(ngModel)]="masterSkill.hasRating">Har rating level?</mat-checkbox>
-                <div *ngIf="masterSkill.hasRating">
-                    <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Level 1 navn" [(ngModel)]="masterSkill.ratingValue1">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Level 2 navn" [(ngModel)]="masterSkill.ratingValue2">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Level 3 navn" [(ngModel)]="masterSkill.ratingValue3">
-                    </mat-form-field>
-                </div>
-                <button mat-raised-button color="primary" (click)="createMasterSkill()" [disabled]="!masterSkill.name">OPRET KOMPETENCE KATEGORI</button>
+<div fxLayout="column wrap"
+     fxLayout.gt-xs="row"
+     fxLayoutGap="2%">
+  <div fxFlex="100"
+       fxFlex.gt-md="50">
+    <mat-card *ngIf="masterskillList"
+              class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+          Opret en kompetence kategori
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <input matInput
+                 placeholder="Tilføj kompetence kategori"
+                 [(ngModel)]="masterSkill.name">
+        </mat-form-field>
+        <mat-checkbox [(ngModel)]="masterSkill.onlyAdminEdit">Kun admin og eventleder?</mat-checkbox>
+        <br>
+        <mat-checkbox [(ngModel)]="masterSkill.hasRating">Har rating level?</mat-checkbox>
+        <div *ngIf="masterSkill.hasRating">
+          <mat-form-field class="example-full-width">
+            <input matInput
+                   placeholder="Level 1 navn"
+                   [(ngModel)]="masterSkill.ratingValue1">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput
+                   placeholder="Level 2 navn"
+                   [(ngModel)]="masterSkill.ratingValue2">
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput
+                   placeholder="Level 3 navn"
+                   [(ngModel)]="masterSkill.ratingValue3">
+          </mat-form-field>
+        </div>
+        <br>
+        <button mat-raised-button
+                color="primary"
+                (click)="createMasterSkill()"
+                [disabled]="!masterSkill.name">OPRET KOMPETENCE KATEGORI</button>
 
-            </mat-card-content>
-        </mat-card>
-    </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
-<div fxLayout="column wrap" fxLayout.gt-xs="row wrap" fxLayoutGap="2%">
-    <div fxFlex="100" fxFlex.gt-md="25" *ngFor="let masterSkill of masterskillList">
-        <mat-card *ngIf="masterskillList" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-            <mat-card-header class="card-header">
-                <h3>
-                    {{masterSkill.name}}
-                </h3>
-                <span class="spacer"></span>
-                <button mat-icon-button (click)="deleteMasterSkill(masterSkill)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list>
-                    <div>
-                        Order {{masterSkill.order}}
-                        <button [disabled]="masterSkill.order == 1" (click)="orderUp(masterSkill)" mat-icon-button>
-                            <mat-icon>
-                                keyboard_arrow_up
-                            </mat-icon>
-                        </button>
-                        <button [disabled]="masterSkill.order == masterskillList.length" (click)="orderDown(masterSkill)" mat-icon-button>
-                            <mat-icon>
-                                keyboard_arrow_down
-                            </mat-icon>
-                        </button>
-                    </div>
-                    <p>
-                        {{masterSkill.onlyAdminEdit ? 'Kun admin og eventleder': 'Alle bruger'}}
-                    </p>
-                    <div *ngIf="masterSkill.hasRating">
-                        <p>
-                            {{masterSkill.ratingValue1}}
-                            <mat-icon>star</mat-icon>
-                        </p>
-                        <p>
-                            {{masterSkill.ratingValue2}}
-                            <mat-icon>star</mat-icon>
-                            <mat-icon>star</mat-icon>
-                        </p>
-                        <p>
-                            {{masterSkill.ratingValue3}}
-                            <mat-icon>star</mat-icon>
-                            <mat-icon>star</mat-icon>
-                            <mat-icon>star</mat-icon>
-                        </p>
-                    </div>
-                    <mat-divider></mat-divider>
-                    <h3>Kompetenceliste</h3>
-                    <p *ngIf="!masterSkill.skills.length">
-                        Ingen under kategorier oprettet endnu.
-                    </p>
-                    <mat-list-item *ngFor="let skill of masterSkill.skills; index as i">
-                        <mat-icon class="btn" (click)="delete(masterSkill, skill)" mat-list-icon>delete</mat-icon>
-                        <h4 mat-line>{{skill}}</h4>
-                        <button [disabled]="!i" (click)="skillSwap(masterSkill, skill, false)" mat-icon-button>
-                            <mat-icon>
-                                keyboard_arrow_up
-                            </mat-icon>
-                        </button>
-                        <button [disabled]="masterSkill.skills.length-1 == i" (click)="skillSwap(masterSkill, skill, true)" mat-icon-button>
-                            <mat-icon>
-                                keyboard_arrow_down
-                            </mat-icon>
-                        </button>
-                    </mat-list-item>
-                    <mat-list-item>
-                        <mat-icon class="btn" (click)="createSubSkill(masterSkill, input.value); input.value =''" mat-list-icon>add</mat-icon>
-                        <mat-form-field mat-line class="example-full-width">
-                            <input matInput placeholder="Tilføj kompetence" #input>
-                        </mat-form-field>
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-        </mat-card>
-    </div>
+<div fxLayout="column wrap"
+     fxLayout.gt-xs="row wrap"
+     fxLayoutGap="2%">
+  <div fxFlex="100"
+       fxFlex.gt-md="25"
+       *ngFor="let masterSkill of masterskillList">
+    <mat-card *ngIf="masterskillList"
+              class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+          {{masterSkill.name}}
+        </h3>
+        <span class="spacer"></span>
+        <button mat-icon-button
+                (click)="deleteMasterSkill(masterSkill)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <div>
+            Rang {{masterSkill.order}}
+            <button [disabled]="masterSkill.order == 1"
+                    (click)="orderUp(masterSkill)"
+                    mat-icon-button>
+              <mat-icon>
+                keyboard_arrow_up
+              </mat-icon>
+            </button>
+            <button [disabled]="masterSkill.order == masterskillList.length"
+                    (click)="orderDown(masterSkill)"
+                    mat-icon-button>
+              <mat-icon>
+                keyboard_arrow_down
+              </mat-icon>
+            </button>
+          </div>
+          <p>
+            {{masterSkill.onlyAdminEdit ? 'Kun admin og eventleder': 'Alle bruger'}}
+          </p>
+          <div *ngIf="masterSkill.hasRating">
+            <div fxLayout="row"
+                 fxLayoutAlign="start center">
+              <div fxFlex>
+                {{masterSkill.ratingValue1}}
+              </div>
+              <div fxFlex>
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+            <div fxLayout="row"
+                 fxLayoutAlign="start center">
+              <div fxFlex>
+                {{masterSkill.ratingValue2}}
+              </div>
+              <div fxFlex>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+            <div fxLayout="row"
+                 fxLayoutAlign="start center">
+              <div fxFlex>
+                {{masterSkill.ratingValue3}}
+              </div>
+              <div fxFlex>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+                <mat-icon>star</mat-icon>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <h3>Kompetenceliste</h3>
+          <p *ngIf="!masterSkill.skills.length">
+            Ingen under kategorier oprettet endnu.
+          </p>
+          <mat-list-item *ngFor="let skill of masterSkill.skills; index as i">
+            <mat-icon class="btn"
+                      (click)="delete(masterSkill, skill)"
+                      mat-list-icon>delete</mat-icon>
+            <h4 mat-line>{{skill}}</h4>
+            <button [disabled]="!i"
+                    (click)="skillSwap(masterSkill, skill, false)"
+                    mat-icon-button>
+              <mat-icon>
+                keyboard_arrow_up
+              </mat-icon>
+            </button>
+            <button [disabled]="masterSkill.skills.length-1 == i"
+                    (click)="skillSwap(masterSkill, skill, true)"
+                    mat-icon-button>
+              <mat-icon>
+                keyboard_arrow_down
+              </mat-icon>
+            </button>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon class="btn"
+                      (click)="createSubSkill(masterSkill, input.value); input.value =''"
+                      mat-list-icon>add</mat-icon>
+            <mat-form-field mat-line
+                            class="example-full-width">
+              <input matInput
+                     placeholder="Tilføj kompetence"
+                     #input>
+            </mat-form-field>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

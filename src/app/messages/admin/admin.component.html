@@ -1,58 +1,81 @@
-<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-    <div fxFlex="100" fxFlex.gt-md="50">
-        <mat-card *ngIf="messagesList" class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-            <mat-card-header class="card-header">
-                <h3>
-                    Skriv en besked
-                </h3>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Titel" [(ngModel)]="message.title">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <textarea class="message" matInput placeholder="Besked" [(ngModel)]="message.message"></textarea>
-                </mat-form-field>
-                <button mat-raised-button color="primary" (click)="create()" [disabled]="!message.title && !message.message">OPRET BESKED</button>
-            </mat-card-content>
-        </mat-card>
-    </div>
-    <div fxFlex="100" fxFlex.gt-md="50" *ngIf="messagesList">
-        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']" *ngFor="let message of messagesList">
-            <mat-card-header class="card-header">
-                <h3>
-                    Beskedtitel: {{message.title}}
-                </h3>
-            </mat-card-header>
-            <mat-card-content>
-                <div>
-                    <mat-list>
-                        <mat-list-item>
-                            <img mat-list-icon [src]="message.createdByImage" />
-                            <h4 class="title" mat-line>Oprettet af</h4>
-                            <p mat-line>{{message.createdByName}}</p>
-                        </mat-list-item>
-                        <mat-list-item>
-                            <mat-icon mat-list-icon>date_range</mat-icon>
-                            <h4 class="title" mat-line>Dato</h4>
-                            <p mat-line>{{message.dateCreated | date: 'Den dd. MMMM yyyy kl: HH:MM'}}</p>
-                        </mat-list-item>
-                        <mat-list-item>
-                            <mat-icon mat-list-icon>title</mat-icon>
-                            <h4 class="title" mat-line>Titel</h4>
-                            <p mat-line>{{message.title}}</p>
-                        </mat-list-item>
-                    </mat-list>
-                    <h3 class="comment title">Besked</h3>
-                    <br>
-                    <div class="besked">
-                        <p class="comment">{{message.message}}</p>
-                    </div>
-                </div>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button color="warn" (click)="delete(message)">SLET</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>
+<div fxLayout="column wrap"
+     fxLayout.gt-xs="row"
+     fxLayoutGap="2%">
+  <div fxFlex="100"
+       fxFlex.gt-md="50">
+    <mat-card *ngIf="messagesList"
+              class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+          Skriv en besked
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <input matInput
+                 placeholder="Titel"
+                 [(ngModel)]="message.title">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <textarea class="message"
+                    matInput
+                    placeholder="Besked"
+                    [(ngModel)]="message.message"></textarea>
+        </mat-form-field>
+        <button mat-raised-button
+                color="primary"
+                (click)="create()"
+                [disabled]="!message.title && !message.message">OPRET BESKED</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="100"
+       fxFlex.gt-md="50"
+       *ngIf="messagesList">
+    <mat-card class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']"
+              *ngFor="let message of messagesList">
+      <mat-card-header class="card-header">
+        <h3>
+          {{message.title}}
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          <mat-list>
+            <mat-list-item>
+              <img mat-list-icon
+                   [src]="message.createdByImage" />
+              <h4 class="title"
+                  mat-line>Oprettet af</h4>
+              <p mat-line>{{message.createdByName}}</p>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>date_range</mat-icon>
+              <h4 class="title"
+                  mat-line>Dato</h4>
+              <p mat-line>{{message.dateCreated | date: 'Den dd. MMMM yyyy kl: HH:MM'}}</p>
+            </mat-list-item>
+            <mat-list-item>
+              <mat-icon mat-list-icon>title</mat-icon>
+              <h4 class="title"
+                  mat-line>Titel</h4>
+              <p mat-line>{{message.title}}</p>
+            </mat-list-item>
+          </mat-list>
+          <h3 class="title">Besked</h3>
+          <br>
+          <div class="besked">
+            <p class="comment">{{message.message}}</p>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button
+                color="warn"
+                (click)="delete(message)">SLET</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

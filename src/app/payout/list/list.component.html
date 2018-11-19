@@ -1,122 +1,139 @@
-<div fxLayout="column wrap" fxLayout.gt-xs="row" fxLayoutGap="2%">
-    <div fxFlex>
-        <mat-card class="card infocard" [class.xs]="['card-xs', 'infocard-xs']">
-            <mat-card-header class="card-header">
-                <h3>
-                    Event du er tilknyttet til som 'Eventleder'
-                </h3>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="search">
-                    <mat-form-field>
-                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Søg">
-                    </mat-form-field>
-                </div>
-                <div class="table-overflow">
-                    <div class="container">
-                        <mat-table #table [dataSource]="dataSource">
+<div fxLayout="column wrap"
+     fxLayout.gt-xs="row"
+     fxLayoutGap="2%">
+  <div fxFlex>
+    <mat-card class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+          Event du er tilknyttet til som 'Eventleder'
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="search">
+          <mat-form-field>
+            <input matInput
+                   (keyup)="applyFilter($event.target.value)"
+                   placeholder="Søg">
+          </mat-form-field>
+        </div>
+        <div class="table-overflow">
+          <div class="container">
+            <mat-table #table
+                       [dataSource]="dataSource">
 
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="name">
-                                <mat-header-cell *matHeaderCellDef> Navn </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    {{row.name}}
-                                </mat-cell>
-                            </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  {{row.name}}
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="eventLeader">
-                                <mat-header-cell *matHeaderCellDef> Eventleder </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    {{row.eventLeader ? row.eventLeader : 'Ingen eventleder' }}
-                                </mat-cell>
-                            </ng-container>
+              <!-- Name Column -->
+              <ng-container matColumnDef="eventLeader">
+                <mat-header-cell *matHeaderCellDef> Eventleder </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  {{row.eventLeader ? row.eventLeader : 'Ingen eventleder' }}
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Date Column -->
-                            <ng-container matColumnDef="date">
-                                <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
-                                <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'Den dd. MMMM yyyy'}}</mat-cell>
-                            </ng-container>
+              <!-- Date Column -->
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'Den dd. MMMM yyyy'}}</mat-cell>
+              </ng-container>
 
-                            <!-- Date Column -->
-                            <ng-container matColumnDef="time">
-                                <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
-                                <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
-                            </ng-container>
+              <!-- Date Column -->
+              <ng-container matColumnDef="time">
+                <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
+              </ng-container>
 
-                            <!-- Lokation Column -->
-                            <ng-container matColumnDef="location">
-                                <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    {{row.eventLocation ? row.eventLocation : 'Ingen lokation' }}
-                                </mat-cell>
-                            </ng-container>
+              <!-- Lokation Column -->
+              <ng-container matColumnDef="location">
+                <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  {{row.eventLocation ? row.eventLocation : 'Ingen lokation' }}
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Customer Column -->
-                            <ng-container matColumnDef="customer">
-                                <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    {{row.customer ? row.customer : 'Ingen kunde' }}
-                                </mat-cell>
-                            </ng-container>
+              <!-- Customer Column -->
+              <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  {{row.customer ? row.customer : 'Ingen kunde' }}
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Staff Needed Column -->
-                            <ng-container matColumnDef="staffNeed">
-                                <mat-header-cell *matHeaderCellDef> Medarbejder der mangler? </mat-header-cell>
-                                <mat-cell *matCellDef="let row" matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked">
-                                    <span *ngIf="row.staffNeed">
-                                        <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
-                                            {{row.staffNeed - row.booked.length}}
-                                        </span>
-                                        <span *ngIf="row.booked?.length && row.staffNeed == row.booked.length">
-                                            <mat-icon>check_circle</mat-icon>
-                                        </span>
-                                        <span *ngIf="!row.booked?.length">
-                                            {{row.staffNeed}}
-                                        </span>
-                                    </span>
-                                    <span *ngIf="!row.staffNeed">
-                                        Ikke angivet
-                                    </span>
-                                </mat-cell>
-                            </ng-container>
+              <!-- Staff Needed Column -->
+              <ng-container matColumnDef="staffNeed">
+                <mat-header-cell *matHeaderCellDef> Medarbejder der mangler? </mat-header-cell>
+                <mat-cell *matCellDef="let row"
+                          matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked">
+                  <span *ngIf="row.staffNeed">
+                    <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
+                      {{row.staffNeed - row.booked.length}}
+                    </span>
+                    <span *ngIf="row.booked?.length && row.staffNeed == row.booked.length">
+                      <mat-icon>check_circle</mat-icon>
+                    </span>
+                    <span *ngIf="!row.booked?.length">
+                      {{row.staffNeed}}
+                    </span>
+                  </span>
+                  <span *ngIf="!row.staffNeed">
+                    Ikke angivet
+                  </span>
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Event type Column -->
-                            <ng-container matColumnDef="eventType">
-                                <mat-header-cell *matHeaderCellDef> Event-Type </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <mat-chip-list>
-                                        <mat-chip [style.background]="row.eventTypeColor" style="color:white;">{{row.eventType ? row.eventType : 'Ingen event type'}}</mat-chip>
-                                    </mat-chip-list>
-                                </mat-cell>
-                            </ng-container>
+              <!-- Event type Column -->
+              <ng-container matColumnDef="eventType">
+                <mat-header-cell *matHeaderCellDef> Event-Type </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-chip-list>
+                    <mat-chip [style.background]="row.eventTypeColor"
+                              [style.color]="row.eventTypeColor ? 'white' : 'black'">{{row.eventType ? row.eventType :
+                      'Ingen
+                      event type'}}</mat-chip>
+                  </mat-chip-list>
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Booking Done Column -->
-                            <ng-container matColumnDef="bookingDone">
-                                <mat-header-cell *matHeaderCellDef> Booking udført? </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <mat-icon> {{row.bookingDone ? 'check_circle': 'remove_circle'}}</mat-icon>
-                                </mat-cell>
-                            </ng-container>
+              <!-- Booking Done Column -->
+              <ng-container matColumnDef="bookingDone">
+                <mat-header-cell *matHeaderCellDef> Booking udført? </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-icon> {{row.bookingDone ? 'check_circle': 'remove_circle'}}</mat-icon>
+                </mat-cell>
+              </ng-container>
 
-                            <!-- Payout Done Column -->
-                            <ng-container matColumnDef="payoutDone">
-                                <mat-header-cell *matHeaderCellDef> Udbetalt </mat-header-cell>
-                                <mat-cell *matCellDef="let row">
-                                    <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>
-                                </mat-cell>
-                            </ng-container>
+              <!-- Payout Done Column -->
+              <ng-container matColumnDef="payoutDone">
+                <mat-header-cell *matHeaderCellDef> Udbetalt </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>
+                </mat-cell>
+              </ng-container>
 
-                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                            <mat-row *matRowDef="let row; columns: displayedColumns;" class="row" (click)="gotoEvent(row.uid)"></mat-row>
-                        </mat-table>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"
+                       class="row"
+                       (click)="gotoEvent(row.uid)"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
-<a class="global-fab" mat-fab color="primary" matTooltip="Opret nyt event" routerLinkActive="active" routerLink="/event/create">
-    <mat-icon>add</mat-icon>
+<a class="global-fab"
+   mat-fab
+   color="primary"
+   matTooltip="Opret nyt event"
+   routerLinkActive="active"
+   routerLink="/event/create">
+  <mat-icon>add</mat-icon>
 </a>

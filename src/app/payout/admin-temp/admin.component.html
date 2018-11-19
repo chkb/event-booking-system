@@ -50,7 +50,13 @@
   </div>
 </div>
 
-<div *ngIf="!loading && dataSource">
+<div *ngIf="!loading && !dataSource.length">
+  <div fxLayout="row"
+       fxLayoutAlign="center center">
+    <h3>Afventer søgning..</h3>
+  </div>
+</div>
+<div *ngIf="!loading && dataSource.length">
   <mat-card class="card infocard"
             [class.xs]="['card-xs', 'infocard-xs']">
     <table mat-table

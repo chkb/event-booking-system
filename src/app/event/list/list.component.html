@@ -106,9 +106,9 @@
                   <mat-cell *matCellDef="let row">
                     <mat-chip-list>
                       <mat-chip [style.background]="row.eventTypeColor"
-                                style="color:white;">{{row.eventType ? row.eventType : 'Ingen
-                        event
-                        type'}}</mat-chip>
+                                [style.color]="row.eventTypeColor ? 'white' : 'black'">
+                        {{row.eventType ? row.eventType : 'Ingen event type'}}
+                      </mat-chip>
                     </mat-chip-list>
                   </mat-cell>
                 </ng-container>

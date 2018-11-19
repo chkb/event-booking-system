@@ -63,7 +63,7 @@
                       *matHeaderCellDef
                       mat-sort-header> Mobilnummer </th>
                   <td mat-cell
-                      *matCellDef="let row"> {{row.mobile}} </td>
+                      *matCellDef="let row"> {{row.mobile ? row.mobile : 'Ikke angivet'}} </td>
                 </ng-container>
 
                 <!-- HasCar Column -->

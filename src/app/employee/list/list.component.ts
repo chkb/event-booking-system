@@ -24,7 +24,8 @@ export class EmployeeListComponent implements OnInit, AfterViewInit {
         'email',
         'mobile',
         'hasDriverLicens',
-        'hasCar'
+        'hasCar',
+        'deactive'
     ];
     dataSource: MatTableDataSource<Employee>;
     @ViewChild(MatSort) sort: MatSort;
@@ -53,6 +54,7 @@ export class EmployeeListComponent implements OnInit, AfterViewInit {
                 employee.mobile = doc.data()['mobile'];
                 employee.hasCar = doc.data()['hasCar'];
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
+                employee.deactive = doc.data()['deactive'];
                 employeeList.push(employee);
             });
             this.loading = false;

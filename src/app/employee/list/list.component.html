@@ -84,6 +84,15 @@
                       *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </td>
                 </ng-container>
 
+                <!-- inactive Column -->
+                <ng-container matColumnDef="deactive">
+                  <th mat-header-cell
+                      *matHeaderCellDef
+                      mat-sort-header> Aktiv? </th>
+                  <td mat-cell
+                      *matCellDef="let row"> {{!row.deactive ? 'Ja' : 'nej'}} </td>
+                </ng-container>
+
                 <tr mat-header-row
                     *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row

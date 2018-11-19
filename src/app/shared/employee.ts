@@ -19,6 +19,7 @@ export class Employee {
     bankAccount: string;
     bankReg: string;
     hasDriverLicens: boolean;
+    deactive: boolean;
     hasCar: boolean;
     contractSigned: boolean;
     role: string;

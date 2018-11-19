@@ -139,6 +139,44 @@ export class EmployeeEditComponent implements OnInit {
         });
     }
 
+    deactiveEmployee(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent,
+            {
+                data: {
+                    text: 'Dette er en deaktivering af medarbejderen, er du sikker på du vil deaktivere denne medarbejder?',
+                    title: `Vil du deaktivere ${this.selectedEmployee.displayName}`,
+                    cancelButtonText: 'ANNULLER',
+                    confirmButtonText: 'DEAKTIVÈR MEDARBEJDER'
+                }
+            });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.selectedEmployee.deactive = true;
+                this.saveChanges();
+            }
+        });
+    }
+
+    enableEmployee(): void {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent,
+            {
+                data: {
+                    text: 'Dette er en aktivering af medarbejderen, er du sikker på du vil aktivere denne medarbejder?',
+                    title: `Vil du aktivere ${this.selectedEmployee.displayName}`,
+                    cancelButtonText: 'ANNULLER',
+                    confirmButtonText: 'AKTIVÈR MEDARBEJDER'
+                }
+            });
+
+        dialogRef.afterClosed().subscribe((result: boolean) => {
+            if (result) {
+                this.selectedEmployee.deactive = false;
+                this.saveChanges();
+            }
+        });
+    }
+
     addSkill(masterskillId: string, skill: string, isOnlyAdmin?: boolean, ranking?: number, ratingText?: string): void {
         // FE stuff
         this.removeFromFEList(masterskillId, skill);

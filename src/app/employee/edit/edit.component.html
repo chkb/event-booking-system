@@ -1,335 +1,342 @@
+<h1 *ngIf="selectedEmployee.deactive">Denne medarbejder er inaktiv!</h1>
 <mat-tab-group>
-    <mat-tab label="Info">
-        <div fxLayout="column wrap"
-             fxLayout.gt-xs="row"
-             fxLayoutGap="2%">
-            <div fxFlex="100"
-                 fxFlex.gt-md="30">
-                <mat-card *ngIf="selectedEmployee"
-                          class="card infocard"
-                          [class.xs]="['card-xs', 'infocard-xs']">
-                    <mat-card-header class="card-header">
-                        <h3>
-                            Medarbejder opsumering
-                        </h3>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <img mat-card-image
-                             *ngIf="selectedEmployee.photoURL"
-                             [src]="selectedEmployee.photoURL">
-                        <img mat-card-image
-                             *ngIf="!selectedEmployee.photoURL"
-                             src="assets/img/profile.png">
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <input matInput
-                                   placeholder="Photo URL"
-                                   [(ngModel)]="selectedEmployee.photoURL"
-                                   name="fullName">
-                        </mat-form-field>
-                        <mat-card-title>{{selectedEmployee.displayName}}</mat-card-title>
-                        <mat-card-subtitle>{{selectedEmployee.email}}</mat-card-subtitle>
-                        <p>
-                            {{selectedEmployee.comment}}
-                        </p>
-                    </mat-card-content>
-                </mat-card>
+  <mat-tab label="Info">
+    <div fxLayout="column wrap"
+         fxLayout.gt-xs="row"
+         fxLayoutGap="2%">
+      <div fxFlex="100"
+           fxFlex.gt-md="30">
+        <mat-card *ngIf="selectedEmployee"
+                  class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+          <mat-card-header class="card-header">
+            <h3>
+              Medarbejder opsumering
+            </h3>
+          </mat-card-header>
+          <mat-card-content>
+            <img mat-card-image
+                 *ngIf="selectedEmployee.photoURL"
+                 [src]="selectedEmployee.photoURL">
+            <img mat-card-image
+                 *ngIf="!selectedEmployee.photoURL"
+                 src="assets/img/profile.png">
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <input matInput
+                     placeholder="Photo URL"
+                     [(ngModel)]="selectedEmployee.photoURL"
+                     name="fullName">
+            </mat-form-field>
+            <mat-card-title>{{selectedEmployee.displayName}}</mat-card-title>
+            <mat-card-subtitle>{{selectedEmployee.email}}</mat-card-subtitle>
+            <p>
+              {{selectedEmployee.comment}}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex="100"
+           fxFlex.gt-md="70">
+        <mat-card *ngIf="selectedEmployee"
+                  class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+          <mat-card-header class="card-header">
+            <h3>
+              Ret informationer
+            </h3>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <mat-select placeholder="Rolle"
+                          [(value)]="selectedEmployee.role">
+                <mat-option *ngFor="let role of roles"
+                            [value]="role.value">
+                  {{ role.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Navn (unikt for bruger)"
+                     [(ngModel)]="selectedEmployee.displayName"
+                     name="fullName">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Email"
+                     disabled
+                     [(ngModel)]="selectedEmployee.email"
+                     name="email">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     *ngIf="!showUniqueId"
+                     type="password"
+                     placeholder="CPR"
+                     [disabled]="!isThisMe()"
+                     [(ngModel)]="selectedEmployee.uniqueId"
+                     name="uniqueId">
+              <input matInput
+                     *ngIf="showUniqueId"
+                     placeholder="CPR"
+                     disabled
+                     [(ngModel)]="selectedEmployee.uniqueId"
+                     name="uniqueId">
+            </mat-form-field>
+
+            <button mat-raised-button
+                    *ngIf="(isThisMe() || isAdmin()) && selectedEmployee.uniqueId"
+                    (click)="showUniqueId = !showUniqueId"
+                    color="primary">{{showUniqueId ? 'SKJUL CPR': 'VIS CPR'}}</button>
+            <br>
+            <br>
+
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <mat-select placeholder="Vælg løn-nivaeu">
+                <mat-option *ngFor="let wager of wagerList"
+                            (click)="setWager(wager.value)"
+                            [value]="wager.value">
+                  {{wager.name}} - {{wager.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <input type="number"
+                     matInput
+                     placeholder="Personligt løn-niveau"
+                     [(ngModel)]="selectedEmployee.personalWager"
+                     name="wager">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Arbejdsmail"
+                     [(ngModel)]="selectedEmployee.workEmail"
+                     name="workEmail">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <textarea matInput
+                        placeholder="Kommentar"
+                        [(ngModel)]="selectedEmployee.comment"
+                        name="comment"></textarea>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="!isThisMe() && isAdminOrEventLeader()"
+                            class="full-width">
+              <textarea matInput
+                        placeholder="Intern kommentar (kun for Administrator og EL)"
+                        [(ngModel)]="selectedEmployee.internalComment"
+                        name="internalcomment"></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Mobilnummer"
+                     [(ngModel)]="selectedEmployee.mobile"
+                     name="mobile">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Adresse"
+                     [(ngModel)]="selectedEmployee.adress"
+                     name="adress">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="By"
+                     [(ngModel)]="selectedEmployee.city"
+                     name="postal">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Postnr"
+                     [(ngModel)]="selectedEmployee.postal"
+                     name="postal">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Højde"
+                     [(ngModel)]="selectedEmployee.height"
+                     name="height">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Reg nummer"
+                     maxlength="4"
+                     [(ngModel)]="selectedEmployee.bankReg"
+                     name="text">
+            </mat-form-field>
+
+            <mat-form-field class="full-width">
+              <input matInput
+                     placeholder="Kontonummer"
+                     maxlength="10"
+                     [(ngModel)]="selectedEmployee.bankAccount"
+                     name="account">
+            </mat-form-field>
+
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <input matInput
+                     placeholder="Danløn Lønningsnummer"
+                     maxlength="10"
+                     [(ngModel)]="selectedEmployee.payrollNumber"
+                     name="account">
+            </mat-form-field>
+
+            <mat-form-field class="full-width"
+                            *ngIf="isAdmin()">
+              <mat-select placeholder="Udbetalingsform"
+                          [(value)]="selectedEmployee.paymentMethod">
+                <mat-option value="A-indkomst">A-Indkomst</mat-option>
+                <mat-option value="B-indkomst">B-Indkomst</mat-option>
+                <mat-option value="Faktura">Faktura</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
+            <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
+            <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned"
+                          *ngIf="isAdminOrEventLeader()">Kontrakt underskrevet?</mat-checkbox>
+
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button
+                    color="primary"
+                    (click)="saveChanges()">GEM ÆNDRINGER</button>
+            <button mat-raised-button
+                    *ngIf="isAdmin() && !selectedEmployee.deactive"
+                    (click)="deactiveEmployee()">DEAKTIVÈR MEDARBEJDER</button>
+            <button mat-raised-button
+                    *ngIf="isAdmin() && selectedEmployee.deactive"
+                    (click)="enableEmployee()">AKTIVÈR MEDARBEJDER</button>
+            <button mat-raised-button
+                    color="warn"
+                    *ngIf="isAdmin()"
+                    (click)="deleteEmployee()">SLET MEDARBEJDER</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Medarbejderens kompetencer">
+    <div fxLayout="column wrap"
+         fxLayout.gt-xs="row"
+         fxLayoutGap="2%">
+      <div fxFlex="100"
+           fxFlex.gt-md="30">
+        <mat-card *ngIf="selectedEmployee"
+                  class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+          <mat-card-header class="card-header">
+            <h3>
+              Kompetencer
+            </h3>
+          </mat-card-header>
+          <mat-card-content>
+            <h4 *ngIf="!selectedEmployee.skills">Ingen kompentencer tildelt endnu.</h4>
+            <h3 *ngIf="selectedEmployee.skills">Medarbejders kompentencer</h3>
+            <mat-list>
+              <div *ngIf="selectedEmployee.skills">
+                <div *ngFor="let skill of selectedEmployee.skills">
+                  <mat-list-item>
+                    <mat-icon class="btn"
+                              *ngIf="!skill.isOnlyadmin || isAdminOrEventLeader()"
+                              (click)="removeSkill(skill)"
+                              mat-list-icon>delete</mat-icon>
+                    <h4 mat-line>{{skill.name}}</h4>
+                    <div mat-line
+                         [matTooltip]="skill.ratingText"
+                         *ngIf="skill.ranking">
+                      <mat-icon>star</mat-icon>
+                      <mat-icon>
+                        {{skill.ranking == 2 || skill.ranking > 2 ? 'star' : 'star_border'}}
+                      </mat-icon>
+                      <mat-icon>
+                        {{skill.ranking == 3 ? 'star' : 'star_border'}}
+                      </mat-icon>
+                    </div>
+                  </mat-list-item>
+                </div>
+              </div>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div fxFlex="100"
+           fxFlex.gt-md="70">
+        <mat-card *ngIf="selectedEmployee"
+                  class="card infocard"
+                  [class.xs]="['card-xs', 'infocard-xs']">
+          <mat-card-header class="card-header">
+          </mat-card-header>
+          <mat-card-content>
+            <h3>Liste af tilgænglige kompentencer</h3>
+            <div fxLayout="column wrap"
+                 fxLayout.gt-xs="row wrap"
+                 fxLayoutGap="5%">
+              <div fxFlex="100"
+                   fxFlex.gt-md="25"
+                   *ngFor="let masterskill of masterskills">
+                <mat-list>
+                  <div *ngIf="masterskill.skills?.length ">
+                    <div *ngIf="!masterskill.onlyAdminEdit || (masterskill.onlyAdminEdit && isAdminOrEventLeader())">
+                      <h3 mat-subheader>{{masterskill.name}}</h3>
+                      <div *ngIf="!masterskill.hasRating">
+                        <mat-list-item *ngFor="let skill of masterskill.skills">
+                          <mat-icon class="btn"
+                                    (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)"
+                                    mat-list-icon>add</mat-icon>
+                          <h4 mat-line>{{skill}}</h4>
+                        </mat-list-item>
+                      </div>
+                      <div *ngIf="masterskill.hasRating">
+                        <mat-list-item *ngFor="let skill of masterskill.skills">
+                          <div class="stars">
+                            <button mat-icon-button
+                                    [matTooltip]="masterskill.ratingValue1"
+                                    (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit , 1, masterskill.ratingValue1)">
+                              <mat-icon>star</mat-icon>
+                            </button>
+                            <button mat-icon-button
+                                    [matTooltip]="masterskill.ratingValue2"
+                                    (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 2, masterskill.ratingValue2)">
+                              <mat-icon>star</mat-icon>
+                            </button>
+                            <button mat-icon-button
+                                    [matTooltip]="masterskill.ratingValue3"
+                                    (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 3, masterskill.ratingValue3)">
+                              <mat-icon>star</mat-icon>
+                            </button>
+                          </div>
+                          <h4>{{skill}}</h4>
+                        </mat-list-item>
+                      </div>
+                    </div>
+                  </div>
+                </mat-list>
+              </div>
             </div>
-            <div fxFlex="100"
-                 fxFlex.gt-md="70">
-                <mat-card *ngIf="selectedEmployee"
-                          class="card infocard"
-                          [class.xs]="['card-xs', 'infocard-xs']">
-                    <mat-card-header class="card-header">
-                        <h3>
-                            Ret informationer
-                        </h3>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <mat-select placeholder="Rolle"
-                                        [(value)]="selectedEmployee.role">
-                                <mat-option *ngFor="let role of roles"
-                                            [value]="role.value">
-                                    {{ role.viewValue }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Navn (unikt for bruger)"
-                                   [(ngModel)]="selectedEmployee.displayName"
-                                   name="fullName">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Email"
-                                   disabled
-                                   [(ngModel)]="selectedEmployee.email"
-                                   name="email">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   *ngIf="!showUniqueId"
-                                   type="password"
-                                   placeholder="CPR"
-                                   [disabled]="!isThisMe()"
-                                   [(ngModel)]="selectedEmployee.uniqueId"
-                                   name="uniqueId">
-                            <input matInput
-                                   *ngIf="showUniqueId"
-                                   placeholder="CPR"
-                                   disabled
-                                   [(ngModel)]="selectedEmployee.uniqueId"
-                                   name="uniqueId">
-                        </mat-form-field>
-
-                        <button mat-raised-button
-                                *ngIf="(isThisMe() || isAdmin()) && selectedEmployee.uniqueId"
-                                (click)="showUniqueId = !showUniqueId"
-                                color="primary">{{showUniqueId ? 'SKJUL CPR': 'VIS CPR'}}</button>
-                        <br>
-                        <br>
-
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <mat-select placeholder="Vælg løn-nivaeu">
-                                <mat-option *ngFor="let wager of wagerList"
-                                            (click)="setWager(wager.value)"
-                                            [value]="wager.value">
-                                    {{wager.name}} - {{wager.value}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <input type="number"
-                                   matInput
-                                   placeholder="Personligt løn-niveau"
-                                   [(ngModel)]="selectedEmployee.personalWager"
-                                   name="wager">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Arbejdsmail"
-                                   [(ngModel)]="selectedEmployee.workEmail"
-                                   name="workEmail">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <textarea matInput
-                                      placeholder="Kommentar"
-                                      [(ngModel)]="selectedEmployee.comment"
-                                      name="comment"></textarea>
-                        </mat-form-field>
-
-                        <mat-form-field *ngIf="!isThisMe() && isAdminOrEventLeader()"
-                                        class="full-width">
-                            <textarea matInput
-                                      placeholder="Intern kommentar (kun for Administrator og EL)"
-                                      [(ngModel)]="selectedEmployee.internalComment"
-                                      name="internalcomment"></textarea>
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Mobilnummer"
-                                   [(ngModel)]="selectedEmployee.mobile"
-                                   name="mobile">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Adresse"
-                                   [(ngModel)]="selectedEmployee.adress"
-                                   name="adress">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="By"
-                                   [(ngModel)]="selectedEmployee.city"
-                                   name="postal">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Postnr"
-                                   [(ngModel)]="selectedEmployee.postal"
-                                   name="postal">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Højde"
-                                   [(ngModel)]="selectedEmployee.height"
-                                   name="height">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Reg nummer"
-                                   maxlength="4"
-                                   [(ngModel)]="selectedEmployee.bankReg"
-                                   name="text">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width">
-                            <input matInput
-                                   placeholder="Kontonummer"
-                                   maxlength="10"
-                                   [(ngModel)]="selectedEmployee.bankAccount"
-                                   name="account">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <input matInput
-                                   placeholder="Danløn Lønningsnummer"
-                                   maxlength="10"
-                                   [(ngModel)]="selectedEmployee.payrollNumber"
-                                   name="account">
-                        </mat-form-field>
-
-                        <mat-form-field class="full-width"
-                                        *ngIf="isAdmin()">
-                            <mat-select placeholder="Udbetalingsform"
-                                        [(value)]="selectedEmployee.paymentMethod">
-                                <mat-option value="A-indkomst">A-Indkomst</mat-option>
-                                <mat-option value="B-indkomst">B-Indkomst</mat-option>
-                                <mat-option value="Faktura">Faktura</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
-                        <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
-                        <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned"
-                                      *ngIf="isAdminOrEventLeader()">Kontrakt underskrevet?</mat-checkbox>
-
-                    </mat-card-content>
-                    <mat-card-actions>
-                        <button mat-raised-button
-                                color="primary"
-                                (click)="saveChanges()">GEM ÆNDRINGER</button>
-                        <button mat-raised-button
-                                color="warn"
-                                *ngIf="isAdmin()"
-                                (click)="deleteEmployee()">SLET MEDARBEJDER</button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
-        </div>
-    </mat-tab>
-    <mat-tab label="Medarbejderens kompetencer">
-        <div fxLayout="column wrap"
-             fxLayout.gt-xs="row"
-             fxLayoutGap="2%">
-            <div fxFlex="100"
-                 fxFlex.gt-md="30">
-                <mat-card *ngIf="selectedEmployee"
-                          class="card infocard"
-                          [class.xs]="['card-xs', 'infocard-xs']">
-                    <mat-card-header class="card-header">
-                        <h3>
-                            Kompetencer
-                        </h3>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <h4 *ngIf="!selectedEmployee.skills">Ingen kompentencer tildelt endnu.</h4>
-                        <h3 *ngIf="selectedEmployee.skills">Medarbejders kompentencer</h3>
-                        <mat-list>
-                            <div *ngIf="selectedEmployee.skills">
-                                <div *ngFor="let skill of selectedEmployee.skills">
-                                    <mat-list-item>
-                                        <mat-icon class="btn"
-                                                  *ngIf="!skill.isOnlyadmin || isAdminOrEventLeader()"
-                                                  (click)="removeSkill(skill)"
-                                                  mat-list-icon>delete</mat-icon>
-                                        <h4 mat-line>{{skill.name}}</h4>
-                                        <div mat-line
-                                             [matTooltip]="skill.ratingText"
-                                             *ngIf="skill.ranking">
-                                            <mat-icon>star</mat-icon>
-                                            <mat-icon>
-                                                {{skill.ranking == 2 || skill.ranking > 2 ? 'star' : 'star_border'}}
-                                            </mat-icon>
-                                            <mat-icon>
-                                                {{skill.ranking == 3 ? 'star' : 'star_border'}}
-                                            </mat-icon>
-                                        </div>
-                                    </mat-list-item>
-                                </div>
-                            </div>
-                        </mat-list>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-            <div fxFlex="100"
-                 fxFlex.gt-md="70">
-                <mat-card *ngIf="selectedEmployee"
-                          class="card infocard"
-                          [class.xs]="['card-xs', 'infocard-xs']">
-                    <mat-card-header class="card-header">
-                    </mat-card-header>
-                    <mat-card-content>
-                        <h3>Liste af tilgænglige kompentencer</h3>
-                        <div fxLayout="column wrap"
-                             fxLayout.gt-xs="row wrap"
-                             fxLayoutGap="5%">
-                            <div fxFlex="100"
-                                 fxFlex.gt-md="25"
-                                 *ngFor="let masterskill of masterskills">
-                                <mat-list>
-                                    <div *ngIf="masterskill.skills?.length ">
-                                        <div *ngIf="!masterskill.onlyAdminEdit || (masterskill.onlyAdminEdit && isAdminOrEventLeader())">
-                                            <h3 mat-subheader>{{masterskill.name}}</h3>
-                                            <div *ngIf="!masterskill.hasRating">
-                                                <mat-list-item *ngFor="let skill of masterskill.skills">
-                                                    <mat-icon class="btn"
-                                                              (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit)"
-                                                              mat-list-icon>add</mat-icon>
-                                                    <h4 mat-line>{{skill}}</h4>
-                                                </mat-list-item>
-                                            </div>
-                                            <div *ngIf="masterskill.hasRating">
-                                                <mat-list-item *ngFor="let skill of masterskill.skills">
-                                                    <div class="stars">
-                                                        <button mat-icon-button
-                                                                [matTooltip]="masterskill.ratingValue1"
-                                                                (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit , 1, masterskill.ratingValue1)">
-                                                            <mat-icon>star</mat-icon>
-                                                        </button>
-                                                        <button mat-icon-button
-                                                                [matTooltip]="masterskill.ratingValue2"
-                                                                (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 2, masterskill.ratingValue2)">
-                                                            <mat-icon>star</mat-icon>
-                                                        </button>
-                                                        <button mat-icon-button
-                                                                [matTooltip]="masterskill.ratingValue3"
-                                                                (click)="addSkill(masterskill.uid, skill, masterskill.onlyAdminEdit, 3, masterskill.ratingValue3)">
-                                                            <mat-icon>star</mat-icon>
-                                                        </button>
-                                                    </div>
-                                                    <h4>{{skill}}</h4>
-                                                </mat-list-item>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </mat-list>
-                            </div>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-    </mat-tab>
-    <mat-tab label="Historik">
-        <app-event-history [employeeId]="employeeId"></app-event-history>
-    </mat-tab>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Historik">
+    <app-event-history [employeeId]="employeeId"></app-event-history>
+  </mat-tab>
 </mat-tab-group>

@@ -107,18 +107,21 @@ export class EventEditComponent implements OnInit {
                 employee.hasCar = doc.data()['hasCar'];
                 employee.personalWager = doc.data()['personalWager'];
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
-                if (this.searchFilterBucket.length) {
-                    let count = 0;
-                    this.searchFilterBucket.forEach(skill => {
-                        if (employee.skills && employee.skills.length && this.isInArray(employee.skills, skill)) {
-                            count++;
+                employee.deactive = doc.data()['deactive'];
+                if (!employee.deactive) {
+                    if (this.searchFilterBucket.length) {
+                        let count = 0;
+                        this.searchFilterBucket.forEach(skill => {
+                            if (employee.skills && employee.skills.length && this.isInArray(employee.skills, skill)) {
+                                count++;
+                            }
+                        });
+                        if (count) {
+                            employeeList.push(employee);
                         }
-                    });
-                    if (count) {
+                    } else {
                         employeeList.push(employee);
                     }
-                } else {
-                    employeeList.push(employee);
                 }
             });
             this.generalEmployeeList = employeeList;

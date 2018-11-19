@@ -217,7 +217,6 @@ export class TableExpandableRowsComponent implements OnInit {
         return Object.keys(groupedCollection).map(key => {
             const obj = new PayoutObject();
             obj.cvr = '10105455';
-            obj.udbetaling = groupedCollection[key][0]['paymentMethod'];
             obj.medarbejder = groupedCollection[key][0]['medarbejder'];
             obj.medarbejdernummer = groupedCollection[key][0]['payrollNumber'];
             obj.loentype = groupedCollection[key][0]['paymentMethod'] ? groupedCollection[key][0]['paymentMethod'] : 'Ikke angivet';

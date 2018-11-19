@@ -59,6 +59,7 @@ export class PayoutObject {
 export class TableExpandableRowsComponent implements OnInit {
     selection = new SelectionModel<PayoutObject>(true, []);
     list: PayoutDanish[] = [];
+    parrentList: PayoutObject[] = [];
     eventList: EventObject[] = [];
     startDate = new FormControl((new Date()).toISOString());
     endDate = new FormControl((new Date()).toISOString());
@@ -170,6 +171,7 @@ export class TableExpandableRowsComponent implements OnInit {
                 });
                 this.list = list;
                 const parrentList = this.groupList(list, 'medarbejder');
+                this.parrentList = parrentList;
                 this.dataSource = parrentList;
             });
     }
@@ -266,7 +268,7 @@ export class TableExpandableRowsComponent implements OnInit {
         const startDateText = this.datepipe.transform(this.startDate.value).toString();
         const slutDateText = this.datepipe.transform(this.endDate.value).toString();
         const title = `Liste over lønninger for perioden: ${startDateText} til ${slutDateText} `;
-        this.JSONToCSVConvertor(this.list, title, true);
+        this.JSONToCSVConvertor(this.parrentList, title, true);
     }
 
     removeDuplicateUsingFilter(arr) {

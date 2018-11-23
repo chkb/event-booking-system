@@ -4,10 +4,10 @@ import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firest
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
+// tslint:disable-next-line:import-blacklist
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-// tslint:disable-next-line:import-blacklist
 interface User {
     uid: string;
     email: string;
@@ -69,7 +69,13 @@ export class LoginProviderService {
     private signupWithEmail(email: string, password: string) {
         return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
             .then((credential) => {
-                this.updateUserData(credential);
+                this.updateUserData(credential.user);
+            })
+            .catch(error => {
+                this.snackBar.open(error, 'LUK',
+                    {
+                        duration: 10000,
+                    });
             });
     }
 
@@ -104,7 +110,9 @@ export class LoginProviderService {
 
         this.afs.firestore.doc(`/users/${user.uid}`).get()
             .then(docSnapshot => {
-                if (docSnapshot.exists) {
+                if (!data.displayName) {
+                    return;
+                } else if (docSnapshot.exists) {
                     return userRef.update(data);
                 } else {
                     data.role = '';

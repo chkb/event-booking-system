@@ -1,4 +1,4 @@
-<h1 *ngIf="selectedEmployee.deactive">Denne medarbejder er inaktiv!</h1>
+<h1 *ngIf="selectedEmployee && selectedEmployee.deactive">Denne medarbejder er inaktiv!</h1>
 <mat-tab-group>
   <mat-tab label="Info">
     <div fxLayout="column wrap"

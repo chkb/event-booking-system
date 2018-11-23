@@ -46,24 +46,21 @@ export class SignupComponent {
 
     isValid(): boolean {
         let result = false;
-        if(this.password !== this.repeatPassword){
+        if (this.password !== this.repeatPassword) {
             result = false;
-        }
-        else if(!this.email || !EMAIL_REGEX.test(this.email)){
+        } else if (!this.email || !EMAIL_REGEX.test(this.email)) {
             result = false;
-        }
-        else if(this.password.length < 6){
+        } else if (this.password.length < 6) {
             result = false;
-        }
-        else{
+        } else {
             result = true;
         }
-        
+
         return result;
     }
 
     createLogin() {
-        if(this.isValid()){
+        if (this.isValid()) {
             this.loginProvider.signup(this.email, this.password);
             this.navigateToDashboard();
         }

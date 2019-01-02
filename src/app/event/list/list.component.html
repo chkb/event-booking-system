@@ -14,7 +14,9 @@
         <mat-card-header class="card-header">
           <mat-card-title>Eventliste</mat-card-title>
           <mat-card-subtitle>
-            <mat-slide-toggle [(ngModel)]="viewAllUpcomming"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="viewAllUpcomming">
+              Vis alle
+            </mat-slide-toggle>
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
@@ -136,7 +138,7 @@
                 <!-- Payout Done Column -->
                 <ng-container matColumnDef="payoutDone">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="75px"> Løn </mat-header-cell>
+                                   fxFlex="75px"> Timeregistrering </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="75px">
                     <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>
@@ -164,7 +166,9 @@
         <mat-card-header class="card-header">
           <mat-card-title>Tidligere Eventliste</mat-card-title>
           <mat-card-subtitle>
-            <mat-slide-toggle [(ngModel)]="viewAllPrev"></mat-slide-toggle>
+            <mat-slide-toggle [(ngModel)]="viewAllPrev">
+              Vis alle
+            </mat-slide-toggle>
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>

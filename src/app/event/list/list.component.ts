@@ -73,9 +73,7 @@ export class EventListComponent implements AfterViewInit {
                     if (moment(event.dateFrom).isSameOrAfter(now)) {
                         eventList.push(event);
                     } else {
-                        if (moment(event.dateFrom).isSame(now, 'year')) {
-                            eventPrevList.push(event);
-                        }
+                        eventPrevList.push(event);
                     }
                 } else if (getAll) {
                     if (moment(event.dateFrom).isSameOrAfter(now)) {

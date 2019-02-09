@@ -37,7 +37,7 @@ export class AppComponent {
         },
         {
             url: '/event/create',
-            text: 'Opret event'
+            text: 'Opret Event'
         },
     ];
 
@@ -79,7 +79,7 @@ export class AppComponent {
     payoutNavigationItems: NavigationItem[] = [
         {
             url: '/payout/list',
-            text: 'Event lønning'
+            text: 'Indtast Eventløn'
         }
     ];
 

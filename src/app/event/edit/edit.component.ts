@@ -61,6 +61,7 @@ export class EventEditComponent implements OnInit {
         'mobile',
         'hasDriverLicens',
         'hasCar',
+        'comment',
         'selection'
     ];
 
@@ -105,6 +106,7 @@ export class EventEditComponent implements OnInit {
                 employee.skills = doc.data()['skills'];
                 employee.mobile = doc.data()['mobile'];
                 employee.hasCar = doc.data()['hasCar'];
+                employee.comment = doc.data()['comment'];
                 employee.personalWager = doc.data()['personalWager'];
                 employee.hasDriverLicens = doc.data()['hasDriverLicens'];
                 employee.deactive = doc.data()['deactive'];

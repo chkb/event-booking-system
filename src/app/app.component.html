@@ -27,6 +27,84 @@
       </button>
     </mat-menu>
   </mat-toolbar>
+  <mat-toolbar>
+    <span *ngIf="isAuthenticated">
+      <button mat-button
+              *ngFor="let item of dashboardNavigationItems"
+              [routerLink]="item.url"
+              routerLinkActive="active-link"
+              (click)="sidenav.close()">
+        <span>{{item.text}}</span>
+      </button>
+      <span *ngIf="isAdminOrEventLeader()">
+        <button mat-button
+                *ngFor="let item of eventNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of payoutNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of payoutNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of employeeNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+      </span>
+      <span *ngIf="isAdmin()">
+        <button mat-button
+                *ngFor="let item of eventTypeNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of skillNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of wagerNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of messagesNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+        <button mat-button
+                *ngFor="let item of eventAdminNavigationItems"
+                [routerLink]="item.url"
+                routerLinkActive="active-link"
+                (click)="sidenav.close()">
+          <span>{{item.text}}</span>
+        </button>
+      </span>
+    </span>
+  </mat-toolbar>
   <mat-sidenav #sidenav
                class="sidenav">
     <div class="logo-container">
@@ -36,35 +114,6 @@
       <span>Menu</span>
     </div>
     <mat-nav-list class="nav-list">
-      <span>
-        <h3>Dashboard</h3>
-        <a *ngFor="let item of dashboardNavigationItems"
-           mat-list-item
-           [routerLink]="item.url"
-           routerLinkActive="active-link"
-           (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </a>
-      </span>
-      <span *ngIf="isAdminOrEventLeader()">
-        <h3>Events</h3>
-        <a *ngFor="let item of eventNavigationItems"
-           mat-list-item
-           [routerLink]="item.url"
-           routerLinkActive="active-link"
-           (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </a>
-      </span>
-      <span *ngIf="isAdmin()">
-        <a *ngFor="let item of eventTypeNavigationItems"
-           mat-list-item
-           [routerLink]="item.url"
-           routerLinkActive="active-link"
-           (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </a>
-      </span>
       <span *ngIf="isAdminOrEventLeader()">
         <a *ngFor="let item of payoutNavigationItems"
            mat-list-item

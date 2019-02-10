@@ -175,8 +175,8 @@ export class PayoutEditComponent implements OnInit {
     }
 
     updatePayout(payout: Payout): void {
-        payout.sum = this.getSum(payout.hours, payout.wager, payout.bonus);
         payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
+        payout.sum = this.getSum(payout.hours, payout.wager, payout.bonus);
         const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
         this.selectedPayoutList[idx] = payout;
         this.updateTable();

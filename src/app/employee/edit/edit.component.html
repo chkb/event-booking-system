@@ -208,10 +208,16 @@
               </mat-select>
             </mat-form-field>
 
-            <mat-checkbox [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
-            <mat-checkbox [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
-            <mat-checkbox [(ngModel)]="selectedEmployee.contractSigned"
-                          *ngIf="isAdminOrEventLeader()">Kontrakt underskrevet?</mat-checkbox>
+            <mat-checkbox class="padding-checkbox"
+                          [(ngModel)]="selectedEmployee.hasDriverLicens">Har kørekort?</mat-checkbox>
+            <mat-checkbox class="padding-checkbox"
+                          [(ngModel)]="selectedEmployee.hasCar">Har egen bil?</mat-checkbox>
+            <mat-checkbox class="padding-checkbox"
+                          [(ngModel)]="selectedEmployee.contractSigned"
+                          *ngIf="isAdminOrEventLeader()">Gammel kontrakt underskrevet?</mat-checkbox>
+            <mat-checkbox class="padding-checkbox"
+                          [(ngModel)]="selectedEmployee.newContractSigned"
+                          *ngIf="isAdminOrEventLeader()">Kontrakt version 3.0 underskrevet?</mat-checkbox>
 
           </mat-card-content>
           <mat-card-actions>

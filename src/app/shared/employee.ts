@@ -22,6 +22,7 @@ export class Employee {
     deactive: boolean;
     hasCar: boolean;
     contractSigned: boolean;
+    newContractSigned: boolean;
     role: string;
     skills: Skill[] = [];
     personalWager: number;

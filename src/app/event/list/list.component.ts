@@ -82,7 +82,9 @@ export class EventListComponent implements AfterViewInit {
                 .where('dateFrom', '>', moment().format('YYYY-MM-DD'))
                 .limit(getAll ? 1000 : 20))
             .valueChanges()
-            .subscribe(events => this.setDataAfterToday(events));
+            .subscribe(events => {
+                this.setDataAfterToday(events);
+            });
     }
 
     setDataAfterToday(events: any): void {

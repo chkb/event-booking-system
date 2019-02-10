@@ -38,20 +38,19 @@ export class EventHistoryComponent implements OnInit {
 
     getEmployeeData(): void {
         this.list = [];
-        this.afs.collection('events').ref.get().then(querySnapshot => {
+        this.afs.collection(`event-history/${this.employeeId}/2018`).ref.get().then(querySnapshot => {
             querySnapshot.forEach(doc => {
-                const bookedList = doc.data()['booked'];
-                bookedList.forEach((booked: Booked) => {
+                const bookedEvent = doc.data();
+                if (bookedEvent) {
                     const eh = new EventHistoryViewModel();
-                    if (booked.uid === this.employeeId) {
-                        eh.comments = booked.comment;
-                        eh.employeeName = booked.displayName;
-                        eh.employeeUid = booked.uid;
-                        eh.eventUid = doc.id;
-                        eh.event = doc.data();
-                        this.list.push(eh);
-                    }
-                });
+                    eh.comments = bookedEvent.comments;
+                    eh.date = moment(bookedEvent.date).toDate();
+                    eh.employeeName = bookedEvent.employeeName;
+                    eh.employeeUid = this.employeeId;
+                    eh.eventUid = bookedEvent.eventUid;
+                    eh.eventName = bookedEvent.eventName;
+                    this.list.push(eh);
+                }
             });
         });
         this.list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

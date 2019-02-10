@@ -168,7 +168,12 @@ export class EventCreateComponent implements AfterViewInit {
                 {
                     duration: 10000,
                 });
-            this.router.navigate(['/event/', res.id]);
+            this.event.uid = res.id;
+            this.afs
+                .collection('events')
+                .doc(res.id).update(JSON.parse(JSON.stringify(this.event))).then(result => {
+                    this.router.navigate(['/event/', res.id]);
+                });
         });
     }
 

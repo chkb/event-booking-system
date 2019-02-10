@@ -35,7 +35,6 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"
                class="row"
-               [ngClass]="row.deative ? 'greyout': ''"
                (click)="gotoEvent(row.eventUid)"></mat-row>
     </mat-table>
   </div>

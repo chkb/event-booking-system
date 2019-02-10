@@ -119,7 +119,7 @@ export class PayoutAdminComponent implements OnInit {
         // tslint:disable-next-line:no-debugger
         const list: PayoutDanish[] = [];
         this.eventList.forEach(event => {
-            if (!event.deative && event.payouts) {
+            if (event.payouts) {
                 event.payouts.forEach(payout => {
                     const p = new PayoutDanish();
                     p.Medarbejder = payout.employee.displayName;

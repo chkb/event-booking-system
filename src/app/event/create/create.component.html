@@ -14,8 +14,7 @@
     </mat-form-field>
     <mat-form-field class="full-width"
                     *ngIf="eventTypeList">
-      <mat-select [disabled]=" event.deative"
-                  placeholder="Event-type"
+      <mat-select placeholder="Event-type"
                   [(value)]="event.eventType">
         <mat-option [style.background]="eventType.color"
                     style="color:white;"
@@ -29,24 +28,21 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input [disabled]=" event.deative"
-             matInput
+      <input matInput
              placeholder="Antal kunder"
              [(ngModel)]="event.numberOfCustomer"
              name="kunder">
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <input [disabled]=" event.deative"
-             matInput
+      <input matInput
              placeholder="Antal hold"
              [(ngModel)]="event.numberOfTeam"
              name="numberOfTeam">
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <input [disabled]=" event.deative"
-             matInput
+      <input matInput
              placeholder="Rollebesætning"
              [(ngModel)]="event.crew"
              name="crew">
@@ -58,7 +54,6 @@
       <div fxFlex>
         <mat-form-field class="full-width">
           <textarea class="comment"
-                    [disabled]=" event.deative"
                     matInput
                     placeholder="Event beskrivelse"
                     [(ngModel)]="event.eventDescription"
@@ -69,7 +64,6 @@
 
         <mat-form-field class="full-width">
           <textarea class="comment"
-                    [disabled]=" event.deative"
                     matInput
                     placeholder="Tidsplan"
                     [(ngModel)]="event.timeline"
@@ -87,8 +81,7 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <mat-select [disabled]=" event.deative"
-                  placeholder="Eventleder"
+      <mat-select placeholder="Eventleder"
                   [(value)]="event.eventLeader">
         <mat-option *ngFor="let employee of leaderList"
                     (click)="event.eventLeaderId = employee.uid"
@@ -100,16 +93,14 @@
 
     <mat-form-field class="full-width"
                     *ngIf="isAdminOrEventLeader()">
-      <input [disabled]=" event.deative"
-             matInput
+      <input matInput
              placeholder="Info til eventleder"
              [(ngModel)]="event.eventLeaderInfo"
              name="eventLeaderInfo">
     </mat-form-field>
 
     <mat-form-field class="full-width">
-      <input [disabled]=" event.deative"
-             matInput
+      <input matInput
              placeholder="Sagsnr"
              [(ngModel)]="event.eventNumber"
              name="eventNumber">

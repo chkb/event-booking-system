@@ -313,29 +313,31 @@ export class EventEditComponent implements OnInit {
                 .valueChanges()
                 .subscribe((result: EventObject) => {
                     this.selectedEvent = result;
-                    this.timeFrom = this.selectedEvent.timeFrom;
-                    this.timeTo = this.selectedEvent.timeTo;
-                    if (this.selectedEvent.booked) {
-                        this.selectedBookedList = this.selectedEvent.booked;
-                        this.selectedBookedList.forEach(employee => {
-                            this.employeeBlackList.push(employee.uid);
-                        });
-                        this.updateBookedList();
-                        this.getEmailList();
-                    }
-                    if (this.selectedEvent.maybe) {
-                        this.selectedMaybeList = this.selectedEvent.maybe;
-                        this.updateMaybeList();
-                        this.selectedMaybeList.forEach(employee => {
-                            this.employeeBlackList.push(employee.uid);
-                        });
-                    }
-                    if (this.selectedEvent.nogo) {
-                        this.selectedNogoList = this.selectedEvent.nogo;
-                        this.updateNogoList();
-                        this.selectedNogoList.forEach(employee => {
-                            this.employeeBlackList.push(employee.uid);
-                        });
+                    if (this.selectedEvent) {
+                        this.timeFrom = this.selectedEvent.timeFrom;
+                        this.timeTo = this.selectedEvent.timeTo;
+                        if (this.selectedEvent.booked) {
+                            this.selectedBookedList = this.selectedEvent.booked;
+                            this.selectedBookedList.forEach(employee => {
+                                this.employeeBlackList.push(employee.uid);
+                            });
+                            this.updateBookedList();
+                            this.getEmailList();
+                        }
+                        if (this.selectedEvent.maybe) {
+                            this.selectedMaybeList = this.selectedEvent.maybe;
+                            this.updateMaybeList();
+                            this.selectedMaybeList.forEach(employee => {
+                                this.employeeBlackList.push(employee.uid);
+                            });
+                        }
+                        if (this.selectedEvent.nogo) {
+                            this.selectedNogoList = this.selectedEvent.nogo;
+                            this.updateNogoList();
+                            this.selectedNogoList.forEach(employee => {
+                                this.employeeBlackList.push(employee.uid);
+                            });
+                        }
                     }
                 });
         });
@@ -605,29 +607,29 @@ export class EventEditComponent implements OnInit {
         this.router.navigate([`/payout`, this.eventId]);
     }
 
-    deativate(): void {
-        if (this.selectedEvent.deative) {
-            this.selectedEvent.deative = false;
-            this.update(false);
-        } else {
-            const dialogRef = this.dialog.open(ConfirmDialogComponent,
-                {
-                    data: {
-                        text: 'Vil du deaktivere dette event?, den vil ikke fremgå nogen liste, men vil stadig blive gemt i databasen?',
-                        title: `Vil du deaktivere ${this.selectedEvent.name}`,
-                        cancelButtonText: 'ANNULLER',
-                        confirmButtonText: 'DEAKTIVERE EVENT'
-                    }
-                });
+    // deativate(): void {
+    //     if (this.selectedEvent.deative) {
+    //         this.selectedEvent.deative = false;
+    //         this.update(false);
+    //     } else {
+    //         const dialogRef = this.dialog.open(ConfirmDialogComponent,
+    //             {
+    //                 data: {
+    //                     text: 'Vil du deaktivere dette event?, den vil ikke fremgå nogen liste, men vil stadig blive gemt i databasen?',
+    //                     title: `Vil du deaktivere ${this.selectedEvent.name}`,
+    //                     cancelButtonText: 'ANNULLER',
+    //                     confirmButtonText: 'DEAKTIVERE EVENT'
+    //                 }
+    //             });
 
-            dialogRef.afterClosed().subscribe((result: boolean) => {
-                if (result) {
-                    this.selectedEvent.deative = true;
-                    this.update(true);
-                }
-            });
-        }
-    }
+    //         dialogRef.afterClosed().subscribe((result: boolean) => {
+    //             if (result) {
+    //                 this.selectedEvent.deative = true;
+    //                 this.update(true);
+    //             }
+    //         });
+    //     }
+    // }
 
     isAdminOrEventLeader() {
         if (this.lps.role === 'admin' || this.lps.role === 'eventLeader') {

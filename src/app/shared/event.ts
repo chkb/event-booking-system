@@ -33,7 +33,6 @@ export class EventObject {
     bookingDone: boolean;
     payoutDone: boolean;
     payoutDoneBy: Employee;
-    deative: boolean;
     payouts: Payout[] = [];
     eventNumber: string;
     numberOfCustomer: string;

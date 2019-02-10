@@ -21,6 +21,7 @@ export class EventObject {
     eventLeader: string;
     eventLeaderId: string;
     staffNeed: number;
+    bookedCount: number;
     booked: Booked[] = [];
     maybe: Booked[] = [];
     nogo: Booked[] = [];

@@ -1,11 +1,12 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatSlideToggleChange } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
 
 import { EventObject } from '../../shared/event';
 import { moveIn } from '../../router.animations';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-event-list',
@@ -16,7 +17,8 @@ import { moveIn } from '../../router.animations';
     host: { '[@moveIn]': '' }
 })
 export class EventListComponent implements AfterViewInit {
-    loading = false;
+    afterLoading = false;
+    beforeLoading = false;
     viewAllUpcomming = false;
     viewAllPrev = false;
     getAllCheckBox: boolean;
@@ -40,55 +42,52 @@ export class EventListComponent implements AfterViewInit {
         private afs: AngularFirestore,
         private router: Router
     ) {
-
-        this.loading = true;
-        this.getdata(false);
+        this.getAfterToday(false);
+        this.getBeforeToday(false);
     }
 
-    getdata(getAll: boolean): void {
-        const now = moment().startOf('day');
-        let eventList: EventObject[] = [];
-        let eventPrevList: EventObject[] = [];
-        this.afs.collection('events').ref.get().then(querySnapshot => {
-            querySnapshot.forEach(doc => {
-                const event = new EventObject();
-                event.name = doc.data()['name'];
-                event.dateFrom = doc.data()['dateFrom'];
-                event.timeFrom = doc.data()['timeFrom'];
-                event.dateTo = doc.data()['dateTo'];
-                event.timeTo = doc.data()['timeTo'];
-                event.eventLeader = doc.data()['eventLeader'];
-                event.uid = doc.id;
-                event.eventLocation = doc.data()['eventLocation'];
-                event.customer = doc.data()['customer'];
-                event.staffNeed = doc.data()['staffNeed'];
-                event.billInfo = doc.data()['billInfo'];
-                event.eventType = doc.data()['eventType'];
-                event.eventTypeColor = doc.data()['eventTypeColor'];
-                event.bookingDone = doc.data()['bookingDone'];
-                event.payoutDone = doc.data()['payoutDone'];
-                event.booked = doc.data()['booked'];
-                event.deative = doc.data()['deative'];
-                if (!getAll && !event.deative) {
-                    if (moment(event.dateFrom).isSameOrAfter(now)) {
-                        eventList.push(event);
-                    } else {
-                        eventPrevList.push(event);
-                    }
-                } else if (getAll) {
-                    if (moment(event.dateFrom).isSameOrAfter(now)) {
-                        eventList.push(event);
-                    } else {
-                        eventPrevList.push(event);
-                    }
-                }
-            });
-            this.loading = false;
-            eventList = eventList.sort((a, b) => new Date(a.dateFrom).getTime() - new Date(b.dateFrom).getTime());
-            this.dataSource = new MatTableDataSource(eventList);
-            eventPrevList = eventPrevList.sort((a, b) => new Date(b.dateFrom).getTime() - new Date(a.dateFrom).getTime());
-            this.dataPrevSource = new MatTableDataSource(eventPrevList);
-        });
+    beforeEventToggle(toggle: MatSlideToggleChange): void {
+        this.getBeforeToday(toggle.checked);
+    }
+
+    getBeforeToday(getAll: boolean): void {
+        this.setDataBeforeToday([]);
+        this.beforeLoading = true;
+        this.afs
+            .collection('events', ref => ref
+                .orderBy('dateFrom', 'desc')
+                .orderBy('timeFrom')
+                .where('dateFrom', '<', moment().format('YYYY-MM-DD'))
+                .limit(getAll ? 1000 : 20))
+            .valueChanges()
+            .subscribe(events => this.setDataBeforeToday(events));
+    }
+
+    setDataBeforeToday(events: any): void {
+        this.dataPrevSource = new MatTableDataSource(events);
+        this.beforeLoading = false;
+    }
+
+    afterEventToggle(toggle: MatSlideToggleChange): void {
+        this.getAfterToday(toggle.checked);
+    }
+
+    getAfterToday(getAll: boolean): void {
+        this.setDataAfterToday([]);
+        this.afterLoading = true;
+        this.afs
+            .collection('events', ref => ref
+                .orderBy('dateFrom')
+                .orderBy('timeFrom')
+                .where('dateFrom', '>', moment().format('YYYY-MM-DD'))
+                .limit(getAll ? 1000 : 20))
+            .valueChanges()
+            .subscribe(events => this.setDataAfterToday(events));
+    }
+
+    setDataAfterToday(events: any): void {
+        this.dataSource = new MatTableDataSource(events);
+        this.afterLoading = false;
     }
 
     ngAfterViewInit() {

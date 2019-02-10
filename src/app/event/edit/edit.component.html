@@ -1,739 +1,314 @@
-<div fxLayout="column wrap"
-     fxLayout.gt-xs="row"
-     fxLayoutGap="2%"
-     *ngIf="selectedEvent">
-  <div fxFlex>
-    <mat-card class="card infocard"
-              [class.xs]="['card-xs', 'infocard-xs']">
-      <mat-card-header class="card-header">
-        <h3>
-          Begivenhed {{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}
-        </h3>
-      </mat-card-header>
-      <mat-card-content>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Kunde"
-                 [(ngModel)]="selectedEvent.name"
-                 name="eventname">
-        </mat-form-field>
-
-        <mat-form-field class="full-width"
-                        *ngIf="eventTypeList">
-          <mat-select [disabled]=" selectedEvent.deative"
-                      placeholder="Event-type"
-                      [(value)]="selectedEvent.eventType">
-            <mat-option [style.background]="eventType.color"
-                        style="color:white;"
-                        (click)="selectedEvent.eventTypeColor = eventType.color"
-                        *ngFor="let eventType of eventTypeList"
-                        [value]="eventType.name">
-              <h4>
-                {{eventType.name}}
-              </h4>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Antal kunder"
-                 [(ngModel)]="selectedEvent.numberOfCustomer"
-                 name="kunder">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Antal hold"
-                 [(ngModel)]="selectedEvent.numberOfTeam"
-                 name="numberOfTeam">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Rollebesætning"
-                 [(ngModel)]="selectedEvent.crew"
-                 name="crew">
-        </mat-form-field>
-
-        <div fxLayout="column wrap"
-             fxLayout.gt-xs="row"
-             fxLayoutGap="2%">
-          <div fxFlex>
-            <mat-form-field class="full-width">
-              <textarea class="comment"
-                        [disabled]=" selectedEvent.deative"
-                        matInput
-                        placeholder="Event beskrivelse"
-                        [(ngModel)]="selectedEvent.eventDescription"
-                        name="comment"></textarea>
-            </mat-form-field>
-          </div>
-          <div fxFlex>
-            <mat-form-field class="full-width">
-              <textarea class="comment"
-                        [disabled]=" selectedEvent.deative"
-                        matInput
-                        placeholder="Tidsplan"
-                        [(ngModel)]="selectedEvent.timeline"
-                        name="timeline"></textarea>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 type="number"
-                 placeholder="Antal medarbejdere på event (kun heltal)"
-                 [(ngModel)]="selectedEvent.staffNeed"
-                 name="eventname">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-select [disabled]=" selectedEvent.deative"
-                      placeholder="Eventleder"
-                      [(value)]="selectedEvent.eventLeader">
-            <mat-option *ngFor="let employee of leaderList"
-                        (click)="selectedEvent.eventLeaderId = employee.uid"
-                        [value]="employee.displayName">
-              {{employee.displayName}} ({{getRoleText(employee.role)}})
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field class="full-width"
-                        *ngIf="isAdminOrEventLeader()">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Info til eventleder"
-                 [(ngModel)]="selectedEvent.eventLeaderInfo"
-                 name="eventLeaderInfo">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <input [disabled]=" selectedEvent.deative"
-                 matInput
-                 placeholder="Sagsnr"
-                 [(ngModel)]="selectedEvent.eventNumber"
-                 name="eventNumber">
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-select [disabled]=" selectedEvent.deative"
-                      placeholder="Fakturering"
-                      [(value)]="selectedEvent.billInfo">
-            <mat-option value="">Ingen fakturing udført</mat-option>
-            <mat-option value="0%">0%</mat-option>
-            <mat-option value="10%">10%</mat-option>
-            <mat-option value="20%">20%</mat-option>
-            <mat-option value="30%">30%</mat-option>
-            <mat-option value="40%">40%</mat-option>
-            <mat-option value="50%">50%</mat-option>
-            <mat-option value="60%">60%</mat-option>
-            <mat-option value="70%">70%</mat-option>
-            <mat-option value="80%">80%</mat-option>
-            <mat-option value="90%">90%</mat-option>
-            <mat-option value="100%">100%</mat-option>
-            <mat-option value="Færdig">Færdig</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-divider></mat-divider>
-        <h3>Tid og sted</h3>
-        <div fxLayout="column wrap"
-             fxLayout.gt-xs="row"
-             fxLayoutGap="2%">
-          <div fxFlex>
-            <h5>Start tidspunkt</h5>
-            <input type="time"
-                   [disabled]=" selectedEvent.deative"
-                   [(ngModel)]="selectedEvent.timeFrom" />
-            <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
-            <mat-form-field class="full-width">
-              <input [disabled]=" selectedEvent.deative"
-                     matInput
-                     type="date"
-                     placeholder="Startdato"
-                     [(ngModel)]="selectedEvent.dateFrom">
-            </mat-form-field>
-          </div>
-          <div fxFlex>
-            <h5>Slut tidspunkt</h5>
-            <input type="time"
-                   [disabled]=" selectedEvent.deative"
-                   [(ngModel)]="selectedEvent.timeTo" />
-            <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
-            <mat-form-field class="full-width">
-              <input [disabled]=" selectedEvent.deative"
-                     matInput
-                     type="date"
-                     placeholder="Slutdato"
-                     [(ngModel)]="selectedEvent.dateTo">
-            </mat-form-field>
-          </div>
-        </div>
-        <div fxLayout="column wrap"
-             fxLayout.gt-xs="row"
-             fxLayoutGap="2%">
-          <div fxFlex>
-            <mat-form-field class="full-width">
-              <input [disabled]=" selectedEvent.deative"
-                     matInput
-                     placeholder="Lokation"
-                     [(ngModel)]="selectedEvent.eventLocation"
-                     name="eventlocation">
-            </mat-form-field>
-          </div>
-          <div fxFlex>
-            <mat-form-field class="full-width">
-              <input [disabled]=" selectedEvent.deative"
-                     matInput
-                     placeholder="Adresse på lokation"
-                     [(ngModel)]="selectedEvent.eventAdress"
-                     name="eventadress">
-            </mat-form-field>
-          </div>
-        </div>
-        <div *ngIf="isAdminOrEventLeader()">
-          <mat-divider></mat-divider>
-          <h3>Kontaktoplysninger</h3>
-          <div fxLayout="column wrap"
-               fxLayout.gt-xs="row"
-               fxLayoutGap="2%">
-            <div fxFlex>
-              <mat-form-field class="full-width">
-                <input [disabled]=" selectedEvent.deative"
-                       matInput
-                       placeholder="Kundekontakt"
-                       [(ngModel)]="selectedEvent.customer"
-                       name="customer">
-              </mat-form-field>
-            </div>
-            <div fxFlex>
-              <mat-form-field class="full-width">
-                <input [disabled]=" selectedEvent.deative"
-                       matInput
-                       placeholder="Lokationkontakt"
-                       [(ngModel)]="selectedEvent.contactInfo"
-                       name="contactInfo">
-              </mat-form-field>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <h3>Status</h3>
-          <div fxLayout="column wrap"
-               fxLayout.gt-xs="row"
-               fxLayoutGap="2%">
-            <div fxFlex>
-              <mat-list>
-                <mat-list-item>
-                  <mat-icon mat-list-icon>{{selectedEvent.bookingDone ? 'check_circle':
-                    'remove_circle'}}</mat-icon>
-                  <h4 mat-line>Er booking udført?</h4>
-                  <p mat-line> {{selectedEvent.bookingDone ? 'JA': 'NEJ'}} </p>
-                </mat-list-item>
-              </mat-list>
-              <button mat-raised-button
-                      (click)="bookingDone()">{{selectedEvent.bookingDone ? 'GENÅBN EVENT': 'FÆRDIG MED
-                BOOKING'}}</button>
-            </div>
-            <div fxFlex>
-              <mat-list>
-                <mat-list-item>
-                  <mat-icon mat-list-icon>{{selectedEvent.payoutDone ? 'check_circle':
-                    'remove_circle'}}</mat-icon>
-                  <h4 mat-line>Er timeregistrering udført?</h4>
-                  <p mat-line> {{selectedEvent.payoutDone ? 'JA': 'NEJ'}} </p>
-                  <p mat-line
-                     *ngIf="selectedEvent.payoutDone && selectedEvent.payoutDoneBy">
-                    Udført af {{selectedEvent.payoutDoneBy.displayName}}
-                    ({{getRoleText(selectedEvent.payoutDoneBy.role)}}) </p>
-                </mat-list-item>
-              </mat-list>
-              <button mat-raised-button
-                      (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN TIMEREGISTRERING': 'FÆRDIG MED
-                TIMEREGISTRERING'}}</button>
-              <button mat-raised-button
-                      (click)="goToPayout()">GÅ TIL TIMEREGISTRERING</button>
-            </div>
-          </div>
-        </div>
-      </mat-card-content>
-      <mat-card-actions *ngIf="isAdminOrEventLeader()">
-        <button mat-raised-button
-                [disabled]=" selectedEvent.deative"
-                color="primary"
-                (click)="update(true)">GEM ÆNDRINGER</button>
-        <button mat-raised-button
-                [disabled]=" selectedEvent.deative"
-                color="accent"
-                (click)="deativate()">{{selectedEvent.deative ? 'AKTIVER BEGIVENHED' : 'DEATIVERE BEGIVENHED'}}</button>
-        <button mat-raised-button
-                [disabled]=" selectedEvent.deative"
-                color="warn"
-                (click)="delete()">SLET BEGIVENHED</button>
-      </mat-card-actions>
-    </mat-card>
+<div *ngIf="loading">
+  <div fxLayout="row"
+       fxLayoutAlign="center center">
+    <mat-spinner></mat-spinner>
   </div>
 </div>
-<div class="margin"
-     *ngIf="isAdminOrEventLeader()">
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Medarbejder der er booked
-        </mat-panel-title>
-        <mat-panel-description>
-          Der er {{selectedBookedList.length}} på listen
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <h4 *ngIf="!selectedBookedList?.length">
-        Der er ingen på denne liste
-      </h4>
-      <div class="table-overflow">
-        <div class="container">
-          <mat-table #table
-                     [dataSource]="bookedSource"
-                     matSort>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="displayName">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Navn </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <!-- <img class="image" [src]="row.photoURL" /> -->
-                {{row.displayName}}
-              </mat-cell>
-            </ng-container>
+<div *ngIf="!loading">
+  <div fxLayout="column wrap"
+       fxLayout.gt-xs="row"
+       fxLayoutGap="2%"
+       *ngIf="selectedEvent">
+    <div fxFlex>
+      <mat-card class="card infocard"
+                [class.xs]="['card-xs', 'infocard-xs']">
+        <mat-card-header class="card-header">
+          <h3>
+            Begivenhed {{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}
+          </h3>
+        </mat-card-header>
+        <mat-card-content>
 
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Email </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-            </ng-container>
-
-            <!-- Mobile Column -->
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Mobilnummer </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
-            </ng-container>
-
-            <!-- HasCar Column -->
-            <ng-container matColumnDef="hasCar">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header
-                               fxFlex="100px"> Bil </mat-header-cell>
-              <mat-cell *matCellDef="let row"
-                        fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="hasDriverLicens">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Kørekort </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="bookingComment">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Kommentar </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <mat-form-field>
-                  <textarea [disabled]=" selectedEvent.deative"
-                            matInput
-                            (click)="$event.stopPropagation()"
-                            [(ngModel)]="row.bookingComment"
-                            (keyup)="updateWithDebounce(); updateComment(row, row.bookingComment)"
-                            placeholder="Kommentar"></textarea>
-                </mat-form-field>
-              </mat-cell>
-            </ng-container>
-
-            <!-- Selection Column -->
-            <ng-container matColumnDef="selection">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <!-- <button class="book" (click)="bookEmployee(row)" mat-mini-fab matTooltip="Book {{row.displayName}}">
-                                        <mat-icon>check</mat-icon>
-                                    </button> -->
-                <button class="maybe"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeBookedEmployee(row); maybeEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="{{row.displayName}} kan måske">
-                  <mat-icon>error_outline</mat-icon>
-                </button>
-                <button class="nogo"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeBookedEmployee(row); nogoEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="{{row.displayName}} kan ikke">
-                  <mat-icon>clear</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: bookedColumns;"
-                     matRipple
-                     class="element-row"
-                     [class.expanded]="expandedElement == row"
-                     (click)="openEmployeeDialog(row.uid)"></mat-row>
-          </mat-table>
-        </div>
-      </div>
-      <br>
-      <br>
-      <mat-form-field class="full-width">
-        <input matInput
-               placeholder="Email list"
-               readonly
-               [(ngModel)]="emailList"
-               #inputTarget
-               name="emaillist">
-      </mat-form-field>
-      <button mat-raised-button
-              color="primary"
-              [class.book]="copied"
-              (click)="copied = true"
-              [ngxClipboard]="inputTarget">{{copied ? 'EMAIL LIST KOPIERET' : 'KOPIER EMAIL LISTE'}}</button>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Medarbejder der måske kan
-        </mat-panel-title>
-        <mat-panel-description>
-          Der er {{selectedMaybeList.length}} på listen
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <h4 *ngIf="!selectedMaybeList?.length">
-        Der er ingen på denne liste
-      </h4>
-      <div class="table-overflow">
-        <div class="container">
-          <mat-table #table
-                     [dataSource]="maybeSource"
-                     matSort>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="displayName">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Navn </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <!-- <img class="image" [src]="row.photoURL" /> -->
-                {{row.displayName}}
-              </mat-cell>
-            </ng-container>
-
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Email </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-            </ng-container>
-
-            <!-- Mobile Column -->
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Mobilnummer </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
-            </ng-container>
-
-            <!-- HasCar Column -->
-            <ng-container matColumnDef="hasCar">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header
-                               fxFlex="100px"> Bil </mat-header-cell>
-              <mat-cell *matCellDef="let row"
-                        fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="hasDriverLicens">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header
-                               fxFlex="100px"> Kørekort </mat-header-cell>
-              <mat-cell *matCellDef="let row"
-                        fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="bookingComment">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Kommentar </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <mat-form-field>
-                  <textarea [disabled]=" selectedEvent.deative"
-                            matInput
-                            (click)="$event.stopPropagation()"
-                            [(ngModel)]="row.bookingComment"
-                            (keyup)="updateWithDebounce();"
-                            placeholder="Kommentar"></textarea>
-                </mat-form-field>
-              </mat-cell>
-            </ng-container>
-
-            <!-- Selection Column -->
-            <ng-container matColumnDef="selection">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <button class="book"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeMaybeEmployee(row); bookEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="Book {{row.displayName}}">
-                  <mat-icon>check</mat-icon>
-                </button>
-                <!-- <button class="maybe" (click)="removeBookedEmployee(row); maybeEmployee(row)" mat-mini-fab matTooltip="{{row.displayName}} kan måske">
-                                    <mat-icon>error_outline</mat-icon>
-                                </button> -->
-                <button class="nogo"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeMaybeEmployee(row); nogoEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="{{row.displayName}} kan ikke">
-                  <mat-icon>clear</mat-icon>
-                </button>
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: bookedColumns;"
-                     matRipple
-                     class="element-row"
-                     [class.expanded]="expandedElement == row"
-                     (click)="openEmployeeDialog(row.uid)"></mat-row>
-          </mat-table>
-        </div>
-      </div>
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Medarbejder der ikke kan deltage
-        </mat-panel-title>
-        <mat-panel-description>
-          Der er {{selectedNogoList.length}} på listen
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <h4 *ngIf="!selectedNogoList?.length">
-        Der er ingen på denne liste
-      </h4>
-      <div class="table-overflow">
-        <div class="container">
-          <mat-table #table
-                     [dataSource]="nogoSource"
-                     matSort>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="displayName">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Navn </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <!-- <img class="image" [src]="row.photoURL" /> -->
-                {{row.displayName}}
-              </mat-cell>
-            </ng-container>
-
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Email </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
-            </ng-container>
-
-            <!-- Mobile Column -->
-            <ng-container matColumnDef="mobile">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Mobilnummer </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
-            </ng-container>
-
-            <!-- HasCar Column -->
-            <ng-container matColumnDef="hasCar">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header
-                               fxFlex="100px"> Bil </mat-header-cell>
-              <mat-cell *matCellDef="let row"
-                        fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="hasDriverLicens">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header
-                               fxFlex="100px"> Kørekort </mat-header-cell>
-              <mat-cell *matCellDef="let row"
-                        fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
-            </ng-container>
-
-            <!-- HasDriverLicens Column -->
-            <ng-container matColumnDef="bookingComment">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> Kommentar </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <mat-form-field>
-                  <textarea matInput
-                            [disabled]=" selectedEvent.deative"
-                            (click)="$event.stopPropagation()"
-                            [(ngModel)]="row.bookingComment"
-                            (keyup)="updateWithDebounce();"
-                            placeholder="Kommentar"></textarea>
-                </mat-form-field>
-              </mat-cell>
-            </ng-container>
-
-            <!-- Selection Column -->
-            <ng-container matColumnDef="selection">
-              <mat-header-cell *matHeaderCellDef
-                               mat-sort-header> </mat-header-cell>
-              <mat-cell *matCellDef="let row">
-                <button class="book"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeNogoEmployee(row); bookEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="Book {{row.displayName}}">
-                  <mat-icon>check</mat-icon>
-                </button>
-                <button class="maybe"
-                        [disabled]=" selectedEvent.deative"
-                        (click)="removeNogoEmployee(row); maybeEmployee(row)"
-                        mat-mini-fab
-                        matTooltip="{{row.displayName}} kan måske">
-                  <mat-icon>error_outline</mat-icon>
-                </button>
-
-              </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: bookedColumns;"
-                     matRipple
-                     class="element-row"
-                     [class.expanded]="expandedElement == row"
-                     (click)="openEmployeeDialog(row.uid)"></mat-row>
-          </mat-table>
-        </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
-
-<div *ngIf="isAdminOrEventLeader()"
-     fxLayout="column wrap"
-     class="padding-bottom"
-     fxLayout.gt-xs="row"
-     fxLayoutGap="2%">
-  <div fxFlex>
-    <mat-card class="card infocard"
-              [class.xs]="['card-xs', 'infocard-xs']">
-      <mat-card-header class="card-header">
-        <h3>
-          Find og book medarbejder (Kun aktive medarbejdere)
-        </h3>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="search">
-          <mat-form-field>
-            <input matInput
-                   (keyup)="applyFilter($event.target.value)"
-                   placeholder="Søg">
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Kunde"
+                   [(ngModel)]="selectedEvent.name"
+                   name="eventname">
           </mat-form-field>
-          <button mat-raised-button
-                  (click)="showFilters = !showFilters">
-            {{showFilters ? 'LUK FILTRE' : 'VIS FILTRE'}}
-          </button>
-          <div *ngIf="showFilters && skillList">
-            <h3>Vælg filtre</h3>
+
+          <mat-form-field class="full-width"
+                          *ngIf="eventTypeList">
+            <mat-select [disabled]=" selectedEvent.deative"
+                        placeholder="Event-type"
+                        [(value)]="selectedEvent.eventType">
+              <mat-option [style.background]="eventType.color"
+                          style="color:white;"
+                          (click)="selectedEvent.eventTypeColor = eventType.color"
+                          *ngFor="let eventType of eventTypeList"
+                          [value]="eventType.name">
+                <h4>
+                  {{eventType.name}}
+                </h4>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Antal kunder"
+                   [(ngModel)]="selectedEvent.numberOfCustomer"
+                   name="kunder">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Antal hold"
+                   [(ngModel)]="selectedEvent.numberOfTeam"
+                   name="numberOfTeam">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Rollebesætning"
+                   [(ngModel)]="selectedEvent.crew"
+                   name="crew">
+          </mat-form-field>
+
+          <div fxLayout="column wrap"
+               fxLayout.gt-xs="row"
+               fxLayoutGap="2%">
+            <div fxFlex>
+              <mat-form-field class="full-width">
+                <textarea class="comment"
+                          [disabled]=" selectedEvent.deative"
+                          matInput
+                          placeholder="Event beskrivelse"
+                          [(ngModel)]="selectedEvent.eventDescription"
+                          name="comment"></textarea>
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field class="full-width">
+                <textarea class="comment"
+                          [disabled]=" selectedEvent.deative"
+                          matInput
+                          placeholder="Tidsplan"
+                          [(ngModel)]="selectedEvent.timeline"
+                          name="timeline"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   type="number"
+                   placeholder="Antal medarbejdere på event (kun heltal)"
+                   [(ngModel)]="selectedEvent.staffNeed"
+                   name="eventname">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-select [disabled]=" selectedEvent.deative"
+                        placeholder="Eventleder"
+                        [(value)]="selectedEvent.eventLeader">
+              <mat-option *ngFor="let employee of leaderList"
+                          (click)="selectedEvent.eventLeaderId = employee.uid"
+                          [value]="employee.displayName">
+                {{employee.displayName}} ({{getRoleText(employee.role)}})
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width"
+                          *ngIf="isAdminOrEventLeader()">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Info til eventleder"
+                   [(ngModel)]="selectedEvent.eventLeaderInfo"
+                   name="eventLeaderInfo">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input [disabled]=" selectedEvent.deative"
+                   matInput
+                   placeholder="Sagsnr"
+                   [(ngModel)]="selectedEvent.eventNumber"
+                   name="eventNumber">
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-select [disabled]=" selectedEvent.deative"
+                        placeholder="Fakturering"
+                        [(value)]="selectedEvent.billInfo">
+              <mat-option value="">Ingen fakturing udført</mat-option>
+              <mat-option value="0%">0%</mat-option>
+              <mat-option value="10%">10%</mat-option>
+              <mat-option value="20%">20%</mat-option>
+              <mat-option value="30%">30%</mat-option>
+              <mat-option value="40%">40%</mat-option>
+              <mat-option value="50%">50%</mat-option>
+              <mat-option value="60%">60%</mat-option>
+              <mat-option value="70%">70%</mat-option>
+              <mat-option value="80%">80%</mat-option>
+              <mat-option value="90%">90%</mat-option>
+              <mat-option value="100%">100%</mat-option>
+              <mat-option value="Færdig">Færdig</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-divider></mat-divider>
+          <h3>Tid og sted</h3>
+          <div fxLayout="column wrap"
+               fxLayout.gt-xs="row"
+               fxLayoutGap="2%">
+            <div fxFlex>
+              <h5>Start tidspunkt</h5>
+              <input type="time"
+                     [disabled]=" selectedEvent.deative"
+                     [(ngModel)]="selectedEvent.timeFrom" />
+              <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
+              <mat-form-field class="full-width">
+                <input [disabled]=" selectedEvent.deative"
+                       matInput
+                       type="date"
+                       placeholder="Startdato"
+                       [(ngModel)]="selectedEvent.dateFrom">
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <h5>Slut tidspunkt</h5>
+              <input type="time"
+                     [disabled]=" selectedEvent.deative"
+                     [(ngModel)]="selectedEvent.timeTo" />
+              <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
+              <mat-form-field class="full-width">
+                <input [disabled]=" selectedEvent.deative"
+                       matInput
+                       type="date"
+                       placeholder="Slutdato"
+                       [(ngModel)]="selectedEvent.dateTo">
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="column wrap"
+               fxLayout.gt-xs="row"
+               fxLayoutGap="2%">
+            <div fxFlex>
+              <mat-form-field class="full-width">
+                <input [disabled]=" selectedEvent.deative"
+                       matInput
+                       placeholder="Lokation"
+                       [(ngModel)]="selectedEvent.eventLocation"
+                       name="eventlocation">
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field class="full-width">
+                <input [disabled]=" selectedEvent.deative"
+                       matInput
+                       placeholder="Adresse på lokation"
+                       [(ngModel)]="selectedEvent.eventAdress"
+                       name="eventadress">
+              </mat-form-field>
+            </div>
+          </div>
+          <div *ngIf="isAdminOrEventLeader()">
+            <mat-divider></mat-divider>
+            <h3>Kontaktoplysninger</h3>
             <div fxLayout="column wrap"
-                 fxLayout.gt-xs="row wrap"
+                 fxLayout.gt-xs="row"
                  fxLayoutGap="2%">
-              <div fxFlex="100"
-                   fxFlex.gt-md="30"
-                   *ngFor="let masterskill of masterskills | sort : 'order'">
-                <mat-card class="card infocard"
-                          [class.xs]="['card-xs', 'infocard-xs']">
-                  <mat-card-header class="card-header">
-                    <h3>
-                      {{masterskill.name}}
-                    </h3>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <mat-list>
-                      <div *ngIf="masterskill.skills?.length">
-                        <div>
-                          <div *ngIf="!masterskill.hasRating">
-                            <mat-list-item *ngFor="let skill of masterskill.skills">
-                              <mat-icon class="btn"
-                                        [class.book]="ifFilterisSelected(masterskill, skill, 0)"
-                                        (click)="selectFilter(masterskill.uid, skill, 0)"
-                                        mat-list-icon>
-                                {{ifFilterisSelected(masterskill, skill, 0) ?
-                                'check':'star'}}
-                              </mat-icon>
-                              <h4 mat-line>{{skill}}</h4>
-                            </mat-list-item>
-                          </div>
-                          <div *ngIf="masterskill.hasRating">
-                            <mat-list-item *ngFor="let skill of masterskill.skills">
-                              <div class="stars">
-                                <button mat-icon-button
-                                        [matTooltip]="masterskill.ratingValue1"
-                                        (click)="selectFilter(masterskill.uid, skill, 1)">
-                                  <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
-                                    {{ifFilterisSelected(masterskill, skill, 1) ?
-                                    'check' : 'star'}}
-                                  </mat-icon>
-                                </button>
-                                <button mat-icon-button
-                                        [matTooltip]="masterskill.ratingValue2"
-                                        (click)="selectFilter(masterskill.uid, skill, 2)">
-                                  <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 2)">
-                                    {{ifFilterisSelected(masterskill, skill, 2) ?
-                                    'check' : 'star'}}
-                                  </mat-icon>
-                                </button>
-                                <button mat-icon-button
-                                        [matTooltip]="masterskill.ratingValue3"
-                                        (click)="selectFilter(masterskill.uid, skill, 3)">
-                                  <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 3)">
-                                    {{ifFilterisSelected(masterskill, skill, 3) ?
-                                    'check' : 'star'}}
-                                  </mat-icon>
-                                </button>
-                              </div>
-                              <h4>{{skill}}</h4>
-                            </mat-list-item>
-                          </div>
-                        </div>
-                      </div>
-                      <div *ngIf="!masterskill.skills?.length">
-                        <h3>Ingen kompetencer under denne kategori</h3>
-                      </div>
-                    </mat-list>
-                  </mat-card-content>
-                </mat-card>
+              <div fxFlex>
+                <mat-form-field class="full-width">
+                  <input [disabled]=" selectedEvent.deative"
+                         matInput
+                         placeholder="Kundekontakt"
+                         [(ngModel)]="selectedEvent.customer"
+                         name="customer">
+                </mat-form-field>
+              </div>
+              <div fxFlex>
+                <mat-form-field class="full-width">
+                  <input [disabled]=" selectedEvent.deative"
+                         matInput
+                         placeholder="Lokationkontakt"
+                         [(ngModel)]="selectedEvent.contactInfo"
+                         name="contactInfo">
+                </mat-form-field>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <h3>Status</h3>
+            <div fxLayout="column wrap"
+                 fxLayout.gt-xs="row"
+                 fxLayoutGap="2%">
+              <div fxFlex>
+                <mat-list>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>{{selectedEvent.bookingDone ? 'check_circle':
+                      'remove_circle'}}</mat-icon>
+                    <h4 mat-line>Er booking udført?</h4>
+                    <p mat-line> {{selectedEvent.bookingDone ? 'JA': 'NEJ'}} </p>
+                  </mat-list-item>
+                </mat-list>
+                <button mat-raised-button
+                        (click)="bookingDone()">{{selectedEvent.bookingDone ? 'GENÅBN EVENT': 'FÆRDIG MED
+                  BOOKING'}}</button>
+              </div>
+              <div fxFlex>
+                <mat-list>
+                  <mat-list-item>
+                    <mat-icon mat-list-icon>{{selectedEvent.payoutDone ? 'check_circle':
+                      'remove_circle'}}</mat-icon>
+                    <h4 mat-line>Er timeregistrering udført?</h4>
+                    <p mat-line> {{selectedEvent.payoutDone ? 'JA': 'NEJ'}} </p>
+                    <p mat-line
+                       *ngIf="selectedEvent.payoutDone && selectedEvent.payoutDoneBy">
+                      Udført af {{selectedEvent.payoutDoneBy.displayName}}
+                      ({{getRoleText(selectedEvent.payoutDoneBy.role)}}) </p>
+                  </mat-list-item>
+                </mat-list>
+                <button mat-raised-button
+                        (click)="payoutDone()">{{selectedEvent.payoutDone ? 'GENÅBN TIMEREGISTRERING': 'FÆRDIG MED
+                  TIMEREGISTRERING'}}</button>
+                <button mat-raised-button
+                        (click)="goToPayout()">GÅ TIL TIMEREGISTRERING</button>
               </div>
             </div>
           </div>
-        </div>
+        </mat-card-content>
+        <mat-card-actions *ngIf="isAdminOrEventLeader()">
+          <button mat-raised-button
+                  [disabled]=" selectedEvent.deative"
+                  color="primary"
+                  (click)="update(true)">GEM ÆNDRINGER</button>
+          <button mat-raised-button
+                  [disabled]=" selectedEvent.deative"
+                  color="accent"
+                  (click)="deativate()">{{selectedEvent.deative ? 'AKTIVER BEGIVENHED' : 'DEATIVERE BEGIVENHED'}}</button>
+          <button mat-raised-button
+                  [disabled]=" selectedEvent.deative"
+                  color="warn"
+                  (click)="delete()">SLET BEGIVENHED</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+  <div class="margin"
+       *ngIf="isAdminOrEventLeader()">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Medarbejder der er booked
+          </mat-panel-title>
+          <mat-panel-description>
+            Der er {{selectedBookedList.length}} på listen
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <h4 *ngIf="!selectedBookedList?.length">
+          Der er ingen på denne liste
+        </h4>
         <div class="table-overflow">
           <div class="container">
             <mat-table #table
-                       [dataSource]="dataSource"
+                       [dataSource]="bookedSource"
                        matSort>
 
               <!-- Name Column -->
@@ -744,13 +319,6 @@
                   <!-- <img class="image" [src]="row.photoURL" /> -->
                   {{row.displayName}}
                 </mat-cell>
-              </ng-container>
-
-              <!-- Name Column -->
-              <ng-container matColumnDef="role">
-                <mat-header-cell *matHeaderCellDef
-                                 mat-sort-header> Rolle </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
               </ng-container>
 
               <!-- Email Column -->
@@ -776,13 +344,128 @@
                           fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
               </ng-container>
 
-              <!-- comment Column -->
-              <ng-container matColumnDef="comment">
+              <!-- HasDriverLicens Column -->
+              <ng-container matColumnDef="hasDriverLicens">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Kørekort </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+              </ng-container>
+
+              <!-- HasDriverLicens Column -->
+              <ng-container matColumnDef="bookingComment">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Kommentar </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-form-field>
+                    <textarea [disabled]=" selectedEvent.deative"
+                              matInput
+                              (click)="$event.stopPropagation()"
+                              [(ngModel)]="row.bookingComment"
+                              (keyup)="updateWithDebounce(); updateComment(row, row.bookingComment)"
+                              placeholder="Kommentar"></textarea>
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Selection Column -->
+              <ng-container matColumnDef="selection">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <!-- <button class="book" (click)="bookEmployee(row)" mat-mini-fab matTooltip="Book {{row.displayName}}">
+                                          <mat-icon>check</mat-icon>
+                                      </button> -->
+                  <button class="maybe"
+                          [disabled]=" selectedEvent.deative"
+                          (click)="removeBookedEmployee(row); maybeEmployee(row)"
+                          mat-mini-fab
+                          matTooltip="{{row.displayName}} kan måske">
+                    <mat-icon>error_outline</mat-icon>
+                  </button>
+                  <button class="nogo"
+                          [disabled]=" selectedEvent.deative"
+                          (click)="removeBookedEmployee(row); nogoEmployee(row)"
+                          mat-mini-fab
+                          matTooltip="{{row.displayName}} kan ikke">
+                    <mat-icon>clear</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: bookedColumns;"
+                       matRipple
+                       class="element-row"
+                       [class.expanded]="expandedElement == row"
+                       (click)="openEmployeeDialog(row.uid)"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+        <br>
+        <br>
+        <mat-form-field class="full-width">
+          <input matInput
+                 placeholder="Email list"
+                 readonly
+                 [(ngModel)]="emailList"
+                 #inputTarget
+                 name="emaillist">
+        </mat-form-field>
+        <button mat-raised-button
+                color="primary"
+                [class.book]="copied"
+                (click)="copied = true"
+                [ngxClipboard]="inputTarget">{{copied ? 'EMAIL LIST KOPIERET' : 'KOPIER EMAIL LISTE'}}</button>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Medarbejder der måske kan
+          </mat-panel-title>
+          <mat-panel-description>
+            Der er {{selectedMaybeList.length}} på listen
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <h4 *ngIf="!selectedMaybeList?.length">
+          Der er ingen på denne liste
+        </h4>
+        <div class="table-overflow">
+          <div class="container">
+            <mat-table #table
+                       [dataSource]="maybeSource"
+                       matSort>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="displayName">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <!-- <img class="image" [src]="row.photoURL" /> -->
+                  {{row.displayName}}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Email Column -->
+              <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Email </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+              </ng-container>
+
+              <!-- Mobile Column -->
+              <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Mobilnummer </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
+              </ng-container>
+
+              <!-- HasCar Column -->
+              <ng-container matColumnDef="hasCar">
                 <mat-header-cell *matHeaderCellDef
                                  mat-sort-header
-                                 fxFlex="100px"> Kommentar </mat-header-cell>
+                                 fxFlex="100px"> Bil </mat-header-cell>
                 <mat-cell *matCellDef="let row"
-                          fxFlex="100px"> {{row.comment}} </mat-cell>
+                          fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
               </ng-container>
 
               <!-- HasDriverLicens Column -->
@@ -794,28 +477,40 @@
                           fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
               </ng-container>
 
+              <!-- HasDriverLicens Column -->
+              <ng-container matColumnDef="bookingComment">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Kommentar </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-form-field>
+                    <textarea [disabled]=" selectedEvent.deative"
+                              matInput
+                              (click)="$event.stopPropagation()"
+                              [(ngModel)]="row.bookingComment"
+                              (keyup)="updateWithDebounce();"
+                              placeholder="Kommentar"></textarea>
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
               <!-- Selection Column -->
               <ng-container matColumnDef="selection">
                 <mat-header-cell *matHeaderCellDef
-                                 mat-sort-header> Book </mat-header-cell>
+                                 mat-sort-header> </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                   <button class="book"
                           [disabled]=" selectedEvent.deative"
-                          (click)="bookEmployee(row)"
+                          (click)="removeMaybeEmployee(row); bookEmployee(row)"
                           mat-mini-fab
                           matTooltip="Book {{row.displayName}}">
                     <mat-icon>check</mat-icon>
                   </button>
-                  <button class="maybe"
-                          [disabled]=" selectedEvent.deative"
-                          (click)="maybeEmployee(row)"
-                          mat-mini-fab
-                          matTooltip="{{row.displayName}} kan måske">
-                    <mat-icon>error_outline</mat-icon>
-                  </button>
+                  <!-- <button class="maybe" (click)="removeBookedEmployee(row); maybeEmployee(row)" mat-mini-fab matTooltip="{{row.displayName}} kan måske">
+                                      <mat-icon>error_outline</mat-icon>
+                                  </button> -->
                   <button class="nogo"
                           [disabled]=" selectedEvent.deative"
-                          (click)="nogoEmployee(row)"
+                          (click)="removeMaybeEmployee(row); nogoEmployee(row)"
                           mat-mini-fab
                           matTooltip="{{row.displayName}} kan ikke">
                     <mat-icon>clear</mat-icon>
@@ -823,17 +518,331 @@
                 </mat-cell>
               </ng-container>
 
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: displayedColumns;"
+              <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: bookedColumns;"
                        matRipple
                        class="element-row"
                        [class.expanded]="expandedElement == row"
                        (click)="openEmployeeDialog(row.uid)"></mat-row>
-
             </mat-table>
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Medarbejder der ikke kan deltage
+          </mat-panel-title>
+          <mat-panel-description>
+            Der er {{selectedNogoList.length}} på listen
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <h4 *ngIf="!selectedNogoList?.length">
+          Der er ingen på denne liste
+        </h4>
+        <div class="table-overflow">
+          <div class="container">
+            <mat-table #table
+                       [dataSource]="nogoSource"
+                       matSort>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="displayName">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Navn </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <!-- <img class="image" [src]="row.photoURL" /> -->
+                  {{row.displayName}}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Email Column -->
+              <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Email </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+              </ng-container>
+
+              <!-- Mobile Column -->
+              <ng-container matColumnDef="mobile">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Mobilnummer </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
+              </ng-container>
+
+              <!-- HasCar Column -->
+              <ng-container matColumnDef="hasCar">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header
+                                 fxFlex="100px"> Bil </mat-header-cell>
+                <mat-cell *matCellDef="let row"
+                          fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+              </ng-container>
+
+              <!-- HasDriverLicens Column -->
+              <ng-container matColumnDef="hasDriverLicens">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header
+                                 fxFlex="100px"> Kørekort </mat-header-cell>
+                <mat-cell *matCellDef="let row"
+                          fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+              </ng-container>
+
+              <!-- HasDriverLicens Column -->
+              <ng-container matColumnDef="bookingComment">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> Kommentar </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-form-field>
+                    <textarea matInput
+                              [disabled]=" selectedEvent.deative"
+                              (click)="$event.stopPropagation()"
+                              [(ngModel)]="row.bookingComment"
+                              (keyup)="updateWithDebounce();"
+                              placeholder="Kommentar"></textarea>
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Selection Column -->
+              <ng-container matColumnDef="selection">
+                <mat-header-cell *matHeaderCellDef
+                                 mat-sort-header> </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <button class="book"
+                          [disabled]=" selectedEvent.deative"
+                          (click)="removeNogoEmployee(row); bookEmployee(row)"
+                          mat-mini-fab
+                          matTooltip="Book {{row.displayName}}">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button class="maybe"
+                          [disabled]=" selectedEvent.deative"
+                          (click)="removeNogoEmployee(row); maybeEmployee(row)"
+                          mat-mini-fab
+                          matTooltip="{{row.displayName}} kan måske">
+                    <mat-icon>error_outline</mat-icon>
+                  </button>
+
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="bookedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: bookedColumns;"
+                       matRipple
+                       class="element-row"
+                       [class.expanded]="expandedElement == row"
+                       (click)="openEmployeeDialog(row.uid)"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div *ngIf="isAdminOrEventLeader()"
+       fxLayout="column wrap"
+       class="padding-bottom"
+       fxLayout.gt-xs="row"
+       fxLayoutGap="2%">
+    <div fxFlex>
+      <mat-card class="card infocard"
+                [class.xs]="['card-xs', 'infocard-xs']">
+        <mat-card-header class="card-header">
+          <h3>
+            Find og book medarbejder (Kun aktive medarbejdere)
+          </h3>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="search">
+            <mat-form-field>
+              <input matInput
+                     (keyup)="applyFilter($event.target.value)"
+                     placeholder="Søg">
+            </mat-form-field>
+            <button mat-raised-button
+                    (click)="showFilters = !showFilters">
+              {{showFilters ? 'LUK FILTRE' : 'VIS FILTRE'}}
+            </button>
+            <div *ngIf="showFilters && skillList">
+              <h3>Vælg filtre</h3>
+              <div fxLayout="column wrap"
+                   fxLayout.gt-xs="row wrap"
+                   fxLayoutGap="2%">
+                <div fxFlex="100"
+                     fxFlex.gt-md="30"
+                     *ngFor="let masterskill of masterskills | sort : 'order'">
+                  <mat-card class="card infocard"
+                            [class.xs]="['card-xs', 'infocard-xs']">
+                    <mat-card-header class="card-header">
+                      <h3>
+                        {{masterskill.name}}
+                      </h3>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <mat-list>
+                        <div *ngIf="masterskill.skills?.length">
+                          <div>
+                            <div *ngIf="!masterskill.hasRating">
+                              <mat-list-item *ngFor="let skill of masterskill.skills">
+                                <mat-icon class="btn"
+                                          [class.book]="ifFilterisSelected(masterskill, skill, 0)"
+                                          (click)="selectFilter(masterskill.uid, skill, 0)"
+                                          mat-list-icon>
+                                  {{ifFilterisSelected(masterskill, skill, 0) ?
+                                  'check':'star'}}
+                                </mat-icon>
+                                <h4 mat-line>{{skill}}</h4>
+                              </mat-list-item>
+                            </div>
+                            <div *ngIf="masterskill.hasRating">
+                              <mat-list-item *ngFor="let skill of masterskill.skills">
+                                <div class="stars">
+                                  <button mat-icon-button
+                                          [matTooltip]="masterskill.ratingValue1"
+                                          (click)="selectFilter(masterskill.uid, skill, 1)">
+                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 1)">
+                                      {{ifFilterisSelected(masterskill, skill, 1) ?
+                                      'check' : 'star'}}
+                                    </mat-icon>
+                                  </button>
+                                  <button mat-icon-button
+                                          [matTooltip]="masterskill.ratingValue2"
+                                          (click)="selectFilter(masterskill.uid, skill, 2)">
+                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 2)">
+                                      {{ifFilterisSelected(masterskill, skill, 2) ?
+                                      'check' : 'star'}}
+                                    </mat-icon>
+                                  </button>
+                                  <button mat-icon-button
+                                          [matTooltip]="masterskill.ratingValue3"
+                                          (click)="selectFilter(masterskill.uid, skill, 3)">
+                                    <mat-icon [class.book]="ifFilterisSelected(masterskill, skill, 3)">
+                                      {{ifFilterisSelected(masterskill, skill, 3) ?
+                                      'check' : 'star'}}
+                                    </mat-icon>
+                                  </button>
+                                </div>
+                                <h4>{{skill}}</h4>
+                              </mat-list-item>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="!masterskill.skills?.length">
+                          <h3>Ingen kompetencer under denne kategori</h3>
+                        </div>
+                      </mat-list>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-overflow">
+            <div class="container">
+              <mat-table #table
+                         [dataSource]="dataSource"
+                         matSort>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="displayName">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header> Navn </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <!-- <img class="image" [src]="row.photoURL" /> -->
+                    {{row.displayName}}
+                  </mat-cell>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="role">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header> Rolle </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{getRoleText(row.role)}} </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header> Email </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{row.email}} </mat-cell>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="mobile">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header> Mobilnummer </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{row.mobile}} </mat-cell>
+                </ng-container>
+
+                <!-- HasCar Column -->
+                <ng-container matColumnDef="hasCar">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header
+                                   fxFlex="100px"> Bil </mat-header-cell>
+                  <mat-cell *matCellDef="let row"
+                            fxFlex="100px"> {{row.hasCar ? 'Ja' : 'nej'}} </mat-cell>
+                </ng-container>
+
+                <!-- comment Column -->
+                <ng-container matColumnDef="comment">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header
+                                   fxFlex="100px"> Kommentar </mat-header-cell>
+                  <mat-cell *matCellDef="let row"
+                            fxFlex="100px"> {{row.comment}} </mat-cell>
+                </ng-container>
+
+                <!-- HasDriverLicens Column -->
+                <ng-container matColumnDef="hasDriverLicens">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header
+                                   fxFlex="100px"> Kørekort </mat-header-cell>
+                  <mat-cell *matCellDef="let row"
+                            fxFlex="100px"> {{row.hasDriverLicens ? 'Ja' : 'nej'}} </mat-cell>
+                </ng-container>
+
+                <!-- Selection Column -->
+                <ng-container matColumnDef="selection">
+                  <mat-header-cell *matHeaderCellDef
+                                   mat-sort-header> Book </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                    <button class="book"
+                            [disabled]=" selectedEvent.deative"
+                            (click)="bookEmployee(row)"
+                            mat-mini-fab
+                            matTooltip="Book {{row.displayName}}">
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button class="maybe"
+                            [disabled]=" selectedEvent.deative"
+                            (click)="maybeEmployee(row)"
+                            mat-mini-fab
+                            matTooltip="{{row.displayName}} kan måske">
+                      <mat-icon>error_outline</mat-icon>
+                    </button>
+                    <button class="nogo"
+                            [disabled]=" selectedEvent.deative"
+                            (click)="nogoEmployee(row)"
+                            mat-mini-fab
+                            matTooltip="{{row.displayName}} kan ikke">
+                      <mat-icon>clear</mat-icon>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                         matRipple
+                         class="element-row"
+                         [class.expanded]="expandedElement == row"
+                         (click)="openEmployeeDialog(row.uid)"></mat-row>
+
+              </mat-table>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

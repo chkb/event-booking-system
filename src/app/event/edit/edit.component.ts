@@ -33,6 +33,7 @@ import { MasterSkillExtended, SkillExtended } from '../../shared/skill';
     host: { '[@moveIn]': '' }
 })
 export class EventEditComponent implements OnInit {
+    loading: boolean;
     debounceUpdate: Subject<boolean> = new Subject<boolean>();
     selectedEvent: EventObject;
     eventId: string;
@@ -96,6 +97,7 @@ export class EventEditComponent implements OnInit {
     getEmployeeData(): void {
         const employeeList: Booked[] = [];
         this.afs.collection('users').ref.get().then(querySnapshot => {
+            this.loading = true;
             querySnapshot.forEach(doc => {
                 const employee = new Booked();
                 employee.displayName = doc.data()['displayName'];
@@ -130,6 +132,7 @@ export class EventEditComponent implements OnInit {
             this.getListOfLeaders(employeeList);
             this.setDataTableData();
             this.getFilterData();
+            this.loading = false;
         });
     }
 

@@ -1,10 +1,4 @@
-<div *ngIf="loading">
-  <div fxLayout="row"
-       fxLayoutAlign="center center">
-    <mat-spinner></mat-spinner>
-  </div>
-</div>
-<div *ngIf="!loading">
+<div>
   <div fxLayout="column wrap"
        fxLayout.gt-xs="row"
        fxLayoutGap="2%">
@@ -14,7 +8,8 @@
         <mat-card-header class="card-header">
           <mat-card-title>Eventliste</mat-card-title>
           <mat-card-subtitle>
-            <mat-slide-toggle [(ngModel)]="viewAllUpcomming">
+            <mat-slide-toggle (change)="afterEventToggle($event)"
+                              [(ngModel)]="viewAllUpcomming">
               Vis alle
             </mat-slide-toggle>
           </mat-card-subtitle>
@@ -26,10 +21,17 @@
                      (keyup)="applyFilter($event.target.value)"
                      placeholder="Søg">
             </mat-form-field>
-            <mat-checkbox [(ngModel)]="getAllCheckBox"
-                          (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox>
+            <!-- <mat-checkbox [(ngModel)]="getAllCheckBox"
+                          (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox> -->
           </div>
-          <div [ngClass]="viewAllUpcomming ?  '' : 'table-overflow'">
+          <div *ngIf="afterLoading">
+            <div fxLayout="row"
+                 fxLayoutAlign="center center">
+              <mat-spinner></mat-spinner>
+            </div>
+          </div>
+          <div *ngIf="!afterLoading"
+               [ngClass]="viewAllUpcomming ?  '' : 'table-overflow'">
             <div class="container">
               <mat-table #table
                          [dataSource]="dataSource">
@@ -78,18 +80,18 @@
                                    fxFlex="100px"
                                    class="center"> Personale </mat-header-cell>
                   <mat-cell *matCellDef="let row"
-                            matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked"
+                            matTooltip="{{row.booked?.length ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
                             fxFlex="100px">
                     <div class="center">
                       <span *ngIf="row.staffNeed">
-                        <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
-                          {{row.staffNeed - row.booked.length}}
+                        <span *ngIf="row.booked?.length && row.staffNeed > row.bookedCount">
+                          {{row.staffNeed - row.bookedCount}}
                         </span>
-                        <span *ngIf="row.booked?.length && row.staffNeed == row.booked.length">
+                        <span *ngIf="row.booked?.length && row.staffNeed == row.bookedCount">
                           <mat-icon>check_circle</mat-icon>
                         </span>
-                        <span *ngIf="row.booked?.length && row.staffNeed < row.booked.length">
-                          {{row.booked.length - row.staffNeed}}
+                        <span *ngIf="row.booked?.length && row.staffNeed < row.bookedCount">
+                          {{row.bookedCount - row.staffNeed}}
                         </span>
                         <span *ngIf="!row.booked?.length">
                           {{row.staffNeed}}
@@ -166,7 +168,8 @@
         <mat-card-header class="card-header">
           <mat-card-title>Tidligere Eventliste</mat-card-title>
           <mat-card-subtitle>
-            <mat-slide-toggle [(ngModel)]="viewAllPrev">
+            <mat-slide-toggle (change)="beforeEventToggle($event)"
+                              [(ngModel)]="viewAllPrev">
               Vis alle
             </mat-slide-toggle>
           </mat-card-subtitle>
@@ -179,7 +182,14 @@
                      placeholder="Søg">
             </mat-form-field>
           </div>
-          <div [ngClass]="viewAllPrev ?  '' : 'table-overflow'">
+          <div *ngIf="beforeLoading">
+            <div fxLayout="row"
+                 fxLayoutAlign="center center">
+              <mat-spinner></mat-spinner>
+            </div>
+          </div>
+          <div *ngIf="!beforeLoading"
+               [ngClass]="viewAllPrev ?  '' : 'table-overflow'">
             <div class="container">
               <mat-table #table
                          [dataSource]="dataPrevSource">
@@ -225,20 +235,20 @@
                   <mat-header-cell *matHeaderCellDef
                                    fxFlex="100px"> Personale </mat-header-cell>
                   <mat-cell *matCellDef="let row"
-                            matTooltip="{{row.booked?.length ? row.booked.length : 0}} ud {{row.staffNeed}} af booked"
+                            matTooltip="{{row.booked?.length ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
                             fxFlex="100px">
                     <span *ngIf="row.staffNeed">
-                      <span *ngIf="row.booked?.length && row.staffNeed > row.booked.length">
+                      <span *ngIf="row.booked?.length && row.staffNeed > row.bookedCount">
                         <strong>
-                          {{row.staffNeed - row.booked.length}}
+                          {{row.staffNeed - row.bookedCount}}
                         </strong>
                       </span>
-                      <span *ngIf="row.booked?.length && row.staffNeed == row.booked.length">
+                      <span *ngIf="row.booked?.length && row.staffNeed == row.bookedCount">
                         <mat-icon>check_circle</mat-icon>
                       </span>
-                      <span *ngIf="row.booked?.length && row.staffNeed < row.booked.length">
+                      <span *ngIf="row.booked?.length && row.staffNeed < row.bookedCount">
                         <strong>
-                          + {{row.booked.length - row.staffNeed}}
+                          + {{row.bookedCount - row.staffNeed}}
                         </strong>
                       </span>
                       <span *ngIf="!row.booked?.length">

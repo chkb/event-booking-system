@@ -15,7 +15,7 @@ import { Role } from '../../shared/role';
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EmployeeListComponent implements OnInit, AfterViewInit {
+export class EmployeeListComponent implements OnInit {
     loading = false;
     employeeList: Employee[] = [];
     displayedColumns = [
@@ -37,7 +37,8 @@ export class EmployeeListComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.getData();
+        // this.getData();
+        this.getEmployeeData();
     }
 
     getData(): void {
@@ -63,10 +64,21 @@ export class EmployeeListComponent implements OnInit, AfterViewInit {
         });
     }
 
-    ngAfterViewInit() {
-        setTimeout(() => {
-            this.dataSource.sort = this.sort;
-        }, 1000);
+    getEmployeeData(): void {
+        this.loading = true;
+        this.afs
+            .collection('users', ref => ref
+                .orderBy('displayName')
+                .limit(1000))
+            .valueChanges()
+            .subscribe(employeeList => this.setEmployeeData(employeeList));
+    }
+
+    setEmployeeData(employeeList: any): void {
+        this.loading = false;
+        this.dataSource = new MatTableDataSource(employeeList);
+        this.dataSource.sort = this.sort;
+
     }
 
     applyFilter(filterValue: string) {

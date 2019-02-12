@@ -44,21 +44,21 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            '<input matInput
+            <input matInput
                    placeholder="Antal kunder"
                    [(ngModel)]="selectedEvent.numberOfCustomer"
                    name="kunder">
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            '<input matInput
+            <input matInput
                    placeholder="Antal hold"
                    [(ngModel)]="selectedEvent.numberOfTeam"
                    name="numberOfTeam">
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            '<input matInput
+            <input matInput
                    placeholder="Rollebesætning"
                    [(ngModel)]="selectedEvent.crew"
                    name="crew">
@@ -88,7 +88,7 @@
           </div>
 
           <mat-form-field class="full-width">
-            '<input matInput
+            <input matInput
                    type="number"
                    placeholder="Antal medarbejdere på event (kun heltal)"
                    [(ngModel)]="selectedEvent.staffNeed"
@@ -108,14 +108,14 @@
 
           <mat-form-field class="full-width"
                           *ngIf="isAdminOrEventLeader()">
-            '<input matInput
+            <input matInput
                    placeholder="Info til eventleder"
                    [(ngModel)]="selectedEvent.eventLeaderInfo"
                    name="eventLeaderInfo">
           </mat-form-field>
 
           <mat-form-field class="full-width">
-            '<input matInput
+            <input matInput
                    placeholder="Sagsnr"
                    [(ngModel)]="selectedEvent.eventNumber"
                    name="eventNumber">
@@ -151,7 +151,7 @@
                      [(ngModel)]="selectedEvent.timeFrom" />
               <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
               <mat-form-field class="full-width">
-                '<input matInput
+                <input matInput
                        type="date"
                        placeholder="Startdato"
                        [(ngModel)]="selectedEvent.dateFrom">
@@ -163,7 +163,7 @@
                      [(ngModel)]="selectedEvent.timeTo" />
               <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
               <mat-form-field class="full-width">
-                '<input matInput
+                <input matInput
                        type="date"
                        placeholder="Slutdato"
                        [(ngModel)]="selectedEvent.dateTo">
@@ -175,7 +175,7 @@
                fxLayoutGap="2%">
             <div fxFlex>
               <mat-form-field class="full-width">
-                '<input matInput
+                <input matInput
                        placeholder="Lokation"
                        [(ngModel)]="selectedEvent.eventLocation"
                        name="eventlocation">
@@ -183,7 +183,7 @@
             </div>
             <div fxFlex>
               <mat-form-field class="full-width">
-                '<input matInput
+                <input matInput
                        placeholder="Adresse på lokation"
                        [(ngModel)]="selectedEvent.eventAdress"
                        name="eventadress">
@@ -198,7 +198,7 @@
                  fxLayoutGap="2%">
               <div fxFlex>
                 <mat-form-field class="full-width">
-                  '<input matInput
+                  <input matInput
                          placeholder="Kundekontakt"
                          [(ngModel)]="selectedEvent.customer"
                          name="customer">
@@ -206,7 +206,7 @@
               </div>
               <div fxFlex>
                 <mat-form-field class="full-width">
-                  '<input matInput
+                  <input matInput
                          placeholder="Lokationkontakt"
                          [(ngModel)]="selectedEvent.contactInfo"
                          name="contactInfo">

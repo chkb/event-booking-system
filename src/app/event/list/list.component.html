@@ -93,7 +93,7 @@
                         <span *ngIf="row.booked?.length && row.staffNeed < row.bookedCount">
                           {{row.bookedCount - row.staffNeed}}
                         </span>
-                        <span *ngIf="!row.booked?.length">
+                        <span *ngIf="!row.bookedCount">
                           {{row.staffNeed}}
                         </span>
                       </span>

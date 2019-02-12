@@ -234,23 +234,23 @@
                   <mat-header-cell *matHeaderCellDef
                                    fxFlex="100px"> Personale </mat-header-cell>
                   <mat-cell *matCellDef="let row"
-                            matTooltip="{{row.booked?.length ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
+                            matTooltip="{{row.bookedCount ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
                             fxFlex="100px">
                     <span *ngIf="row.staffNeed">
-                      <span *ngIf="row.booked?.length && row.staffNeed > row.bookedCount">
+                      <span *ngIf="row.bookedCount && row.staffNeed > row.bookedCount">
                         <strong>
                           {{row.staffNeed - row.bookedCount}}
                         </strong>
                       </span>
-                      <span *ngIf="row.booked?.length && row.staffNeed == row.bookedCount">
+                      <span *ngIf="row.bookedCount && row.staffNeed == row.bookedCount">
                         <mat-icon>check_circle</mat-icon>
                       </span>
-                      <span *ngIf="row.booked?.length && row.staffNeed < row.bookedCount">
+                      <span *ngIf="row.bookedCount && row.staffNeed < row.bookedCount">
                         <strong>
                           + {{row.bookedCount - row.staffNeed}}
                         </strong>
                       </span>
-                      <span *ngIf="!row.booked?.length">
+                      <span *ngIf="!row.bookedCount">
                         <strong>
                           {{row.staffNeed}}
                         </strong>

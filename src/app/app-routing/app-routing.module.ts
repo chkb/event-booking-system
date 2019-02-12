@@ -27,7 +27,7 @@ import { ForgotComponent } from '../forgot/forgot.component';
 const routes: Route[] = [
     {
         path: '',
-        redirectTo: '/login',
+        redirectTo: '/dashboard',
         pathMatch: 'full'
     },
     {

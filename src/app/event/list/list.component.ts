@@ -46,6 +46,22 @@ export class EventListComponent implements AfterViewInit {
         this.getBeforeToday(false);
     }
 
+    // update(): void {
+    //     this.afs.collection('events').ref.get().then(querySnapshot => {
+    //         querySnapshot.forEach(doc => {
+    //             const event = doc.data();
+    //             if (!doc.data()['uid']) {
+    //                 event.uid = doc.id;
+
+    //                 this.afs.collection('events')
+    //                     .doc(doc.id).update(JSON.parse(JSON.stringify(event))).then(res => {
+    //                         console.log(res);
+    //                     });
+    //             }
+    //         });
+    //     });
+    // }
+
     beforeEventToggle(toggle: MatSlideToggleChange): void {
         this.getBeforeToday(toggle.checked);
     }

@@ -95,7 +95,7 @@ export class EventListComponent implements AfterViewInit {
             .collection('events', ref => ref
                 .orderBy('dateFrom')
                 .orderBy('timeFrom')
-                .where('dateFrom', '>', moment().format('YYYY-MM-DD'))
+                .where('dateFrom', '>=', moment().format('YYYY-MM-DD'))
                 .limit(getAll ? 1000 : 50))
             .valueChanges()
             .subscribe(events => {

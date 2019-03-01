@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-interface User {
+export interface User {
     uid: string;
     email: string;
     photoURL?: string;
@@ -26,7 +26,9 @@ export class LoginProviderService {
         private afAuth: AngularFireAuth,
         private snackBar: MatSnackBar,
         private afs: AngularFirestore,
-        private router: Router) {
+        private router: Router,
+
+    ) {
         //// Get auth data, then get firestore user document || null
         this.user = this.afAuth.authState.pipe(
             switchMap(user => {
@@ -59,7 +61,7 @@ export class LoginProviderService {
     }
 
     emailLogin(email: string, password: string) {
-        this.emailAuthLogin(email, password);
+        return this.emailAuthLogin(email, password);
     }
 
     signup(email: string, password: string) {
@@ -68,8 +70,13 @@ export class LoginProviderService {
 
     private signupWithEmail(email: string, password: string) {
         return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-            .then((credential) => {
-                this.updateUserData(credential.user);
+            .then(() => {
+                this.snackBar.open('Bruger er nu oprettet.',
+                    'LUK',
+                    {
+                        duration: 10000,
+                    });
+                this.router.navigate(['/login-email']);
             })
             .catch(error => {
                 this.snackBar.open(error, 'LUK',
@@ -80,10 +87,11 @@ export class LoginProviderService {
     }
 
     private emailAuthLogin(email: string, password: string) {
-        return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-            .then((credential) => {
-                this.updateUserData(credential.user);
-            }).catch(error => {
+        this.afAuth.auth.signInWithEmailAndPassword(email, password)
+            .then((result) => {
+                this.updateUserData(result.user);
+            })
+            .catch(error => {
                 this.snackBar.open(error, 'LUK',
                     {
                         duration: 10000,
@@ -110,9 +118,7 @@ export class LoginProviderService {
 
         this.afs.firestore.doc(`/users/${user.uid}`).get()
             .then(docSnapshot => {
-                if (!data.displayName) {
-                    return;
-                } else if (docSnapshot.exists) {
+                if (docSnapshot.exists) {
                     return userRef.update(data);
                 } else {
                     data.role = '';
@@ -120,6 +126,7 @@ export class LoginProviderService {
                 }
             });
     }
+
     signOut() {
         this.afAuth.auth.signOut().then(() => {
             this.router.navigate(['/login']);

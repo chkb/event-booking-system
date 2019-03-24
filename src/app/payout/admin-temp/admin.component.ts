@@ -91,9 +91,10 @@ export class TableExpandableRowsComponent implements OnInit {
     updateDatabase(): void {
         this.loading = true;
         this.afs.collection('events').ref.get().then(querySnapshot => {
+            let list = [];
             querySnapshot.forEach(doc => {
                 const payoutList = doc.data()['payouts'];
-                const list = payoutList.map((payout: Payout) => {
+                list = payoutList.map((payout: Payout) => {
                     const payoutModified = new PayoutDanish();
                     payoutModified.bonus = payout.bonus ? payout.bonus : 0;
                     payoutModified.comment = payout.comment ? payout.comment : 'ingen';
@@ -112,25 +113,44 @@ export class TableExpandableRowsComponent implements OnInit {
 
                     return payoutModified;
                 });
-                const countLength = list.length;
-                let count = 0;
-                list.forEach((element: PayoutDanish) => {
-                    this.modifiedList.push(element);
-                    count++;
-                    this.afs
-                        .collection('payouts')
-                        .doc(`${element.dato}_${element.medarbejderUid}_${element.fra}_${element.til}`)
-                        .update(JSON.parse(JSON.stringify(element)));
 
-                    if (count === countLength) {
-                        this.loading = false;
-                    }
-                });
+                this.upsertPayoutData(list);
             });
         });
     }
 
+    upsertPayoutData(list: any[]): void {
+        const countLength = list.length;
+        let count = 0;
+        list.forEach((element: PayoutDanish) => {
+            this.modifiedList.push(element);
+            count++;
+            this.afs
+                .collection('payouts')
+                .doc(`${element.dato}_${element.medarbejderUid}_${element.fra}_${element.til}`)
+                .update(JSON.parse(JSON.stringify(element)));
+
+            if (count === countLength) {
+                this.loading = false;
+            }
+        });
+    }
+
     search(): void {
+        this.afs
+            .collection('payouts', ref => ref
+                .orderBy('dato', 'asc')
+                .where('dato', '<=', moment(this.endDate.value).format('YYYY-MM-DD'))
+                .where('dato', '>', moment(this.startDate.value).format('YYYY-MM-DD')))
+            .valueChanges()
+            .subscribe(events => {
+                const parrentList = this.groupList(events, 'medarbejder');
+                this.parrentList = parrentList;
+                this.dataSource = parrentList;
+            });
+    }
+
+    search2(): void {
         this.dataSource = [];
         const list: PayoutDanish[] = [];
         this.afs
@@ -267,7 +287,7 @@ export class TableExpandableRowsComponent implements OnInit {
         const startDateText = this.datepipe.transform(this.startDate.value).toString();
         const slutDateText = this.datepipe.transform(this.endDate.value).toString();
         const title = `Liste over lønninger for perioden: ${startDateText} til ${slutDateText} `;
-        this.JSONToCSVConvertor(this.parrentList, title, true);
+        this.JSONToCSVConvertor(this.parrentList.map(x => x.child), title, true);
     }
 
     removeDuplicateUsingFilter(arr) {

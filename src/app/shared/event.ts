@@ -1,6 +1,4 @@
 import { Employee } from './employee';
-import { EventType } from './event-type';
-import { Wager } from './wager';
 
 export class EventObject {
     uid: string;

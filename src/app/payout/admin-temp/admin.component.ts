@@ -4,11 +4,14 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormControl } from '@angular/forms';
-import { MatCheckboxChange, MatDialog, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort } from '@angular/material';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
+// tslint:disable-next-line:import-blacklist
+import { Observable } from 'rxjs';
 
 import { moveIn } from '../../router.animations';
-import { EventHistory, EventObject, Payout } from '../../shared/event';
+import { EventObject, Payout } from '../../shared/event';
 
 export class PayoutDanish {
     medarbejder: string;
@@ -32,6 +35,7 @@ export class PayoutDanish {
 export class PayoutObject {
     cvr: string;
     medarbejdernummer: string;
+    medarbejderUid: string;
     udbetaling: string;
     medarbejder: string;
     loentype: string;
@@ -39,7 +43,7 @@ export class PayoutObject {
     sats: number;
     beloeb: number;
     child: PayoutDanish[];
-    udbetalt: boolean;
+    event: string;
 }
 
 @Component({
@@ -59,21 +63,19 @@ export class PayoutObject {
 export class TableExpandableRowsComponent implements OnInit {
     selection = new SelectionModel<PayoutObject>(true, []);
     list: PayoutDanish[] = [];
-    parrentList: PayoutObject[] = [];
+    parrentList: any[] = [];
     eventList: EventObject[] = [];
-    startDate = new FormControl((new Date()).toISOString());
+    startDate = new FormControl((moment().startOf('month').toISOString()));
     endDate = new FormControl((new Date()).toISOString());
     expandedElements: string[] = [];
     loading = false;
     modifiedList = [];
+    csvList = [];
     @ViewChild(MatSort) sort: MatSort;
 
     displayedColumns = [
-        'Selection',
         'Medarbejdernummer',
-        'Loentype',
-        'Enheder',
-        'Sats',
+        'Timer',
         'Beloeb',
         'function',
     ];
@@ -82,6 +84,7 @@ export class TableExpandableRowsComponent implements OnInit {
     constructor(
         private afs: AngularFirestore,
         private datepipe: DatePipe,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -113,7 +116,6 @@ export class TableExpandableRowsComponent implements OnInit {
 
                     return payoutModified;
                 });
-
                 this.upsertPayoutData(list);
             });
         });
@@ -122,13 +124,16 @@ export class TableExpandableRowsComponent implements OnInit {
     upsertPayoutData(list: any[]): void {
         const countLength = list.length;
         let count = 0;
-        list.forEach((element: PayoutDanish) => {
-            this.modifiedList.push(element);
+        list.forEach((payout: PayoutDanish) => {
+            if (!payout) {
+                return;
+            }
+            this.modifiedList.push(payout);
             count++;
             this.afs
                 .collection('payouts')
-                .doc(`${element.dato}_${element.medarbejderUid}_${element.fra}_${element.til}`)
-                .update(JSON.parse(JSON.stringify(element)));
+                .doc(`${payout.dato}_${payout.medarbejderUid}_${payout.fra}_${payout.til}`)
+                .set(JSON.parse(JSON.stringify(payout)));
 
             if (count === countLength) {
                 this.loading = false;
@@ -144,78 +149,59 @@ export class TableExpandableRowsComponent implements OnInit {
                 .where('dato', '>', moment(this.startDate.value).format('YYYY-MM-DD')))
             .valueChanges()
             .subscribe(events => {
-                const parrentList = this.groupList(events, 'medarbejder');
-                this.parrentList = parrentList;
+                const parrentList = this.groupList(events, 'medarbejderUid');
+                this.parrentList = events;
+                this.csvList = this.groupListToCsv(events);
                 this.dataSource = parrentList;
             });
     }
 
-    search2(): void {
-        this.dataSource = [];
-        const list: PayoutDanish[] = [];
-        this.afs
-            .collection('payouts')
-            .ref.get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    const payoutModified = new PayoutDanish();
-                    payoutModified.bonus = doc.data()['bonus'];
-                    payoutModified.comment = doc.data()['comment'];
-                    payoutModified.dato = doc.data()['dato'];
-                    payoutModified.fra = doc.data()['fra'];
-                    payoutModified.til = doc.data()['til'];
-                    payoutModified.event = doc.data()['event'];
-                    payoutModified.eventId = doc.data()['eventId'];
-                    payoutModified.medarbejder = doc.data()['medarbejder'];
-                    payoutModified.payrollNumber = doc.data()['payrollNumber'];
-                    payoutModified.medarbejderUid = doc.data()['medarbejderUid'];
-                    payoutModified.paymentMethod = doc.data()['paymentMethod'];
-                    payoutModified.sum = doc.data()['sum'];
-                    payoutModified.takst = doc.data()['takst'];
-                    payoutModified.timer = doc.data()['timer'];
-                    payoutModified.udbetalt = doc.data()['udbetalt'];
 
-                    const isAfterStartDate = moment(payoutModified.dato)
-                        .startOf('day')
-                        .isSameOrAfter(moment(this.startDate.value)
-                            .startOf('day'));
+    // updateAllData(event: MatCheckboxChange): void {
+    //     this.list.forEach(payout => {
+    //         payout.udbetalt = event.checked;
+    //         this.updateEntry(event, payout);
+    //     });
+    //     this.search();
+    // }
 
-                    const isBeforeStartDate = moment(payoutModified.dato)
-                        .startOf('day')
-                        .isSameOrBefore(moment(this.endDate.value)
-                            .startOf('day'));
+    // updateAllEntries(event: MatCheckboxChange, payouts: PayoutDanish[]): void {
+    //     payouts.forEach(payout => {
+    //         this.updateEntry(event, payout);
+    //     });
+    // }
 
-                    if (isAfterStartDate && isBeforeStartDate) {
-                        list.push(payoutModified);
-                    }
-                });
-                this.list = list;
-                const parrentList = this.groupList(list, 'medarbejder');
-                this.parrentList = parrentList;
-                this.dataSource = parrentList;
-            });
+    // updateEntry(event: MatCheckboxChange, payout: PayoutDanish): void {
+    //     payout.udbetalt = event.checked;
+    //     this.afs
+    //         .collection('payouts-admin')
+    //         .doc(`${payout.dato}_${payout.medarbejderUid}_${payout.fra}_${payout.til}`)
+    //         .set(JSON.parse(JSON.stringify(payout))).then(x => console.log('sucess!'));
+    // }
+
+    getDocument(collection: string, id: string): Observable<any> {
+        return this.afs
+            .collection(collection)
+            .doc(id)
+            .valueChanges();
     }
 
-    updateAllData(event: MatCheckboxChange): void {
-        this.list.forEach(payout => {
-            payout.udbetalt = event.checked;
-            this.updateEntry(event, payout);
+    groupListToCsv(collection: any[]): any[] {
+        const list = [];
+        // this will return an array of objects, each object containing a group of objects
+        collection.forEach(payout => {
+            const obj = new PayoutObject();
+            obj.cvr = '10105455';
+            obj.medarbejder = payout.medarbejder;
+            obj.event = payout.event;
+            obj.medarbejdernummer = payout.payrollNumber ? payout.payrollNumber : 'Ikke angivet';
+            obj.loentype = payout.paymentMethod ? payout.paymentMethod : 'Ikke angivet';
+            obj.enheder = payout.timer ? payout.timer : 0;
+            obj.sats = payout.takst ? payout.takst : 0;
+            obj.beloeb = payout.sum ? payout.sum : 0;
+            list.push(obj);
         });
-        this.search();
-    }
-
-    updateAllEntries(event: MatCheckboxChange, payouts: PayoutDanish[]): void {
-        payouts.forEach(payout => {
-            this.updateEntry(event, payout);
-        });
-    }
-
-    updateEntry(event: MatCheckboxChange, payout: PayoutDanish): void {
-        payout.udbetalt = event.checked;
-        this.afs
-            .collection('payouts')
-            .doc(`${payout.dato}_${payout.medarbejderUid}_${payout.fra}_${payout.til}`)
-            .update(JSON.parse(JSON.stringify(payout)));
+        return list;
     }
 
     groupList(collection: Array<any>, property: string): Array<any> {
@@ -238,12 +224,12 @@ export class TableExpandableRowsComponent implements OnInit {
             const obj = new PayoutObject();
             obj.cvr = '10105455';
             obj.medarbejder = groupedCollection[key][0]['medarbejder'];
+            obj.medarbejderUid = groupedCollection[key][0]['medarbejderUid'];
             obj.medarbejdernummer = groupedCollection[key][0]['payrollNumber'];
             obj.loentype = groupedCollection[key][0]['paymentMethod'] ? groupedCollection[key][0]['paymentMethod'] : 'Ikke angivet';
             obj.enheder = this.getValue(groupedCollection[key], 'timer');
             obj.sats = this.getAvg(groupedCollection[key], 'takst');
             obj.beloeb = this.getValue(groupedCollection[key], 'sum');
-            obj.udbetalt = this.getValueBoolean(groupedCollection[key], 'udbetalt');
             obj.child = groupedCollection[key];
 
             return obj;
@@ -287,7 +273,11 @@ export class TableExpandableRowsComponent implements OnInit {
         const startDateText = this.datepipe.transform(this.startDate.value).toString();
         const slutDateText = this.datepipe.transform(this.endDate.value).toString();
         const title = `Liste over lønninger for perioden: ${startDateText} til ${slutDateText} `;
-        this.JSONToCSVConvertor(this.parrentList.map(x => x.child), title, true);
+        this.JSONToCSVConvertor(this.csvList, title, true);
+    }
+
+    gotoEmployee(id: string): void {
+        this.router.navigate(['/employee', id]);
     }
 
     removeDuplicateUsingFilter(arr) {

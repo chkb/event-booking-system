@@ -44,7 +44,8 @@
         <button mat-raised-button
                 (click)="search()">SØG</button>
         <button mat-raised-button
-                (click)="createCsv()">OPRET CSV</button>
+                (click)="createCsv()"
+                [disabled]="!dataSource.length">OPRET CSV</button>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -69,11 +70,9 @@
                 <td td mat-cell
                     *matCellDef="let element"> {{element[column]}} </td>
             </ng-container> -->
-      <ng-container matColumnDef="Selection">
-        <th mat-header-cell
+      <!-- <ng-container matColumnDef="Selection"> -->
+      <!-- <th mat-header-cell
             *matHeaderCellDef>
-          <!-- <mat-checkbox (change)="updateAllData($event)">
-          </mat-checkbox> -->
           Udbetalt?
         </th>
         <td mat-cell
@@ -84,41 +83,27 @@
                         [checked]="row.udbetalt">
           </mat-checkbox>
         <td>
-      </ng-container>
+      </ng-container> -->
 
       <!-- Medarbejdernummer Column -->
       <ng-container matColumnDef="Medarbejdernummer">
         <th mat-header-cell
-            *matHeaderCellDef> Medarbejdernummer </th>
+            *matHeaderCellDef> Medarbejder </th>
         <td mat-cell
             *matCellDef="let row">
           {{row.medarbejder}} <span *ngIf="row.medarbejdernummer">({{row.medarbejdernummer}})</span>
         <td>
       </ng-container>
 
-      <!-- Enheder Column -->
-      <ng-container matColumnDef="Loentype">
-        <th mat-header-cell
-            *matHeaderCellDef> Løntype </th>
-        <td mat-cell
-            *matCellDef="let row"> {{row.loentype}} <td>
-      </ng-container>
 
-      <!-- Enheder Column -->
-      <ng-container matColumnDef="Enheder">
+      <!-- Timer Column -->
+      <ng-container matColumnDef="Timer">
         <th mat-header-cell
-            *matHeaderCellDef> Enheder </th>
+            *matHeaderCellDef> Timer </th>
         <td mat-cell
             *matCellDef="let row"> {{row.enheder | number : '1.2-2'}} <td>
       </ng-container>
 
-      <!-- Sats Column -->
-      <ng-container matColumnDef="Sats">
-        <th mat-header-cell
-            *matHeaderCellDef> Sats </th>
-        <td mat-cell
-            *matCellDef="let row"> {{row.sats | number : '1.2-2'}} <td>
-      </ng-container>
 
       <!-- Beloeb Column -->
       <ng-container matColumnDef="Beloeb">
@@ -134,14 +119,14 @@
             *matHeaderCellDef> </th>
         <td mat-cell
             *matCellDef="let row">
-          <button *ngIf="!expandedElement"
+          <button *ngIf="expandedElement !== row"
                   mat-icon-button
                   (click)="expandedElement = row">
             <mat-icon>
               keyboard_arrow_down
             </mat-icon>
           </button>
-          <button *ngIf="expandedElement"
+          <button *ngIf="expandedElement === row"
                   mat-icon-button
                   (click)="expandedElement = ''">
             <mat-icon>
@@ -162,7 +147,7 @@
             <table>
               <thead>
                 <tr class="custom-table-row">
-                  <th>Udbetalt?</th>
+                  <!-- <th>Udbetalt?</th> -->
                   <th>Dato</th>
                   <th>Timer</th>
                   <th>Sats</th>
@@ -173,13 +158,13 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of element.child">
-                  <td>
+                  <!-- <td>
                     <mat-checkbox #checkbox
                                   (click)="$event.stopPropagation()"
                                   (change)="updateEntry($event, item)"
                                   [checked]="item.udbetalt">
                     </mat-checkbox>
-                  </td>
+                  </td> -->
                   <td>
                     {{item.dato}}
                   </td>

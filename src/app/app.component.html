@@ -52,13 +52,6 @@
           <span>{{item.text}}</span>
         </button>
         <button mat-button
-                *ngFor="let item of payoutNavigationItems"
-                [routerLink]="item.url"
-                routerLinkActive="active-link"
-                (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </button>
-        <button mat-button
                 *ngFor="let item of employeeNavigationItems"
                 [routerLink]="item.url"
                 routerLinkActive="active-link"

@@ -18,9 +18,7 @@ export class MessagesViewComponent implements OnInit {
 
     constructor(
         private afs: AngularFirestore,
-    ) {
-
-    }
+    ) { }
 
     ngOnInit() {
         this.getData();

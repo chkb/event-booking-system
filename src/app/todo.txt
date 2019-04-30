@@ -1,0 +1,11 @@
+1. Priortet
+- Eventleder tegn på event oversigts siden.
+- Admin tegn på event oversigts siden.
+
+2. Priortet
+- Opret en csv som er en samlet løsning
+
+3. Priortet
+- Datofelt før tidsfelter på tidsregistrering.
+- Vis om events er ikke-låst på export siden.
+- Vis en alternativ detalje visning på export visning.

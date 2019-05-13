@@ -28,7 +28,13 @@
     </mat-menu>
   </mat-toolbar>
   <mat-toolbar>
+
+
+      
+
+      
     <span *ngIf="isAuthenticated">
+
       <button mat-button
               *ngFor="let item of dashboardNavigationItems"
               [routerLink]="item.url"
@@ -36,29 +42,52 @@
               (click)="sidenav.close()">
         <span>{{item.text}}</span>
       </button>
+
+      <button mat-button [matMenuTriggerFor]="belowMenu">EVENTS</button>
+      <mat-menu #belowMenu="matMenu" yPosition="below">
+          <span *ngIf="isAdminOrEventLeader()">
+
+
+              <button mat-menu-item
+                      *ngFor="let item of eventNavigationItems"
+                      [routerLink]="item.url"
+                      routerLinkActive="active-link"
+                      (click)="sidenav.close()">
+                <span>{{item.text}}</span>
+              </button>
+      
+      
+              <button mat-menu-item
+                      *ngFor="let item of payoutNavigationItems"
+                      [routerLink]="item.url"
+                      routerLinkActive="active-link"
+                      (click)="sidenav.close()">
+                <span>{{item.text}}</span>
+              </button>
+      
+      
+              
+            </span>
+      
+        <button mat-menu-item>Indtast Afrapportering (ny)</button>
+        <button mat-menu-item>Export Events (tidligere export event liste)</button>
+
+
+      </mat-menu>
+
       <span *ngIf="isAdminOrEventLeader()">
-        <button mat-button
-                *ngFor="let item of eventNavigationItems"
-                [routerLink]="item.url"
-                routerLinkActive="active-link"
-                (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </button>
-        <button mat-button
-                *ngFor="let item of payoutNavigationItems"
-                [routerLink]="item.url"
-                routerLinkActive="active-link"
-                (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </button>
-        <button mat-button
-                *ngFor="let item of employeeNavigationItems"
-                [routerLink]="item.url"
-                routerLinkActive="active-link"
-                (click)="sidenav.close()">
-          <span>{{item.text}}</span>
-        </button>
+          <button mat-button
+          *ngFor="let item of employeeNavigationItems"
+          [routerLink]="item.url"
+          routerLinkActive="active-link"
+          (click)="sidenav.close()">
+          <span>{{item.text}} x</span>
+          </button>
       </span>
+
+      
+
+
       <span *ngIf="isAdmin()">
         <button mat-button
                 *ngFor="let item of eventTypeNavigationItems"
@@ -96,7 +125,13 @@
           <span>{{item.text}}</span>
         </button>
       </span>
+
+
+
     </span>
+
+
+
   </mat-toolbar>
   <mat-sidenav #sidenav
                class="sidenav">
@@ -104,6 +139,10 @@
       <a class="splash-mini black"
          routerLink="/">
       </a>
+
+
+
+      <!-- side menu -->
       <span>Menu</span>
     </div>
     <mat-nav-list class="nav-list">

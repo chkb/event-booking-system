@@ -33,7 +33,7 @@ export class AppComponent {
     eventNavigationItems: NavigationItem[] = [
         {
             url: '/event/list',
-            text: 'Eventliste'
+            text: 'Vis Events'
         },
         {
             url: '/event/create',
@@ -44,7 +44,7 @@ export class AppComponent {
     employeeNavigationItems: NavigationItem[] = [
         {
             url: '/employee/list',
-            text: 'Medarbejdereliste'
+            text: 'Vis Medarbejdere'
         }
     ];
 
@@ -93,7 +93,7 @@ export class AppComponent {
     eventAdminNavigationItems: NavigationItem[] = [
         {
             url: '/payout-admin',
-            text: 'Export løn data'
+            text: 'Administrer Udbetaling (tidligere Export Løn data)'
         }
     ];
 

@@ -107,9 +107,9 @@
 
               <!-- Date Column -->
               <ng-container matColumnDef="timeFrom">
-                <mat-header-cell *matHeaderCellDef> Starttidspunkt </mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                  <input type="time"
+                <mat-header-cell class="wide" *matHeaderCellDef> Starttidspunkt </mat-header-cell>
+                <mat-cell class="wide" *matCellDef="let row">
+                  <input type="datetime-local"
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"
@@ -119,9 +119,9 @@
 
               <!-- Date Column -->
               <ng-container matColumnDef="timeTo">
-                <mat-header-cell *matHeaderCellDef> Sluttidspunkt </mat-header-cell>
-                <mat-cell *matCellDef="let row">
-                  <input type="time"
+                <mat-header-cell class="wide" *matHeaderCellDef> Sluttidspunkt </mat-header-cell>
+                <mat-cell class="wide" *matCellDef="let row">
+                  <input type="datetime-local"
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"

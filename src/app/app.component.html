@@ -31,7 +31,7 @@
         <span *ngIf="isAdminOrEventLeader()">
   
             <button mat-button [matMenuTriggerFor]="belowMenu">
-              <span>EVENTS</span>
+              <span>Events</span>
             </button>
           <mat-menu #belowMenu="matMenu" yPosition="below">
   
@@ -66,7 +66,7 @@
       <span *ngIf="isAdminOrEventLeader()">
 
             <button mat-button [matMenuTriggerFor]="belowMenu">
-              <span>MEDARBEJDERE</span>
+              <span>Medarbejdere</span>
             </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">
   
@@ -95,7 +95,7 @@
   
         <span *ngIf="isAdmin()">
             <button mat-button [matMenuTriggerFor]="belowMenu">
-                <span>INDSTILLINGER</span>
+                <span>Indstillinger</span>
             </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">
   
@@ -145,7 +145,7 @@
         <!--LØN dropdown-->
           <span *ngIf="isAdmin()">
               <button mat-button [matMenuTriggerFor]="belowMenu">
-                  <span>LØN</span>
+                  <span>Løn</span>
               </button>
               <mat-menu #belowMenu="matMenu" yPosition="below">
                   <button mat-menu-item>

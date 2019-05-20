@@ -30,13 +30,16 @@
               <mat-list-item>
                 <mat-icon mat-list-icon>access_time</mat-icon>
                 <h4 mat-line>Tidspunkt</h4>
-                <p mat-line>{{selectedEvent.timeFrom}} til {{selectedEvent.timeTo}} </p>
+                <p mat-line> fra {{selectedEvent.dateFrom}} </p>
+                <p mat-line> til {{selectedEvent.dateTo}} </p>
               </mat-list-item>
+              <!--
               <mat-list-item>
                 <mat-icon mat-list-icon>date_range</mat-icon>
                 <h4 mat-line>Dato</h4>
                 <p mat-line>{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</p>
               </mat-list-item>
+              -->
               <mat-list-item>
                 <mat-icon mat-list-icon>notes</mat-icon>
                 <h4 mat-line>Team beskrivelse</h4>
@@ -113,7 +116,8 @@
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"
-                         [(ngModel)]="row.timeFrom" />
+                         [(ngModel)]="row.dateFrom"
+                         [value]="row.dateFrom" />
                 </mat-cell>
               </ng-container>
 
@@ -125,7 +129,8 @@
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"
-                         [(ngModel)]="row.timeTo" />
+                         [(ngModel)]="row.dateTo"
+                         [value]="row.dateTo" />
                 </mat-cell>
               </ng-container>
 

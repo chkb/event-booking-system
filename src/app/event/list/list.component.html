@@ -54,16 +54,24 @@
                   </mat-cell>
                 </ng-container>
 
+
+
+
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
                   <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
                   <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'EEEE dd. MMMM yyyy'}}</mat-cell>
                 </ng-container>
 
+
+
+
+
+
                 <!-- Date Column -->
                 <ng-container matColumnDef="time">
                   <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
-                  <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
+                  <mat-cell *matCellDef="let row"> {{row.dateFrom}} til {{row.dateTo}} </mat-cell>
                 </ng-container>
 
                 <!-- Lokation Column -->
@@ -209,11 +217,21 @@
                   </mat-cell>
                 </ng-container>
 
+
+
+
+
+
+
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
                   <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'EEEE dd. MMMM yyyy'}}</mat-cell>
+                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'EEEE dd. MMMM yyyy'}} </mat-cell>
                 </ng-container>
+
+
+
+
 
                 <!-- Date Column -->
                 <ng-container matColumnDef="time">

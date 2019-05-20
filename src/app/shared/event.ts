@@ -5,8 +5,8 @@ export class EventObject {
     name: string;
     dateFrom: Date;
     dateTo: Date;
-    timeFrom = '18:00';
-    timeTo = '22:00';
+    timeFrom = 'yyyy-mm-ddThh:mm';
+    timeTo = 'yyyy-mm-ddThh:mm';
     billInfo = '';
     language: string;
     eventDescription: string;

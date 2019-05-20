@@ -124,7 +124,7 @@
       </mat-select>
     </mat-form-field>
 
-    
+
     <mat-divider></mat-divider>
 
 
@@ -136,25 +136,31 @@
          fxLayoutGap="2%">
       <div fxFlex>
         <h5>Start tidspunkt</h5>
-        <input type="time"
-               [(ngModel)]="event.timeFrom" />
+        <input type="datetime-local"
+               [(ngModel)]="event.dateFrom" />
+               
+<!--               
         <mat-form-field class="full-width">
           <input matInput
                  type="date"
                  placeholder="Startdato"
                  [(ngModel)]="event.dateFrom">
         </mat-form-field>
+-->        
       </div>
+
       <div fxFlex>
         <h5>Slut tidspunkt</h5>
-        <input type="time"
-               [(ngModel)]="event.timeTo" />
+        <input type="datetime-local"
+               [(ngModel)]="event.dateTo" />
+<!--
         <mat-form-field class="full-width">
           <input matInput
                  type="date"
-                 placeholder="Slutdato"
+                 placeholder="Slutdatoooooooo"
                  [(ngModel)]="event.dateTo">
         </mat-form-field>
+-->
       </div>
     </div>
     <div fxLayout="column wrap"

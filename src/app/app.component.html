@@ -79,8 +79,12 @@
           <span>{{item.text}}</span>
           </button>
 
-          <button mat-menu-item>
-              <span>Opret medarbejder (ny)</span> 
+          <button mat-menu-item
+              *ngFor="let item of employeeCreateNavigationItems"
+              [routerLink]="item.url"
+              outerLinkActive="active-link"
+              (click)="sidenav.close()">
+              <span>{{item.text}}</span> 
           </button>
 
 

@@ -130,6 +130,44 @@ export class PayoutEditComponent implements OnInit {
         return sum;
     }
 
+     
+/*
+     getHours(dateFrom: string, dateTo: string): number {
+       const result = 0;
+
+       const from = this.event.dateFrom.getHours();
+     }
+
+
+*/
+
+
+/*
+    getHours(dateFrom: string, dateTo: string): number {
+        const result = 0;
+        const from = this.toSeconds(dateFrom);
+        const to = this.toSeconds(dateTo);
+        let diff = Math.abs(to - from);
+        if (to < from) {
+            diff = Math.abs(from - this.toSeconds('24:00'));
+            diff = diff + Math.abs(this.toSeconds('00:00') - to);
+        }
+        
+        
+
+        const h = Math.floor(diff / 3600);
+        const m = Math.round(Math.floor(diff % 3600 / 60) * 0.0166666667 * 100) / 100;
+        const time = h + m;
+
+        return time;
+       
+    }
+   
+   */
+                
+                 
+
+    
     getHours(timeFrom: string, timeTo: string): number {
         const result = 0;
         const from = this.toSeconds(timeFrom);
@@ -139,6 +177,7 @@ export class PayoutEditComponent implements OnInit {
             diff = Math.abs(from - this.toSeconds('24:00'));
             diff = diff + Math.abs(this.toSeconds('00:00') - to);
         }
+        console.log(from);
 
         const h = Math.floor(diff / 3600);
         const m = Math.round(Math.floor(diff % 3600 / 60) * 0.0166666667 * 100) / 100;

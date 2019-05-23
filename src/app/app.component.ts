@@ -17,6 +17,10 @@ export class AppComponent {
     fullscreenActive = false;
     isAuthenticated: boolean;
 
+    
+       
+
+
     constructor(
         private router: Router,
         public auth: LoginProviderService
@@ -28,6 +32,7 @@ export class AppComponent {
                 this.isAuthenticated = false;
             }
         });
+    
     }
 
     eventNavigationItems: NavigationItem[] = [
@@ -45,6 +50,13 @@ export class AppComponent {
         {
             url: '/employee/list',
             text: 'Vis Medarbejdere'
+        }
+    ];
+
+    employeeCreateNavigationItems: NavigationItem[] = [
+        {
+            url: '/employee/create',
+            text: 'Opret medarbejder (ny)'
         }
     ];
 

@@ -7,7 +7,7 @@
               [class.xs]="['card-xs', 'infocard-xs']">
       <mat-card-header class="card-header">
         <h3>
-          Tidsregistrering af event '{{selectedEvent.name}}'
+          Tidsregistrering af event '{{selectedEvent.name}}' + {{current_hrs}}
         </h3>
       </mat-card-header>
       <mat-card-content>
@@ -96,7 +96,8 @@
         <div fxLayout="column wrap"
              fxLayout.gt-xs="row"
              fxLayoutGap="2%">
-          <div fxFlex>
+          <div fxFlex
+          fxLayoutGap="20px">
             <mat-table #table
                        [dataSource]="dataSource">
 
@@ -110,7 +111,7 @@
 
               <!-- Date Column -->
               <ng-container matColumnDef="timeFrom">
-                <mat-header-cell class="wide" *matHeaderCellDef> Starttidspunkt </mat-header-cell>
+                <mat-header-cell class="wide" *matHeaderCellDef>  Starttidspunkt </mat-header-cell>
                 <mat-cell class="wide" *matCellDef="let row">
                   <input type="datetime-local"
                          [disabled]="selectedEvent.payoutDone"
@@ -123,7 +124,7 @@
 
               <!-- Date Column -->
               <ng-container matColumnDef="timeTo">
-                <mat-header-cell class="wide" *matHeaderCellDef> Sluttidspunkt </mat-header-cell>
+                <mat-header-cell class="wide" *matHeaderCellDef>  Sluttidspunkt </mat-header-cell>
                 <mat-cell class="wide" *matCellDef="let row">
                   <input type="datetime-local"
                          [disabled]="selectedEvent.payoutDone"
@@ -136,16 +137,16 @@
 
               <!-- Hours Column -->
               <ng-container matColumnDef="hours">
-                <mat-header-cell *matHeaderCellDef> Timer </mat-header-cell>
-                <mat-cell *matCellDef="let row">
+                <mat-header-cell class="short-timer" *matHeaderCellDef> Timer </mat-header-cell>
+                <mat-cell class="short-timer" *matCellDef="let row">
                   {{row.hours}} timer
                 </mat-cell>
               </ng-container>
 
               <!-- Wager Column -->
               <ng-container matColumnDef="wager">
-                <mat-header-cell *matHeaderCellDef> Løn-niveau </mat-header-cell>
-                <mat-cell *matCellDef="let row">
+                <mat-header-cell class="short-lon" *matHeaderCellDef> Løn-niveau </mat-header-cell>
+                <mat-cell class="short-lon" *matCellDef="let row">
                   {{row.wager}}
                 </mat-cell>
               </ng-container>
@@ -174,8 +175,8 @@
 
               <!-- Bonus Column -->
               <ng-container matColumnDef="bonus">
-                <mat-header-cell *matHeaderCellDef> Ekstra </mat-header-cell>
-                <mat-cell *matCellDef="let row">
+                <mat-header-cell class="short-bonus" *matHeaderCellDef> Ekstra </mat-header-cell>
+                <mat-cell class="short-bonus" *matCellDef="let row">
                   <mat-form-field class="example-full-width">
                     <input type="number"
                            matInput
@@ -188,8 +189,8 @@
 
               <!-- Comment Column -->
               <ng-container matColumnDef="comment">
-                <mat-header-cell *matHeaderCellDef> Kommentar </mat-header-cell>
-                <mat-cell *matCellDef="let row">
+                <mat-header-cell class="short-comment" *matHeaderCellDef> Kommentar </mat-header-cell>
+                <mat-cell class="short-comment" *matCellDef="let row">
                   <mat-form-field class="example-full-width">
                     <input type="text"
                            matInput
@@ -202,8 +203,8 @@
 
               <!-- Sum Column -->
               <ng-container matColumnDef="sum">
-                <mat-header-cell *matHeaderCellDef> Sum </mat-header-cell>
-                <mat-cell *matCellDef="let row"
+                <mat-header-cell class="short" *matHeaderCellDef> Sum </mat-header-cell>
+                <mat-cell class="short" *matCellDef="let row"
                           (keyup)="updatePayout(row)">
                   {{row.sum | currency: 'DKK'}}
                 </mat-cell>

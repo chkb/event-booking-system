@@ -3,6 +3,7 @@ import { Employee } from './employee';
 export class EventObject {
     uid: string;
     name: string;
+    today: number = Date.now();
     dateFrom: Date;
     dateTo: Date;
     timeFrom = 'yyyy-mm-ddThh:mm';
@@ -42,6 +43,8 @@ export class EventObject {
 }
 
 export class Payout {
+    dateFrom: Date;
+    dateTo: Date;
     timeFrom: string;
     timeTo: string;
     hours: number;
@@ -54,6 +57,8 @@ export class Payout {
 }
 export class PayoutVM {
     employeeName: string;
+    dateFrom: Date;
+    dateTo: Date;
     timeFrom: string;
     timeTo: string;
     hours: number;

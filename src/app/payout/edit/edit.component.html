@@ -7,7 +7,7 @@
               [class.xs]="['card-xs', 'infocard-xs']">
       <mat-card-header class="card-header">
         <h3>
-          Tidsregistrering af event '{{selectedEvent.name}}' + {{current_hrs}}
+          Tidsregistrering af event '{{selectedEvent.name}}'
         </h3>
       </mat-card-header>
       <mat-card-content>
@@ -71,8 +71,14 @@
                           class="card infocard"
                           [class.xs]="['card-xs', 'infocard-xs']">
                   <mat-card-content>
-                    <img mat-card-image
-                         [src]="bookedEmployee.photoURL">
+                      <img mat-card-image
+                      *ngIf="bookedEmployee.photoURL"
+                      [src]="bookedEmployee.photoURL">
+
+                      <img mat-card-image
+                      *ngIf="!bookedEmployee.photoURL"
+                      src="assets/img/profile.png">
+
                     <mat-card-title>{{bookedEmployee.displayName}}</mat-card-title>
                     <mat-card-subtitle>{{bookedEmployee.email}}</mat-card-subtitle>
                     <p>

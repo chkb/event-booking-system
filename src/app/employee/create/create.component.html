@@ -42,14 +42,15 @@
                  name="mobile">
         </mat-form-field>
 
-        <mat-form-field 
-                 fxLayout="row"
-                 class="full-width">
-          <input matInput
-                 autocomplete="off"
-                 placeholder="Skills"
-                 [(ngModel)]="employee.skills"
-                 name="skills">
+        <mat-form-field>
+          <mat-select placeholder="Role"
+                      autocomplete="off"
+                      [(ngModel)]="employee.role"
+                      name="role">
+            <mat-option value="employee">Medarbejder</mat-option>
+            <mat-option value="eventLeader">Eventleder</mat-option>
+            <mat-option value="admin">Administrator</mat-option>
+          </mat-select>
         </mat-form-field>
 
         

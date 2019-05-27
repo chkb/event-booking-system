@@ -21,7 +21,7 @@ export class EmployeeCreateComponent implements OnInit {
   name: string;
   mobile: string;
   email: string;
-  skills: string;
+  role: string;
 
 
   constructor(
@@ -42,6 +42,7 @@ create(): void {
         duration: 10000,
       });
     this.employee = new Employee();
+    console.log(Employee);
   });
 }
 

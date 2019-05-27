@@ -1,7 +1,64 @@
-<mat-card class="card infocard"
-          [class.xs]="['card-xs', 'infocard-xs']">
-  <mat-card-header class="card-header">
-    <h3>
-        Opret ny medarbejder
-    </h3>
-  </mat-card-header>
+  <div fxLayout="column wrap"
+     fxLayout.gt-xs="row"
+     fxLayoutGap="2%">
+  <div fxFlex="100"
+       fxFlex.gt-md="50">
+    <mat-card
+              class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+            Opret ny medarbejder
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field 
+                  fxLayout="row"
+                  class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Navn"
+                 [(ngModel)]="employee.name"
+                 name="employeename">
+        </mat-form-field>
+
+        <mat-form-field 
+                 fxLayout="row"
+                 class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Email"
+                 [(ngModel)]="employee.email"
+                 name="email">
+        </mat-form-field>
+
+        <mat-form-field 
+                 fxLayout="row"
+                 class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Mobil"
+                 [(ngModel)]="employee.mobile"
+                 name="mobile">
+        </mat-form-field>
+
+        <mat-form-field 
+                 fxLayout="row"
+                 class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Skills"
+                 [(ngModel)]="employee.skills"
+                 name="skills">
+        </mat-form-field>
+
+        
+      
+      <button mat-raised-button
+                color="primary"
+                (click)="create()"
+                [disabled]="!employee.mobile">OPRET MEDARBEJDER</button>
+      </mat-card-content>
+      
+
+

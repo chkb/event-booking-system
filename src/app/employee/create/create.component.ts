@@ -42,7 +42,7 @@ create(): void {
         duration: 10000,
       });
     this.employee = new Employee();
-    console.log(Employee);
+    console.log('employee created');
   });
 }
 

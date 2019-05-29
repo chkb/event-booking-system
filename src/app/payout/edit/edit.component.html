@@ -30,8 +30,8 @@
               <mat-list-item>
                 <mat-icon mat-list-icon>access_time</mat-icon>
                 <h4 mat-line>Tidspunkt</h4>
-                <p mat-line> fra {{selectedEvent.dateFrom}} </p>
-                <p mat-line> til {{selectedEvent.dateTo}} </p>
+                <p mat-line> Fra  {{selectedEvent.dateFrom | date: 'E dd.MM.yyyy HH:mm'}} </p>
+                <p mat-line> Til  {{selectedEvent.dateTo | date: 'E dd.MM.yyyy HH:mm'}} </p>
               </mat-list-item>
               <!--
               <mat-list-item>
@@ -120,6 +120,7 @@
                 <mat-header-cell class="wide" *matHeaderCellDef>  Starttidspunkt </mat-header-cell>
                 <mat-cell class="wide" *matCellDef="let row">
                   <input type="datetime-local"
+                           
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"
@@ -133,6 +134,7 @@
                 <mat-header-cell class="wide" *matHeaderCellDef>  Sluttidspunkt </mat-header-cell>
                 <mat-cell class="wide" *matCellDef="let row">
                   <input type="datetime-local"
+                         
                          [disabled]="selectedEvent.payoutDone"
                          (keyup)="updatePayout(row)"
                          (change)="updatePayout(row)"

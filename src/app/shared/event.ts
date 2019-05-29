@@ -3,11 +3,11 @@ import { Employee } from './employee';
 export class EventObject {
     uid: string;
     name: string;
-    today: number = Date.now();
+    
     dateFrom: Date;
     dateTo: Date;
-    timeFrom = 'yyyy-mm-ddThh:mm';
-    timeTo = 'yyyy-mm-ddThh:mm';
+    timeFrom = 'yyyy-mm-dd-hh:mm';
+    timeTo = 'yyyy-mm-dd-hh:mm';
     billInfo = '';
     language: string;
     eventDescription: string;

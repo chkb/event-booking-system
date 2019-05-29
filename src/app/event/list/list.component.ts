@@ -1,8 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { MatTableDataSource, MatSlideToggleChange } from '@angular/material';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource, MatSort, MatSlideToggleChange } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
+
+
 
 import { EventObject } from '../../shared/event';
 import { moveIn } from '../../router.animations';
@@ -16,7 +18,7 @@ import { take } from 'rxjs/operators';
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EventListComponent implements AfterViewInit {
+export class EventListComponent implements OnInit {
     afterLoading = false;
     beforeLoading = false;
     viewAllUpcomming = false;
@@ -35,8 +37,18 @@ export class EventListComponent implements AfterViewInit {
         'payoutDone',
         'billInfo'
     ];
+    
     dataSource: MatTableDataSource<EventObject>;
     dataPrevSource: MatTableDataSource<EventObject>;
+    @ViewChild(MatSort) sort: MatSort;
+
+    ngOnInit() {
+
+        
+
+    }
+
+    
 
     constructor(
         private afs: AngularFirestore,
@@ -108,8 +120,7 @@ export class EventListComponent implements AfterViewInit {
         this.afterLoading = false;
     }
 
-    ngAfterViewInit() {
-    }
+    
 
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace

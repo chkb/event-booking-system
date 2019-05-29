@@ -37,7 +37,7 @@ export class EmployeeListComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.getData();
+        //this.getData();
         this.getEmployeeData();
     }
 

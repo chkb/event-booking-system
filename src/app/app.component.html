@@ -98,7 +98,8 @@
           
   
         <span *ngIf="isAdmin()">
-            <button mat-button [matMenuTriggerFor]="belowMenu">
+            <button mat-button 
+                    [matMenuTriggerFor]="belowMenu">
                 <span>Indstillinger</span>
             </button>
             <mat-menu #belowMenu="matMenu" yPosition="below">

@@ -15,7 +15,7 @@
                 [class.xs]="['card-xs', 'infocard-xs']">
         <mat-card-header class="card-header">
           <h3>
-            Begivenhed {{selectedEvent.dateFrom}}
+            Begivenhed {{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}
           </h3>
         </mat-card-header>
         <mat-card-content>

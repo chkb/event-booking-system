@@ -21,9 +21,10 @@
                      (keyup)="applyFilter($event.target.value)"
                      placeholder="Søg">
             </mat-form-field>
-            <!-- <mat-checkbox [(ngModel)]="getAllCheckBox"
-                          (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox> -->
           </div>
+          
+
+
           <div *ngIf="afterLoading">
             <div fxLayout="row"
                  fxLayoutAlign="center center">
@@ -185,6 +186,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
+
           <div class="search">
             <mat-form-field>
               <input matInput
@@ -192,6 +194,9 @@
                      placeholder="Søg">
             </mat-form-field>
           </div>
+          
+
+
           <div *ngIf="beforeLoading">
             <div fxLayout="row"
                  fxLayoutAlign="center center">

@@ -43,7 +43,7 @@ export class EventListComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
 
     ngOnInit() {
-
+        
         
 
     }
@@ -94,6 +94,7 @@ export class EventListComponent implements OnInit {
     setDataBeforeToday(events: any): void {
         this.dataPrevSource = new MatTableDataSource(events);
         this.beforeLoading = false;
+        this.dataSource.sort = this.sort;
     }
 
     afterEventToggle(toggle: MatSlideToggleChange): void {
@@ -118,6 +119,7 @@ export class EventListComponent implements OnInit {
     setDataAfterToday(events: any): void {
         this.dataSource = new MatTableDataSource(events);
         this.afterLoading = false;
+        this.dataSource.sort = this.sort;
     }
 
     

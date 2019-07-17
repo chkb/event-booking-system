@@ -1,3 +1,110 @@
-<p>
-  create works!
-</p>
+<div fxLayout="column" fxLayoutAlign="space-between center">
+    <mat-card class="login-card">
+        <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
+            <div fxFlex>
+                <h1>
+                    Opret ny medarbejder
+                </h1>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <input matInput placeholder="Email" 
+                           alt="email" 
+                           [(ngModel)]="email">
+                    <button mat-button 
+                            *ngIf="email" matSuffix mat-icon-button aria-label="Clear" (click)="email=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" alt="password" placeholder="Password" [(ngModel)]="password">
+                    <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" alt="repeatPassword" placeholder="Repeat Password" [(ngModel)]="repeatPassword">
+                    <button mat-button *ngIf="repeatPassword" matSuffix mat-icon-button aria-label="Clear" (click)="repeatPassword=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div fxFlex>
+                <p class="validation">{{validation}}</p>
+                <button class="login-button" mat-raised-button [disabled]="!email || !password || !repeatPassword" (click)="createLogin()" id="bruger">Opret bruger</button>
+            </div>
+        </div>
+    </mat-card>
+</div>
+  
+  <!--
+  <div fxLayout="column wrap"
+     fxLayout.gt-xs="row"
+     fxLayoutGap="2%">
+  <div fxFlex="100"
+       fxFlex.gt-md="50">
+    <mat-card
+              class="card infocard"
+              [class.xs]="['card-xs', 'infocard-xs']">
+      <mat-card-header class="card-header">
+        <h3>
+            Opret ny medarbejder
+        </h3>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field 
+                  fxLayout="row"
+                  class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Navn"
+                 [(ngModel)]="employee.name"
+                 name="employeename">
+        </mat-form-field>
+
+        <mat-form-field 
+                 fxLayout="row"
+                 class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Email"
+                 [(ngModel)]="employee.email"
+                 name="email">
+        </mat-form-field>
+
+        <mat-form-field 
+                 fxLayout="row"
+                 class="full-width">
+          <input matInput
+                 autocomplete="off"
+                 placeholder="Mobil"
+                 [(ngModel)]="employee.mobile"
+                 name="mobile">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select placeholder="Role"
+                      autocomplete="off"
+                      [(ngModel)]="employee.role"
+                      name="role">
+            <mat-option value="employee">Medarbejder</mat-option>
+            <mat-option value="eventLeader">Eventleder</mat-option>
+            <mat-option value="admin">Administrator</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        
+      
+      <button mat-raised-button
+                color="primary"
+                (click)="create()"
+                [disabled]="!employee.mobile">OPRET MEDARBEJDER</button>
+      </mat-card-content>
+      
+
+
+-->

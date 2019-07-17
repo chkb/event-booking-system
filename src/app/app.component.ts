@@ -17,6 +17,10 @@ export class AppComponent {
     fullscreenActive = false;
     isAuthenticated: boolean;
 
+    
+       
+
+
     constructor(
         private router: Router,
         public auth: LoginProviderService
@@ -28,12 +32,13 @@ export class AppComponent {
                 this.isAuthenticated = false;
             }
         });
+    
     }
 
     eventNavigationItems: NavigationItem[] = [
         {
             url: '/event/list',
-            text: 'Eventliste'
+            text: 'Vis Events'
         },
         {
             url: '/event/create',
@@ -44,7 +49,14 @@ export class AppComponent {
     employeeNavigationItems: NavigationItem[] = [
         {
             url: '/employee/list',
-            text: 'Medarbejdereliste'
+            text: 'Vis Medarbejdere'
+        }
+    ];
+
+    employeeCreateNavigationItems: NavigationItem[] = [
+        {
+            url: '/employee/create',
+            text: 'Opret medarbejder (ny)'
         }
     ];
 
@@ -93,7 +105,7 @@ export class AppComponent {
     eventAdminNavigationItems: NavigationItem[] = [
         {
             url: '/payout-admin',
-            text: 'Export løn data'
+            text: 'Administrer Udbetaling (tidligere Export Løn data)'
         }
     ];
 

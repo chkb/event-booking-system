@@ -123,33 +123,29 @@
         <mat-option value="Færdig">Færdig</mat-option>
       </mat-select>
     </mat-form-field>
+
+
     <mat-divider></mat-divider>
+
+
+
+
     <h3>Tid og sted</h3>
     <div fxLayout="column wrap"
          fxLayout.gt-xs="row"
          fxLayoutGap="2%">
       <div fxFlex>
         <h5>Start tidspunkt</h5>
-        <input type="time"
-               [(ngModel)]="event.timeFrom" />
-        <mat-form-field class="full-width">
-          <input matInput
-                 type="date"
-                 placeholder="Startdato"
-                 [(ngModel)]="event.dateFrom">
-        </mat-form-field>
+        <input type="datetime-local"
+               [(ngModel)]="event.dateFrom" />
       </div>
+
       <div fxFlex>
         <h5>Slut tidspunkt</h5>
-        <input type="time"
-               [(ngModel)]="event.timeTo" />
-        <mat-form-field class="full-width">
-          <input matInput
-                 type="date"
-                 placeholder="Slutdato"
-                 [(ngModel)]="event.dateTo">
-        </mat-form-field>
+        <input type="datetime-local"
+               [(ngModel)]="event.dateTo" />
       </div>
+      
     </div>
     <div fxLayout="column wrap"
          fxLayout.gt-xs="row"

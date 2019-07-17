@@ -3,7 +3,7 @@
         <div fxLayout="column" fxLayoutGap="2%" fxLayoutAlign="space-between center">
             <div fxFlex>
                 <h1>
-                    Opret bruger
+                    Opret bruger 
                 </h1>
             </div>
             <div fxFlex>
@@ -32,7 +32,11 @@
             </div>
             <div fxFlex>
                 <p class="validation">{{validation}}</p>
-                <button class="login-button" mat-raised-button [disabled]="!email || !password || !repeatPassword" (click)="createLogin()" id="bruger">Opret bruger</button>
+                <button class="login-button" 
+                        mat-raised-button [disabled]="!email || !password || !repeatPassword" 
+                        (click)="createLogin()" 
+                        id="bruger">Opret bruger
+                </button>
             </div>
         </div>
     </mat-card>

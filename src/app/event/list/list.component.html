@@ -21,9 +21,10 @@
                      (keyup)="applyFilter($event.target.value)"
                      placeholder="Søg">
             </mat-form-field>
-            <!-- <mat-checkbox [(ngModel)]="getAllCheckBox"
-                          (click)="getdata(!getAllCheckBox)">Hent alle? (deaktiveret events)</mat-checkbox> -->
           </div>
+          
+
+
           <div *ngIf="afterLoading">
             <div fxLayout="row"
                  fxLayoutAlign="center center">
@@ -33,12 +34,15 @@
           <div *ngIf="!afterLoading"
                [ngClass]="viewAllUpcomming ?  '' : 'table-overflow'">
             <div class="container">
-              <mat-table #table
-                         [dataSource]="dataSource">
+
+
+                <table mat-table
+                [dataSource]="dataSource"
+                matSort>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Kunde </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     {{row.name}}
                   </mat-cell>
@@ -46,7 +50,7 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="eventLeader">
-                  <mat-header-cell *matHeaderCellDef
+                  <mat-header-cell *matHeaderCellDef mat-sort-header
                                    fxFlex="150px"> Eventleder </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="150px">
@@ -54,21 +58,29 @@
                   </mat-cell>
                 </ng-container>
 
+
+
+
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
-                  <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'EEEE dd. MMMM yyyy'}}</mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Start </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'E dd.MM.yyyy kl HH:mm'}}</mat-cell>
                 </ng-container>
+
+
+
+
+
 
                 <!-- Date Column -->
                 <ng-container matColumnDef="time">
-                  <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
-                  <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Slut </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{row.dateTo | date: 'E dd.MM.yyyy kl HH:mm'}} </mat-cell>
                 </ng-container>
 
                 <!-- Lokation Column -->
                 <ng-container matColumnDef="location">
-                  <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Lokation </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     {{row.eventLocation ? row.eventLocation : 'Ingen lokation' }}
                   </mat-cell>
@@ -78,7 +90,7 @@
                 <ng-container matColumnDef="staffNeed">
                   <mat-header-cell *matHeaderCellDef
                                    fxFlex="100px"
-                                   class="center"> Personale </mat-header-cell>
+                                   class="center" mat-sort-header> Personale </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             matTooltip="{{row.booked?.length ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
                             fxFlex="100px">
@@ -106,7 +118,7 @@
 
                 <!-- Event type Column -->
                 <ng-container matColumnDef="eventType">
-                  <mat-header-cell *matHeaderCellDef> Event-Type </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Event-Type </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     <mat-chip-list>
                       <mat-chip [style.background]="row.eventTypeColor"
@@ -120,7 +132,7 @@
                 <!-- Bill Info Column -->
                 <ng-container matColumnDef="billInfo">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="100px"> Fakturering </mat-header-cell>
+                                   fxFlex="100px" mat-sort-header> Fakturering </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="100px">
                     {{row.billInfo ? row.billInfo : 'Ikke angivet' }}
@@ -130,7 +142,7 @@
                 <!-- Booking Done Column -->
                 <ng-container matColumnDef="bookingDone">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="75px"> Bookning </mat-header-cell>
+                                   fxFlex="75px" mat-sort-header> Bookning </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="75px">
                     <mat-icon> {{row.bookingDone ? 'check_circle': 'remove_circle'}}</mat-icon>
@@ -140,7 +152,7 @@
                 <!-- Payout Done Column -->
                 <ng-container matColumnDef="payoutDone">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="75px"> Timeregistrering </mat-header-cell>
+                                   fxFlex="75px" mat-sort-header> Timeregistrering </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="75px">
                     <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>
@@ -151,7 +163,7 @@
                 <mat-row *matRowDef="let row; columns: displayedColumns;"
                          class="row"
                          (click)="gotoEvent(row.uid)"></mat-row>
-              </mat-table>
+              </table>
             </div>
           </div>
         </mat-card-content>
@@ -174,6 +186,7 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
+
           <div class="search">
             <mat-form-field>
               <input matInput
@@ -181,6 +194,9 @@
                      placeholder="Søg">
             </mat-form-field>
           </div>
+          
+
+
           <div *ngIf="beforeLoading">
             <div fxLayout="row"
                  fxLayoutAlign="center center">
@@ -191,11 +207,12 @@
                [ngClass]="viewAllPrev ?  '' : 'table-overflow'">
             <div class="container">
               <mat-table #table
-                         [dataSource]="dataPrevSource">
+                         [dataSource]="dataPrevSource"
+                         matSort>
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
-                  <mat-header-cell *matHeaderCellDef> Kunde </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Kunde </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     {{row.name}}
                   </mat-cell>
@@ -203,27 +220,32 @@
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="eventLeader">
-                  <mat-header-cell *matHeaderCellDef> Eventleder </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Eventleder </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     {{row.eventLeader ? row.eventLeader : 'Ingen eventleder' }}
                   </mat-cell>
                 </ng-container>
 
+
                 <!-- Date Column -->
                 <ng-container matColumnDef="date">
-                  <mat-header-cell *matHeaderCellDef> Dato </mat-header-cell>
-                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'EEEE dd. MMMM yyyy'}}</mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Start </mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.dateFrom | date: 'E dd.MM.yyyy kl HH:mm'}} </mat-cell>
                 </ng-container>
+
+
+
+
 
                 <!-- Date Column -->
                 <ng-container matColumnDef="time">
-                  <mat-header-cell *matHeaderCellDef> Tidspunkt </mat-header-cell>
-                  <mat-cell *matCellDef="let row"> {{row.timeFrom}} til {{row.timeTo}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Slut  </mat-header-cell>
+                  <mat-cell *matCellDef="let row"> {{row.dateTo | date: 'E dd.MM.yyyy kl HH:mm'}} </mat-cell>
                 </ng-container>
 
                 <!-- Lokation Column -->
                 <ng-container matColumnDef="location">
-                  <mat-header-cell *matHeaderCellDef> Lokation </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Lokation </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     {{row.eventLocation ? row.eventLocation : 'Ingen lokation' }}
                   </mat-cell>
@@ -232,7 +254,7 @@
                 <!-- Staff Needed Column -->
                 <ng-container matColumnDef="staffNeed">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="100px"> Personale </mat-header-cell>
+                                   fxFlex="100px" mat-sort-header> Personale </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             matTooltip="{{row.bookedCount ? row.bookedCount : 0}} ud {{row.staffNeed}} af booked"
                             fxFlex="100px">
@@ -264,7 +286,7 @@
 
                 <!-- Event type Column -->
                 <ng-container matColumnDef="eventType">
-                  <mat-header-cell *matHeaderCellDef> Event-Type </mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Event-Type </mat-header-cell>
                   <mat-cell *matCellDef="let row">
                     <mat-chip-list>
                       <mat-chip [style.background]="row.eventTypeColor"
@@ -278,7 +300,7 @@
                 <!-- Bill Info Column -->
                 <ng-container matColumnDef="billInfo">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="100px"> Fakturering </mat-header-cell>
+                                   fxFlex="100px" mat-sort-header> Fakturering </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="100px">
                     {{row.billInfo ? row.billInfo : 'Ikke angivet' }}
@@ -288,7 +310,7 @@
                 <!-- Booking Done Column -->
                 <ng-container matColumnDef="bookingDone">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="75px"> Bookning </mat-header-cell>
+                                   fxFlex="75px" mat-sort-header> Bookning </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="75px">
                     <mat-icon> {{row.bookingDone ? 'check_circle': 'remove_circle'}}</mat-icon>
@@ -298,7 +320,7 @@
                 <!-- Payout Done Column -->
                 <ng-container matColumnDef="payoutDone">
                   <mat-header-cell *matHeaderCellDef
-                                   fxFlex="75px"> Løn </mat-header-cell>
+                                   fxFlex="75px" mat-sort-header> Løn </mat-header-cell>
                   <mat-cell *matCellDef="let row"
                             fxFlex="75px">
                     <mat-icon> {{row.payoutDone ? 'check_circle': 'remove_circle'}}</mat-icon>

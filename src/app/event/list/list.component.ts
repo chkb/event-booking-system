@@ -1,8 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { MatTableDataSource, MatSlideToggleChange } from '@angular/material';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource, MatSort, MatSlideToggleChange } from '@angular/material';
 import { Router } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as moment from 'moment';
+
+
 
 import { EventObject } from '../../shared/event';
 import { moveIn } from '../../router.animations';
@@ -16,7 +18,7 @@ import { take } from 'rxjs/operators';
     // tslint:disable-next-line:use-host-property-decorator
     host: { '[@moveIn]': '' }
 })
-export class EventListComponent implements AfterViewInit {
+export class EventListComponent implements OnInit {
     afterLoading = false;
     beforeLoading = false;
     viewAllUpcomming = false;
@@ -35,8 +37,18 @@ export class EventListComponent implements AfterViewInit {
         'payoutDone',
         'billInfo'
     ];
+    
     dataSource: MatTableDataSource<EventObject>;
     dataPrevSource: MatTableDataSource<EventObject>;
+    @ViewChild(MatSort) sort: MatSort;
+
+    ngOnInit() {
+        
+        
+
+    }
+
+    
 
     constructor(
         private afs: AngularFirestore,
@@ -82,6 +94,7 @@ export class EventListComponent implements AfterViewInit {
     setDataBeforeToday(events: any): void {
         this.dataPrevSource = new MatTableDataSource(events);
         this.beforeLoading = false;
+        this.dataSource.sort = this.sort;
     }
 
     afterEventToggle(toggle: MatSlideToggleChange): void {
@@ -106,10 +119,10 @@ export class EventListComponent implements AfterViewInit {
     setDataAfterToday(events: any): void {
         this.dataSource = new MatTableDataSource(events);
         this.afterLoading = false;
+        this.dataSource.sort = this.sort;
     }
 
-    ngAfterViewInit() {
-    }
+    
 
     applyFilter(filterValue: string) {
         filterValue = filterValue.trim(); // Remove whitespace

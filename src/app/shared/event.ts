@@ -3,10 +3,11 @@ import { Employee } from './employee';
 export class EventObject {
     uid: string;
     name: string;
+    
     dateFrom: Date;
     dateTo: Date;
-    timeFrom = '18:00';
-    timeTo = '22:00';
+    timeFrom = 'yyyy-mm-dd-hh:mm';
+    timeTo = 'yyyy-mm-dd-hh:mm';
     billInfo = '';
     language: string;
     eventDescription: string;
@@ -42,6 +43,8 @@ export class EventObject {
 }
 
 export class Payout {
+    dateFrom: Date;
+    dateTo: Date;
     timeFrom: string;
     timeTo: string;
     hours: number;
@@ -54,6 +57,8 @@ export class Payout {
 }
 export class PayoutVM {
     employeeName: string;
+    dateFrom: Date;
+    dateTo: Date;
     timeFrom: string;
     timeTo: string;
     hours: number;

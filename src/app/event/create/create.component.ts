@@ -28,8 +28,6 @@ export class EventCreateComponent implements AfterViewInit {
     event: EventObject = new EventObject();
     leaderList: Booked[] = [];
     eventTypeList: EventType[] = [];
-    startTime = '18:00';
-    endTime = '22:00';
     displayedColumns = [
         'role',
         'displayName',

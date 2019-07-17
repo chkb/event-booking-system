@@ -15,7 +15,7 @@
                 [class.xs]="['card-xs', 'infocard-xs']">
         <mat-card-header class="card-header">
           <h3>
-            Begivenhed {{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}
+            Begivenhed {{selectedEvent.dateFrom | date: 'EEEE Den dd. MMMM yyyy'}}
           </h3>
         </mat-card-header>
         <mat-card-content>
@@ -147,8 +147,9 @@
                fxLayoutGap="2%">
             <div fxFlex>
               <h5>Start tidspunkt</h5>
-              <input type="time"
-                     [(ngModel)]="selectedEvent.timeFrom" />
+              <input type="datetime-local"
+                     [(ngModel)]="selectedEvent.dateFrom" />
+              <!--       
               <h5 *ngIf="selectedEvent.dateFrom">{{selectedEvent.dateFrom | date: 'Den dd. MMMM yyyy'}}</h5>
               <mat-form-field class="full-width">
                 <input matInput
@@ -156,11 +157,14 @@
                        placeholder="Startdato"
                        [(ngModel)]="selectedEvent.dateFrom">
               </mat-form-field>
+
+              -->
             </div>
             <div fxFlex>
               <h5>Slut tidspunkt</h5>
-              <input type="time"
-                     [(ngModel)]="selectedEvent.timeTo" />
+              <input type="datetime-local"
+                     [(ngModel)]="selectedEvent.dateTo" />
+              <!--
               <h5 *ngIf="selectedEvent.dateTo">{{selectedEvent.dateTo | date: 'Den dd. MMMM yyyy'}}</h5>
               <mat-form-field class="full-width">
                 <input matInput
@@ -168,6 +172,8 @@
                        placeholder="Slutdato"
                        [(ngModel)]="selectedEvent.dateTo">
               </mat-form-field>
+
+              -->
             </div>
           </div>
           <div fxLayout="column wrap"

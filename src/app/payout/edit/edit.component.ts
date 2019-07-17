@@ -4,6 +4,7 @@ import { MatDialog, MatSnackBar, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 // tslint:disable-next-line:import-blacklist
 import { Subject } from 'rxjs';
+import * as moment from 'moment';
 
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { LoginProviderService } from '../../core/login-provider.service';
@@ -22,6 +23,7 @@ import { Employee } from '../../shared/employee';
     host: { '[@moveIn]': '' }
 })
 export class PayoutEditComponent implements OnInit {
+    
     selectedPayoutList: Payout[] = [];
     selectedEvent: EventObject;
     tempWagerList: Wager[] = [];
@@ -77,8 +79,8 @@ export class PayoutEditComponent implements OnInit {
             const payoutVm = new PayoutVM();
             payoutVm.employeeName = payout.employee.displayName;
             payoutVm.employee = payout.employee;
-            payoutVm.timeFrom = payout.timeFrom;
-            payoutVm.timeTo = payout.timeTo;
+            payoutVm.dateFrom = payout.dateFrom;
+            payoutVm.dateTo = payout.dateTo;
             payoutVm.hours = payout.hours;
             payoutVm.sum = payout.sum;
             payoutVm.bonus = payout.bonus;
@@ -99,9 +101,9 @@ export class PayoutEditComponent implements OnInit {
                 const payout = new PayoutVM();
                 payout.employeeName = result.displayName;
                 payout.employee = employee;
-                payout.timeFrom = this.selectedEvent.timeFrom;
-                payout.timeTo = this.selectedEvent.timeTo;
-                payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
+                payout.dateFrom = this.selectedEvent.dateFrom;
+                payout.dateTo = this.selectedEvent.dateTo;
+                payout.hours = this.getHours(payout.dateFrom, payout.dateTo);
                 if (result.personalWager) {
                     const wager = new Wager();
                     wager.name = result.displayName;
@@ -130,21 +132,56 @@ export class PayoutEditComponent implements OnInit {
         return sum;
     }
 
-    getHours(timeFrom: string, timeTo: string): number {
+     
+/*
+     getHours(dateFrom: string, dateTo: string): number {
+       const result = 0;
+
+       const from = this.event.dateFrom.getHours();
+     }
+
+
+*/
+
+
+/*
+    getHours(dateFrom: string, dateTo: string): number {
         const result = 0;
-        const from = this.toSeconds(timeFrom);
-        const to = this.toSeconds(timeTo);
+        const from = this.toSeconds(dateFrom);
+        const to = this.toSeconds(dateTo);
         let diff = Math.abs(to - from);
         if (to < from) {
             diff = Math.abs(from - this.toSeconds('24:00'));
             diff = diff + Math.abs(this.toSeconds('00:00') - to);
         }
+        
+        
 
         const h = Math.floor(diff / 3600);
         const m = Math.round(Math.floor(diff % 3600 / 60) * 0.0166666667 * 100) / 100;
         const time = h + m;
 
         return time;
+       
+    }
+   
+   */
+    
+   
+                
+                 
+
+    
+    getHours(dateFrom: Date, dateTo: Date): number {
+        
+        const end = moment(dateTo);
+        const start = moment(dateFrom);
+        const duration = moment.duration(end.diff(start));
+        const hours = duration.asHours();
+        const hoursDecimal = Math.round(hours * 100) / 100;
+    
+        return hoursDecimal ;
+
     }
 
     toSeconds(time: string): number {
@@ -174,8 +211,25 @@ export class PayoutEditComponent implements OnInit {
         });
     }
 
+    checkIfOverlap(payout: Payout): boolean {
+        this.selectedPayoutList.forEach(selected => {
+            if (selected.employee.uid === payout.employee.uid) {
+                if (selected.dateFrom < payout.dateFrom && payout.dateFrom < selected.dateTo) {
+                    return true;
+                }
+            }
+        })
+        return false;
+    }
+
+
+    // check this out
     updatePayout(payout: Payout): void {
-        payout.hours = this.getHours(payout.timeFrom, payout.timeTo);
+        if (this.checkIfOverlap(payout)) {
+            console.log('overlap');
+            return;
+        }
+        payout.hours = this.getHours(payout.dateFrom, payout.dateTo);
         payout.sum = this.getSum(payout.hours, payout.wager, payout.bonus);
         const idx = this.selectedPayoutList.findIndex(x => x.employee === payout.employee && x.hours === payout.hours);
         this.selectedPayoutList[idx] = payout;

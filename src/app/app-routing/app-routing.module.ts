@@ -4,7 +4,6 @@ import { Route, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../core/auth-guard.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { EmployeeCreateComponent } from '../employee/create/create.component';
 import { EmployeeEditComponent } from '../employee/edit/edit.component';
 import { EmployeeListComponent } from '../employee/list/list.component';
 import { EventTypeComponent } from '../event-type/event-type.component';
@@ -64,11 +63,6 @@ const routes: Route[] = [
     {
         path: 'event/:id',
         component: EventEditComponent,
-        canActivate: [AuthGuard]
-    },
-    {
-        path: 'employee/create',
-        component: EmployeeCreateComponent,
         canActivate: [AuthGuard]
     },
     {

@@ -23,7 +23,6 @@ import { LoginProviderService } from './core/login-provider.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MyDateAdapter } from './date-adapter';
 import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
-import { EmployeeCreateComponent } from './employee/create/create.component';
 import { EmployeeEditComponent } from './employee/edit/edit.component';
 import { EmployeeListComponent } from './employee/list/list.component';
 import { EmployeeViewComponent } from './employee/view/view.component';
@@ -58,7 +57,6 @@ registerLocaleData(daLocale);
 @NgModule({
     declarations: [
         AppComponent,
-        EmployeeCreateComponent,
         EmployeeEditComponent,
         EmployeeListComponent,
         EmployeeViewComponent,
